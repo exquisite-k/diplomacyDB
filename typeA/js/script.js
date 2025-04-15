@@ -1,32 +1,32 @@
 // 문서가 완전히 로드된 후 실행
 document.addEventListener('DOMContentLoaded', function() {
     // 스와이퍼 슬라이더 초기화 - 인물 섹션
-    // const personSwiper = new Swiper('.person-slider', {
-    //     slidesPerView: 1,
-    //     spaceBetween: 20,
-    //     pagination: {
-    //         el: '.person-slider .swiper-pagination',
-    //         clickable: true,
-    //     },
-    //     breakpoints: {
-    //         // 576px 이상에서
-    //         576: {
-    //             slidesPerView: 2,
-    //             spaceBetween: 20,
-    //         },
-    //         // 768px 이상에서
-    //         768: {
-    //             slidesPerView: 3,
-    //             spaceBetween: 20,
-    //         },
-    //         // 1024px 이상에서
-    //         1024: {
-    //             slidesPerView: 3,
-    //             spaceBetween: 30,
-    //         },
-    //     }
-    // });
-
+    const personSwiper = new Swiper('.person-slider', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        scrollbar: {
+            el: ".swiper-scrollbar",
+            hide: false,
+            draggable: true,
+        },
+        breakpoints: {
+            // 576px 이상에서
+            576: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+            },
+            // 768px 이상에서
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+            },
+            // 1024px 이상에서
+            1024: {
+                slidesPerView: 3,
+                spaceBetween: 30,
+            },
+        }
+    });
     // 스와이퍼 슬라이더 초기화 - 키워드 섹션
     // const keywordSwiper = new Swiper('.keyword-slider', {
     //     slidesPerView: 1,
@@ -53,9 +53,35 @@ document.addEventListener('DOMContentLoaded', function() {
     //         },
     //     }
     // });
-
     // amCharts 5 차트 생성
     initCharts();
+
+
+    // 탭 버튼 초기화 - 항상 하나는 활성화 (토글 off 불가)
+    initToggleButtonGroup('.tab-btn-box', '.tab-btn', null, false);
+
+
+    // 키워드 버튼 클릭 이벤트
+    // 모든 keyword-wrap을 찾습니다
+    const keywordWraps = document.querySelectorAll('.keyword-wrap');
+    // 각 keyword-wrap에 대해 별도로 이벤트 리스너 설정
+    keywordWraps.forEach(wrap => {
+        // 해당 wrap 내의 모든 버튼을 찾습니다
+        const buttons = wrap.querySelectorAll('.keyword-wrap-item button');
+        
+        // 해당 wrap 내의 각 버튼에 클릭 이벤트 리스너 추가
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                // 현재 wrap 내의 모든 keyword-wrap-item에서 active 클래스 제거
+                wrap.querySelectorAll('.keyword-wrap-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // 클릭된 버튼의 부모 요소(keyword-wrap-item)에 active 클래스 추가
+                this.closest('.keyword-wrap-item').classList.add('active');
+            });
+        });
+    });
 });
 
 // 차트 초기화 함수
@@ -157,6 +183,8 @@ document.querySelectorAll('.filter-option').forEach(option => {
     });
 });
 
+
+
 // 검색 버튼 클릭 이벤트
 document.querySelector('.search-btn').addEventListener('click', function() {
     const searchInput = document.querySelector('.search-input');
@@ -170,31 +198,6 @@ document.querySelector('.search-input').addEventListener('keyup', function(event
     }
 });
 
-// 키워드 버튼 클릭 이벤트
-document.addEventListener('DOMContentLoaded', function() {
-    // 모든 keyword-wrap을 찾습니다
-    const keywordWraps = document.querySelectorAll('.keyword-wrap');
-    
-    // 각 keyword-wrap에 대해 별도로 이벤트 리스너 설정
-    keywordWraps.forEach(wrap => {
-        // 해당 wrap 내의 모든 버튼을 찾습니다
-        const buttons = wrap.querySelectorAll('.keyword-wrap-item button');
-        
-        // 해당 wrap 내의 각 버튼에 클릭 이벤트 리스너 추가
-        buttons.forEach(button => {
-            button.addEventListener('click', function() {
-                // 현재 wrap 내의 모든 keyword-wrap-item에서 active 클래스 제거
-                wrap.querySelectorAll('.keyword-wrap-item').forEach(item => {
-                    item.classList.remove('active');
-                });
-                
-                // 클릭된 버튼의 부모 요소(keyword-wrap-item)에 active 클래스 추가
-                this.closest('.keyword-wrap-item').classList.add('active');
-            });
-        });
-    });
-});
-
 // 검색 수행 함수
 function performSearch(query) {
     if (!query.trim()) return; // 빈 검색어인 경우 무시
@@ -203,3 +206,52 @@ function performSearch(query) {
     // 여기에 실제 검색 로직 구현 (API 호출 등)
     alert('검색 기능은 현재 구현 중입니다: ' + query);
 } 
+
+
+
+// 탭 버튼 함수
+/**
+ * 토글 기능이 있는 탭 버튼 그룹 관리 함수
+ * @param {String} containerSelector - 버튼 그룹을 포함하는 컨테이너 선택자
+ * @param {String} itemSelector - 각 아이템 선택자
+ * @param {String} buttonSelector - 각 아이템 내 버튼 선택자 (생략 가능)
+ * @param {Boolean} allowToggleOff - 모든 버튼이 비활성화될 수 있는지 여부 (기본값: true)
+*/
+function initToggleButtonGroup(containerSelector, itemSelector, buttonSelector = null, allowToggleOff = true) {
+    // 모든 컨테이너 요소 찾기
+    const containers = document.querySelectorAll(containerSelector);
+    
+    containers.forEach(container => {
+        // 버튼 선택자가 제공된 경우 해당 버튼에 이벤트 추가, 아니면 아이템 자체에 이벤트 추가
+        const clickTargets = buttonSelector 
+            ? container.querySelectorAll(buttonSelector)
+            : container.querySelectorAll(itemSelector);
+            
+        clickTargets.forEach(target => {
+            target.addEventListener('click', function() {
+                // 클릭된 아이템 요소 (버튼 또는 아이템 자체)
+                const item = buttonSelector 
+                    ? this.closest(itemSelector) 
+                    : this;
+                    
+                // 이미 활성화된 상태인 경우
+                if (item.classList.contains('active')) {
+                    // allowToggleOff가 true인 경우에만 토글 해제 가능
+                    if (allowToggleOff) {
+                        item.classList.remove('active');
+                    }
+                } else {
+                    // allowToggleOff가 false인 경우, 다른 아이템의 active 클래스 제거
+                    if (!allowToggleOff) {
+                        container.querySelectorAll(itemSelector).forEach(el => {
+                            el.classList.remove('active');
+                        });
+                    }
+                    // 현재 아이템에 active 클래스 추가
+                    item.classList.add('active');
+                }
+            });
+        });
+    });
+}
+
