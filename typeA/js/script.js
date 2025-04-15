@@ -1,31 +1,31 @@
 // 문서가 완전히 로드된 후 실행
 document.addEventListener('DOMContentLoaded', function() {
     // 스와이퍼 슬라이더 초기화 - 인물 섹션
-    // const personSwiper = new Swiper('.person-slider', {
-    //     slidesPerView: 1,
-    //     spaceBetween: 20,
-    //     pagination: {
-    //         el: '.person-slider .swiper-pagination',
-    //         clickable: true,
-    //     },
-    //     breakpoints: {
-    //         // 576px 이상에서
-    //         576: {
-    //             slidesPerView: 2,
-    //             spaceBetween: 20,
-    //         },
-    //         // 768px 이상에서
-    //         768: {
-    //             slidesPerView: 3,
-    //             spaceBetween: 20,
-    //         },
-    //         // 1024px 이상에서
-    //         1024: {
-    //             slidesPerView: 3,
-    //             spaceBetween: 30,
-    //         },
-    //     }
-    // });
+    const personSwiper = new Swiper('.person-slider', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        pagination: {
+            el: '.person-slider .swiper-pagination',
+            clickable: true,
+        },
+        breakpoints: {
+            // 576px 이상에서
+            576: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+            },
+            // 768px 이상에서
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+            },
+            // 1024px 이상에서
+            1024: {
+                slidesPerView: 3,
+                spaceBetween: 30,
+            },
+        }
+    });
     // 스와이퍼 슬라이더 초기화 - 키워드 섹션
     // const keywordSwiper = new Swiper('.keyword-slider', {
     //     slidesPerView: 1,
