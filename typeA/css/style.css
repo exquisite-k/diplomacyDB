@@ -778,28 +778,42 @@ section {
   gap: 20px;
 }
 
+.stats-wrapper .sticky {
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+  position: sticky;
+  top: 80px;
+  z-index: 10;
+}
+
 .total-stats {
-  background-color: #202124;
-  color: #fff;
-  padding: 20px;
+  padding: 24px;
   border-radius: 10px;
-  text-align: center;
+  background-color: #202124;
+  display: flex;
+  flex-direction: column;
+  row-gap: 57px;
+  color: #fff;
 }
 
 .stats-title {
-  font-size: 18px;
-  margin-bottom: 10px;
+  font-size: 28px;
+  font-weight: 700;
 }
 
 .stats-number {
-  font-size: 28px;
+  color: #F53C80;
+  font-size: 40px;
   font-weight: 700;
-  margin-bottom: 5px;
+  text-align: right;
 }
 
 .stats-desc {
-  font-size: 14px;
-  color: #aaa;
+  margin-left: 24px;
+  color: #666;
+  font-size: 16px;
+  font-weight: 300;
 }
 
 .chart-grid {
@@ -824,7 +838,6 @@ section {
   padding: 24px;
   border-radius: 10px;
   background-color: #F6F6F6;
-  border: 1px solid red;
   color: #333;
 }
 
