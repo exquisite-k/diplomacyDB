@@ -83,6 +83,19 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+
+    // filter-wrapper에 무한 스크롤 효과 적용하는 함수
+    initInfiniteScroll();
+    // 창 크기 변경 시 다시 계산
+    window.addEventListener('resize', function() {
+        const filterWrapper = document.querySelector('.filter-wrapper');
+        if (filterWrapper) {
+            filterWrapper.classList.remove('animate');
+            setTimeout(() => {
+                initInfiniteScroll();
+            }, 100);
+        }
+    });
 });
 
 // 차트 초기화 함수
@@ -182,19 +195,139 @@ function initCharts() {
     createPieChart("chart6", chartData);
 }
 
-// 필터 옵션 클릭 이벤트
-document.querySelectorAll('.filter-option').forEach(option => {
-    option.addEventListener('click', function() {
-        // 모든 필터에서 active 클래스 제거
-        document.querySelectorAll('.filter-option').forEach(item => {
-            item.classList.remove('active');
+
+// 앞부분이 끝나면 뒤에서 다시 나오는 무한 슬라이드 구현
+function initInfiniteCarousel() {
+    const filterWrapper = document.querySelector('.filter-wrapper');
+    if (!filterWrapper) return;
+    
+    // 초기 아이템 개수 확인
+    const originalItems = filterWrapper.querySelectorAll('.filter-option');
+    const originalItemCount = originalItems.length;
+    
+    // 10개 이하일 경우 복제하여 개수 늘리기
+    if (originalItemCount <= 10) {
+        // 원본 아이템 복제
+        const originalContent = filterWrapper.innerHTML;
+        // 복제본 추가 (최소 2배)
+        filterWrapper.innerHTML = originalContent;
+        
+        // 필요한 만큼 더 복제 (2배로)
+        for (let i = 0; i < originalItemCount; i++) {
+            const clonedItem = originalItems[i].cloneNode(true);
+            // 클론된 아이템에 고유 ID 추가 (필요 시)
+            clonedItem.dataset.clone = 'true';
+            filterWrapper.appendChild(clonedItem);
+        }
+        
+        console.log(`필터 아이템 복제: ${originalItemCount}개 -> ${filterWrapper.querySelectorAll('.filter-option').length}개`);
+    }
+    
+    // 초기 스타일 설정
+    filterWrapper.style.display = 'flex';
+    filterWrapper.style.position = 'relative';
+    
+    // 모든 아이템 (원본 + 복제본) 가져오기
+    const items = filterWrapper.querySelectorAll('.filter-option');
+    const itemPositions = [];
+    let totalWidth = 0;
+    
+    // 각 아이템의 초기 위치와 크기 계산
+    items.forEach((item, index) => {
+        const width = item.offsetWidth;
+        const marginRight = parseInt(getComputedStyle(item).marginRight);
+        
+        itemPositions.push({
+            item: item,
+            width: width,
+            margin: marginRight,
+            position: totalWidth
         });
         
-        // 클릭한 필터에 active 클래스 추가
-        this.classList.add('active');
+        // 초기 위치 설정
+        item.style.position = 'absolute';
+        item.style.left = `${totalWidth}px`;
+        
+        totalWidth += width + marginRight;
     });
-});
+    
+    // filterWrapper의 width 설정
+    // filterWrapper.style.minWidth = `${totalWidth}px`;
+    filterWrapper.style.height = `${items[0].offsetHeight + 40}px`; // padding 포함
+    
+    // 슬라이드 속도 설정
+    const speed = 2; // 픽셀 단위 이동 속도 (높을수록 빠름)
+    let animationId;
+    
+    // 애니메이션 함수
+    function animateCarousel() {
+        // 모든 아이템을 왼쪽으로 이동
+        itemPositions.forEach(itemData => {
+            itemData.position -= speed;
+            itemData.item.style.left = `${itemData.position}px`;
+            
+            // 아이템이 왼쪽으로 완전히 사라지면 오른쪽 끝으로 재배치
+            if (itemData.position < (-itemData.width * 2)) {
+                itemData.position = totalWidth - (itemData.width * 2);
+                itemData.item.style.left = `${itemData.position}px`;
+            }
+        });
+        
+        animationId = requestAnimationFrame(animateCarousel);
+    }
+    
+    // 애니메이션 시작
+    animationId = requestAnimationFrame(animateCarousel);
+    
+    // 탭이 백그라운드로 갈 때 애니메이션 일시 중지
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            cancelAnimationFrame(animationId);
+        } else {
+            animationId = requestAnimationFrame(animateCarousel);
+        }
+    });
+    
+    // 화면 크기 변경 시 위치 재계산
+    window.addEventListener('resize', function() {
+        cancelAnimationFrame(animationId);
+        
+        // 위치 재계산
+        totalWidth = 0;
+        itemPositions.forEach(itemData => {
+            itemData.width = itemData.item.offsetWidth;
+            itemData.position = totalWidth;
+            itemData.item.style.left = `${totalWidth}px`;
+            totalWidth += itemData.width + itemData.margin;
+        });
+        
+        // filterWrapper.style.minWidth = `${totalWidth}px`;
+        filterWrapper.style.height = `${items[0].offsetHeight + 40}px`;
+        
+        // 애니메이션 재시작
+        setTimeout(() => {
+            animationId = requestAnimationFrame(animateCarousel);
+        }, 100);
+    });
+    
+    return {
+        stop: function() {
+            cancelAnimationFrame(animationId);
+        },
+        start: function() {
+            animationId = requestAnimationFrame(animateCarousel);
+        },
+        setSpeed: function(newSpeed) {
+            speed = newSpeed;
+        }
+    };
+}
 
+// 문서 로드 후 무한 캐러셀 초기화
+let carouselController;
+document.addEventListener('DOMContentLoaded', function() {
+    carouselController = initInfiniteCarousel();
+});
 
 
 // 검색 버튼 클릭 이벤트
