@@ -483,37 +483,29 @@ section {
     button {
         padding: 8px 20px;
         border-radius: 50px;
-
         color: #999;
         font-size: 18px;
         font-weight: 700;
         line-height: 30px;
+        position: relative;
         &.active {
             background-color: #333;
             color: #fff;
         }
+        &::after {
+            content: '';
+            width: 2px;
+            height: 50%;
+            position: absolute;
+            right: calc(-32px / 2);
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #ddd;
+        }
+        &:last-child::after {
+            display: none;
+        }
     }
-//     label {
-//         flex: 1;
-//         position: relative;
-//         display: flex;
-//         align-items: center;
-//         justify-content: space-between;
-//         &::after {
-//             content: '|';
-//         }
-//     }
-//     input[type="radio"] {
-//         filter: opacity(0);
-//         position: absolute;
-//         & + span {
-//             padding: 8px 20px;
-//             border-radius: 50px;
-//         }
-//         &:checked + span {
-//             background-color: red;
-//         }
-//     }
 }
 
 

@@ -487,10 +487,24 @@ section {
   font-size: 18px;
   font-weight: 700;
   line-height: 30px;
+  position: relative;
 }
 .tab-btn-box button.active {
   background-color: #333;
   color: #fff;
+}
+.tab-btn-box button::after {
+  content: "";
+  width: 2px;
+  height: 50%;
+  position: absolute;
+  right: -16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #ddd;
+}
+.tab-btn-box button:last-child::after {
+  display: none;
 }
 
 /* 뉴스 섹션 */
