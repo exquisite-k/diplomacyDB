@@ -284,31 +284,38 @@ img {
 
 /* 필터 섹션 */
 .filter-section {
-    padding: 15px 0;
-    background-color: #fff;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-    overflow-x: auto;
-}
-.filter-container {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 10px;
-    padding: 5px 0;
-}
-.filter-option {
-    padding: 8px 15px;
-    border-radius: 20px;
-    background-color: #f0f0f0;
-    font-size: 14px;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    &.active {
-        background-color: #F53C80;
-        color: #fff;
+    padding: 0;
+    overflow: hidden; // 넘치는 콘텐츠 숨기기
+    
+    .filter-wrapper {
+        min-width: 100%;
+        padding: 20px 0;
+        position: relative;
+    }
+    
+    .filter-option {
+        padding: 16px 36px;
+        margin-right: 20px;
+        border-radius: 100px;
+        background-color: #F0F0F0;
+        display: inline-block;
+        font-size: 24px;
+        font-weight: 500;
+        transition: background-color 0.2s ease, color 0.2s ease;
+        user-select: none;
+        word-break: keep-all;
+        
+        &:hover {
+            background-color: #F53C80;
+            color: #fff;
+        }
+        
+        &::before {
+            content: '#';
+        }
     }
 }
+
 
 /* 섹션 공통 스타일 */
 section {
