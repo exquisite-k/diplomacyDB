@@ -7,9 +7,9 @@
 
 body {
     font-family: 'Noto Sans KR', sans-serif;
-    color: #333;
-    line-height: 1.6;
-    background-color: #f8f9fa;
+    color: #222;
+    line-height: 1.4;
+    overflow-x: hidden;
 }
 
 a {
@@ -39,7 +39,8 @@ img {
     padding: 0 20px;
     display: flex;
     column-gap: 24px;
-    box-sizing: border-box;
+    // box-sizing: border-box;
+    box-sizing: unset;
     .section-container {
         width: 100%;
     }
@@ -317,7 +318,6 @@ section {
     margin-bottom: 20px;
 }
 .section-title {
-    color: #222;
     font-size: 24px;
     font-weight: 700;
 }
@@ -566,7 +566,6 @@ section {
         -webkit-box-orient: vertical;
     }
     .news-title {
-        color: #222;
         font-size: 20px;
         font-weight: 800;
     }
@@ -592,12 +591,18 @@ section {
     flex: 1;
     position: relative;
     overflow: hidden;
+    &:hover, &:focus-visible {
+        img {
+            transform: scale(1.1);
+        }
+    }
     figure {
         display: flex;
         img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: all 0.2s ease-in-out;
         }
     }
     .news-content {
@@ -623,7 +628,6 @@ section {
 
 /* 인물 섹션 */
 .person-section {
-    background-color: #fff;
     .section-container {
         width: 80%;
         flex: 1;
@@ -686,52 +690,84 @@ section {
 
 /* 키워드 섹션 */
 .keyword-section {
-    background-color: #f8f9fa;
+    .section-container {
+        width: 80%;
+        flex: 1;
+        position: relative;
+        &::before {
+            content: '';
+            width: 200%;
+            height: 100%;
+            display: flex;
+            background-color: #fff;
+            position: absolute;
+            right: 100%;
+            z-index: 3;
+        }
+    }
+    .keyword-wrap {
+        position: relative;
+        z-index: 5;
+    }
 }
-
 .keyword-slider {
     padding-bottom: 40px;
+    &.swiper {
+        overflow: unset;
+    }
 }
-
 .keyword-card {
-    background-color: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: relative;
+    &:hover,
+    &:focus-visible {
+        .keyword-image {
+            filter: brightness(1);
+            img {
+                transform: scale(1.1);
+            }
+        }
+    }
 }
-
 .keyword-image {
-    height: 150px;
+    height: 300px;
+    border-radius: 12px;
+    overflow: hidden;
+    filter: brightness(0.6);
+    transition: all 0.2s ease-in-out;
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.2s ease-in-out;
+    }
 }
-
-.keyword1 {
-    background-image: linear-gradient(45deg, #007bff, #00b8d4);
-}
-
-.keyword2 {
-    background-image: linear-gradient(45deg, #ff9a9e, #fad0c4);
-}
-
-.keyword3 {
-    background-image: linear-gradient(45deg, #a18cd1, #fbc2eb);
-}
-
-.keyword4 {
-    background-image: linear-gradient(45deg, #84fab0, #8fd3f4);
-}
-
 .keyword-info {
-    padding: 15px;
-    text-align: center;
-}
-
-.keyword-title {
+    padding: 24px;
+    display: flex;
+    row-gap: 4px;
+    flex-direction: column;
+    align-items: flex-end;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    color: #fff;
     font-size: 16px;
 }
+.keyword-title {
+    font-size: 28px;
+    font-weight: 600;
+}
+
+
 
 /* 통계 섹션 */
 .stats-section {
-    background-color: #fff;
+    .container {
+        flex-direction: column;
+    }
+    .section-title {
+        font-size: 32px;
+    }
 }
 
 .stats-container {
@@ -765,33 +801,43 @@ section {
 
 .chart-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
+    grid-template-columns: 1fr 2fr;
+    gap: 24px;
+    .chart-grid {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+    .left-chart,
+    .right-chart {
+        display: flex;
+        flex-direction: column;
+        row-gap: 24px;
+    }
+    .right-chart {
+        margin-top: 100px;
+    }
 }
 
 .chart-item {
-    background-color: #f8f9fa;
+    padding: 24px;
     border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    text-align: center;
+    background-color: #F6F6F6;
+    border: 1px solid red;
+    color: #333;
 }
-
 .chart-title {
-    font-size: 16px;
-    margin-bottom: 15px;
+    font-size: 28px;
+    font-weight: 500;
 }
-
-.chart-container {
-    height: 200px;
-    margin-bottom: 10px;
-}
-
 .chart-value {
-    font-size: 20px;
+    font-size: 40px;
     font-weight: 700;
-    color: #F53C80;
+    text-align: right;
 }
+.chart-container {
+    height: 300px;
+    margin: 50px 0;
+}
+
 
 /* AI 서비스 섹션 */
 .ai-section {
@@ -909,9 +955,9 @@ section {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
     
-    .chart-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    }
+    // .chart-grid {
+    //     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    // }
 }
 
 @media (max-width: 768px) {

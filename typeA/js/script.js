@@ -13,46 +13,47 @@ document.addEventListener('DOMContentLoaded', function() {
             // 576px 이상에서
             576: {
                 slidesPerView: 2,
-                spaceBetween: 20,
+                spaceBetween: 24,
             },
             // 768px 이상에서
             768: {
                 slidesPerView: 3,
-                spaceBetween: 20,
+                spaceBetween: 24,
             },
             // 1024px 이상에서
             1024: {
                 slidesPerView: 3,
-                spaceBetween: 30,
+                spaceBetween: 24,
             },
         }
     });
     // 스와이퍼 슬라이더 초기화 - 키워드 섹션
-    // const keywordSwiper = new Swiper('.keyword-slider', {
-    //     slidesPerView: 1,
-    //     spaceBetween: 20,
-    //     pagination: {
-    //         el: '.keyword-slider .swiper-pagination',
-    //         clickable: true,
-    //     },
-    //     breakpoints: {
-    //         // 576px 이상에서
-    //         576: {
-    //             slidesPerView: 2,
-    //             spaceBetween: 20,
-    //         },
-    //         // 768px 이상에서
-    //         768: {
-    //             slidesPerView: 3,
-    //             spaceBetween: 20,
-    //         },
-    //         // 1024px 이상에서
-    //         1024: {
-    //             slidesPerView: 4,
-    //             spaceBetween: 20,
-    //         },
-    //     }
-    // });
+    const keywordSwiper = new Swiper('.keyword-slider', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        scrollbar: {
+            el: ".swiper-scrollbar",
+            hide: false,
+            draggable: true,
+        },
+        breakpoints: {
+            // 576px 이상에서
+            576: {
+                slidesPerView: 2,
+                spaceBetween: 24,
+            },
+            // 768px 이상에서
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 24,
+            },
+            // 1024px 이상에서
+            1024: {
+                slidesPerView: 4,
+                spaceBetween: 24,
+            },
+        }
+    });
     // amCharts 5 차트 생성
     initCharts();
 
@@ -122,6 +123,7 @@ function initCharts() {
 
         // 루트 요소 생성
         let root = am5.Root.new(elementId);
+        root._logo.dispose();
 
         // 테마 설정
         root.setThemes([am5themes_Animated.new(root)]);
