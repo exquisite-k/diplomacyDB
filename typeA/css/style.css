@@ -964,11 +964,22 @@ section {
   }
 }
 /* 스와이퍼 스타일 */
-.swiper-pagination-bullet {
+section .swiper .swiper-scrollbar {
+  width: auto;
+  height: 6px;
+  margin-top: 40px;
+  position: unset;
+  background-color: #dedede;
+}
+section .swiper .swiper-scrollbar-drag {
+  border-radius: 100px;
+  background-color: #F53C80;
+  cursor: grab;
+}
+section .swiper .swiper-pagination-bullet {
   width: 10px;
   height: 10px;
 }
-
-.swiper-pagination-bullet-active {
+section .swiper .swiper-pagination-bullet-active {
   background-color: #F53C80;
 }/*# sourceMappingURL=style.css.map */

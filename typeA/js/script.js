@@ -4,9 +4,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const personSwiper = new Swiper('.person-slider', {
         slidesPerView: 1,
         spaceBetween: 20,
-        pagination: {
-            el: '.person-slider .swiper-pagination',
-            clickable: true,
+        scrollbar: {
+            el: ".swiper-scrollbar",
+            hide: false,
+            draggable: true,
         },
         breakpoints: {
             // 576px 이상에서

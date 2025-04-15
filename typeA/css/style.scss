@@ -979,12 +979,32 @@ section {
     }
 }
 
+
 /* 스와이퍼 스타일 */
-.swiper-pagination-bullet {
-    width: 10px;
-    height: 10px;
+section {
+    .swiper {
+        // 스크롤바
+        .swiper-scrollbar {
+            width: auto;
+            height: 6px;
+            margin-top: 40px;
+            position: unset;
+            background-color: #dedede;
+        }
+        .swiper-scrollbar-drag {
+            border-radius: 100px;
+            background-color: #F53C80;
+            cursor: grab;
+        }
+
+        // 페이지네이션
+        .swiper-pagination-bullet {
+            width: 10px;
+            height: 10px;
+        }
+        .swiper-pagination-bullet-active {
+            background-color: #F53C80;
+        } 
+    }
 }
 
-.swiper-pagination-bullet-active {
-    background-color: #F53C80;
-} 
