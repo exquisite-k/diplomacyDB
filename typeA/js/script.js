@@ -13,46 +13,47 @@ document.addEventListener('DOMContentLoaded', function() {
             // 576px 이상에서
             576: {
                 slidesPerView: 2,
-                spaceBetween: 20,
+                spaceBetween: 24,
             },
             // 768px 이상에서
             768: {
                 slidesPerView: 3,
-                spaceBetween: 20,
+                spaceBetween: 24,
             },
             // 1024px 이상에서
             1024: {
                 slidesPerView: 3,
-                spaceBetween: 30,
+                spaceBetween: 24,
             },
         }
     });
     // 스와이퍼 슬라이더 초기화 - 키워드 섹션
-    // const keywordSwiper = new Swiper('.keyword-slider', {
-    //     slidesPerView: 1,
-    //     spaceBetween: 20,
-    //     pagination: {
-    //         el: '.keyword-slider .swiper-pagination',
-    //         clickable: true,
-    //     },
-    //     breakpoints: {
-    //         // 576px 이상에서
-    //         576: {
-    //             slidesPerView: 2,
-    //             spaceBetween: 20,
-    //         },
-    //         // 768px 이상에서
-    //         768: {
-    //             slidesPerView: 3,
-    //             spaceBetween: 20,
-    //         },
-    //         // 1024px 이상에서
-    //         1024: {
-    //             slidesPerView: 4,
-    //             spaceBetween: 20,
-    //         },
-    //     }
-    // });
+    const keywordSwiper = new Swiper('.keyword-slider', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        scrollbar: {
+            el: ".swiper-scrollbar",
+            hide: false,
+            draggable: true,
+        },
+        breakpoints: {
+            // 576px 이상에서
+            576: {
+                slidesPerView: 2,
+                spaceBetween: 24,
+            },
+            // 768px 이상에서
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 24,
+            },
+            // 1024px 이상에서
+            1024: {
+                slidesPerView: 4,
+                spaceBetween: 24,
+            },
+        }
+    });
     // amCharts 5 차트 생성
     initCharts();
 
@@ -91,28 +92,23 @@ function initCharts() {
         {
             category: "한국",
             value: 35,
-            color: am5.color(0xf64e60)
+            color: am5.color(0x1326A7)
         },
         {
             category: "미국",
             value: 25,
-            color: am5.color(0x4278d3)
+            color: am5.color(0x2CD5AB)
         },
         {
             category: "중국",
             value: 20,
-            color: am5.color(0x3fdbb1)
+            color: am5.color(0xF53C80)
         },
         {
             category: "일본",
             value: 10,
-            color: am5.color(0xffc107)
+            color: am5.color(0xE0E0E0)
         },
-        {
-            category: "기타",
-            value: 10,
-            color: am5.color(0x808080)
-        }
     ];
 
     // 차트 생성 함수 - 파이 차트 생성 함수
@@ -122,6 +118,7 @@ function initCharts() {
 
         // 루트 요소 생성
         let root = am5.Root.new(elementId);
+        root._logo.dispose();
 
         // 테마 설정
         root.setThemes([am5themes_Animated.new(root)]);
@@ -130,7 +127,7 @@ function initCharts() {
         let chart = root.container.children.push(
             am5percent.PieChart.new(root, {
                 layout: root.verticalLayout,
-                innerRadius: am5.percent(50)
+                innerRadius: am5.percent(60)
             })
         );
 
@@ -145,13 +142,28 @@ function initCharts() {
             })
         );
 
+        // 슬라이스 템플릿 설정
+        let sliceTemplate = series.slices.template;
+            
+        // 내부 색상 채우기 및 투명도 설정
+        sliceTemplate.setAll({
+            fillOpacity: 1,          // 내부 색상 투명도 (1 = 완전 불투명)
+            stroke: am5.color(0xffffff), // 테두리 색상 (흰색)
+            strokeWidth: 0,          // 테두리 두께
+            strokeOpacity: 0       // 테두리 투명도
+        });
+
+        // 색상 설정 - fill 속성 사용
+        sliceTemplate.adapters.add("fill", function(fill, target) {
+            let dataItem = target.dataItem;
+            if (dataItem && dataItem.dataContext && dataItem.dataContext.color) {
+                return dataItem.dataContext.color;
+            }
+            return fill;
+        });
+
         // 시리즈에 데이터 추가
         series.data.setAll(data);
-        
-        // 색상 설정
-        series.slices.template.set("fill", function(item) {
-            return item.dataItem.dataContext.color;
-        });
         
         // 레이블 비활성화 (공간 부족으로)
         series.labels.template.set("visible", false);
