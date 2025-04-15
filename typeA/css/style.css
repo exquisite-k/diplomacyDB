@@ -473,7 +473,7 @@ section {
   box-shadow: 0 0 15px 0 rgba(245, 60, 128, 0.5);
 }
 
-/* 탭버튼 */
+/* 탭 버튼 */
 .tab-btn-box {
   display: flex;
   -moz-column-gap: 32px;
