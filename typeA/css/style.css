@@ -262,33 +262,75 @@ img {
 /* 필터 섹션 */
 .filter-section {
   padding: 0;
-  overflow: hidden;
+}
+.filter-section .container {
+  max-width: none;
 }
 .filter-section .filter-wrapper {
-  min-width: 100%;
-  padding: 20px 0;
-  position: relative;
+  padding: 40px 0;
+  display: flex;
+  flex-direction: column;
+}
+.filter-section .filter-marquee-row {
+  display: flex;
+  flex-wrap: nowrap;
+  transition: none;
+}
+.filter-section .filter-marquee-row[data-direction=right] .filter-option {
+  animation: pulse 2s infinite alternate;
+  animation-delay: calc(0.1s * var(--i, 0));
 }
 .filter-section .filter-option {
-  padding: 16px 36px;
   margin-right: 20px;
+  padding: 16px 36px;
   border-radius: 100px;
   background-color: #F0F0F0;
-  display: inline-block;
+  display: flex;
   font-size: 24px;
   font-weight: 500;
-  transition: background-color 0.2s ease, color 0.2s ease;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  transition: all 0.3s ease;
   word-break: keep-all;
+  white-space: nowrap;
+  transition: all 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 .filter-section .filter-option:hover {
   background-color: #F53C80;
   color: #fff;
+  transform: translateY(-5px);
 }
 .filter-section .filter-option::before {
   content: "#";
+}
+@keyframes pulse {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-5px);
+  }
+}
+
+.page_instagramMarqueeContent__X1DAF {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  padding: 40px 0;
+  background: #f8f8f8;
+}
+
+.instagram-marquee-row {
+  display: flex;
+  flex-wrap: nowrap;
+  will-change: transform;
+}
+
+.instagram-marquee-item {
+  transition: transform 0.3s ease;
+}
+
+.instagram-marquee-item:hover img {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* 섹션 공통 스타일 */
