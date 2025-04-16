@@ -98,6 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
 // 차트 초기화 함수
 function initCharts() {
     // 데이터 세트 (샘플 데이터)
@@ -196,140 +197,6 @@ function initCharts() {
 }
 
 
-// 앞부분이 끝나면 뒤에서 다시 나오는 무한 슬라이드 구현
-function initInfiniteCarousel() {
-    const filterWrapper = document.querySelector('.filter-wrapper');
-    if (!filterWrapper) return;
-    
-    // 초기 아이템 개수 확인
-    const originalItems = filterWrapper.querySelectorAll('.filter-option');
-    const originalItemCount = originalItems.length;
-    
-    // 10개 이하일 경우 복제하여 개수 늘리기
-    if (originalItemCount <= 10) {
-        // 원본 아이템 복제
-        const originalContent = filterWrapper.innerHTML;
-        // 복제본 추가 (최소 2배)
-        filterWrapper.innerHTML = originalContent;
-        
-        // 필요한 만큼 더 복제 (2배로)
-        for (let i = 0; i < originalItemCount; i++) {
-            const clonedItem = originalItems[i].cloneNode(true);
-            // 클론된 아이템에 고유 ID 추가 (필요 시)
-            clonedItem.dataset.clone = 'true';
-            filterWrapper.appendChild(clonedItem);
-        }
-        
-        console.log(`필터 아이템 복제: ${originalItemCount}개 -> ${filterWrapper.querySelectorAll('.filter-option').length}개`);
-    }
-    
-    // 초기 스타일 설정
-    filterWrapper.style.display = 'flex';
-    filterWrapper.style.position = 'relative';
-    
-    // 모든 아이템 (원본 + 복제본) 가져오기
-    const items = filterWrapper.querySelectorAll('.filter-option');
-    const itemPositions = [];
-    let totalWidth = 0;
-    
-    // 각 아이템의 초기 위치와 크기 계산
-    items.forEach((item, index) => {
-        const width = item.offsetWidth;
-        const marginRight = parseInt(getComputedStyle(item).marginRight);
-        
-        itemPositions.push({
-            item: item,
-            width: width,
-            margin: marginRight,
-            position: totalWidth
-        });
-        
-        // 초기 위치 설정
-        item.style.position = 'absolute';
-        item.style.left = `${totalWidth}px`;
-        
-        totalWidth += width + marginRight;
-    });
-    
-    // filterWrapper의 width 설정
-    // filterWrapper.style.minWidth = `${totalWidth}px`;
-    filterWrapper.style.height = `${items[0].offsetHeight + 40}px`; // padding 포함
-    
-    // 슬라이드 속도 설정
-    const speed = 2; // 픽셀 단위 이동 속도 (높을수록 빠름)
-    let animationId;
-    
-    // 애니메이션 함수
-    function animateCarousel() {
-        // 모든 아이템을 왼쪽으로 이동
-        itemPositions.forEach(itemData => {
-            itemData.position -= speed;
-            itemData.item.style.left = `${itemData.position}px`;
-            
-            // 아이템이 왼쪽으로 완전히 사라지면 오른쪽 끝으로 재배치
-            if (itemData.position < (-itemData.width * 2)) {
-                itemData.position = totalWidth - (itemData.width * 2);
-                itemData.item.style.left = `${itemData.position}px`;
-            }
-        });
-        
-        animationId = requestAnimationFrame(animateCarousel);
-    }
-    
-    // 애니메이션 시작
-    animationId = requestAnimationFrame(animateCarousel);
-    
-    // 탭이 백그라운드로 갈 때 애니메이션 일시 중지
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
-            cancelAnimationFrame(animationId);
-        } else {
-            animationId = requestAnimationFrame(animateCarousel);
-        }
-    });
-    
-    // 화면 크기 변경 시 위치 재계산
-    window.addEventListener('resize', function() {
-        cancelAnimationFrame(animationId);
-        
-        // 위치 재계산
-        totalWidth = 0;
-        itemPositions.forEach(itemData => {
-            itemData.width = itemData.item.offsetWidth;
-            itemData.position = totalWidth;
-            itemData.item.style.left = `${totalWidth}px`;
-            totalWidth += itemData.width + itemData.margin;
-        });
-        
-        // filterWrapper.style.minWidth = `${totalWidth}px`;
-        filterWrapper.style.height = `${items[0].offsetHeight + 40}px`;
-        
-        // 애니메이션 재시작
-        setTimeout(() => {
-            animationId = requestAnimationFrame(animateCarousel);
-        }, 100);
-    });
-    
-    return {
-        stop: function() {
-            cancelAnimationFrame(animationId);
-        },
-        start: function() {
-            animationId = requestAnimationFrame(animateCarousel);
-        },
-        setSpeed: function(newSpeed) {
-            speed = newSpeed;
-        }
-    };
-}
-
-// 문서 로드 후 무한 캐러셀 초기화
-let carouselController;
-document.addEventListener('DOMContentLoaded', function() {
-    carouselController = initInfiniteCarousel();
-});
-
-
 // 검색 버튼 클릭 이벤트
 document.querySelector('.search-btn').addEventListener('click', function() {
     const searchInput = document.querySelector('.search-input');
@@ -352,6 +219,29 @@ function performSearch(query) {
     alert('검색 기능은 현재 구현 중입니다: ' + query);
 } 
 
+// 네비게이션 버튼 클릭 이벤트
+function toggleActive(element) {
+    // 이미 active 상태인지 확인
+    const isAlreadyActive = element.classList.contains('active');
+    
+    // 부모 요소 찾기
+    const parent = element.parentNode;
+    
+    // 부모 안에 있는 모든 a 태그 형제 요소들 찾기
+    const siblings = parent.querySelectorAll('a');
+    
+    // 모든 형제 요소에서 active 클래스 제거
+    siblings.forEach(sibling => {
+        sibling.classList.remove('active');
+    });
+    
+    // 이미 active 상태가 아니었을 경우에만 현재 요소에 active 클래스 추가
+    if (!isAlreadyActive) {
+        element.classList.add('active');
+    }
+    
+    return false; // 이벤트 전파 중지
+}
 
 
 // 탭 버튼 함수
@@ -399,4 +289,282 @@ function initToggleButtonGroup(containerSelector, itemSelector, buttonSelector =
         });
     });
 }
+
+
+
+// Instagram 스타일 마퀴 효과 구현
+// function initInstagramMarquee() {
+//     const marqueeContainer = document.querySelector('.page_instagramMarqueeContent__X1DAF');
+//     if (!marqueeContainer) return;
+    
+//     // 타임빌라스 스타일 인스타그램 이미지 데이터 (예시)
+//     const images = [
+//         '/images/marquee/image1.jpg',
+//         '/images/marquee/image2.jpg',
+//         '/images/marquee/image3.jpg',
+//         '/images/marquee/image4.jpg',
+//         '/images/marquee/image5.jpg',
+//         '/images/marquee/image6.jpg',
+//         '/images/marquee/image7.jpg',
+//         '/images/marquee/image8.jpg'
+//     ];
+    
+//     // 두 개의 행으로 마퀴 생성 (위/아래 반대 방향으로 움직임)
+//     const rows = 2;
+//     marqueeContainer.innerHTML = '';
+    
+//     for (let i = 0; i < rows; i++) {
+//         const rowElement = document.createElement('div');
+//         rowElement.className = 'instagram-marquee-row';
+//         rowElement.style.display = 'flex';
+//         rowElement.style.marginBottom = i < rows - 1 ? '20px' : '0';
+        
+//         // 각 행에 이미지 추가
+//         for (let j = 0; j < images.length; j++) {
+//             const itemElement = document.createElement('div');
+//             itemElement.className = 'instagram-marquee-item';
+//             itemElement.style.margin = '0 10px';
+//             itemElement.style.flex = '0 0 auto';
+            
+//             const imageElement = document.createElement('img');
+//             imageElement.src = images[j];
+//             imageElement.alt = 'Instagram image';
+//             imageElement.style.width = '300px';
+//             imageElement.style.height = '300px';
+//             imageElement.style.objectFit = 'cover';
+//             imageElement.style.borderRadius = '12px';
+            
+//             itemElement.appendChild(imageElement);
+//             rowElement.appendChild(itemElement);
+//         }
+        
+//         // 무한 스크롤을 위해 이미지 복제
+//         for (let j = 0; j < images.length; j++) {
+//             const itemElement = document.createElement('div');
+//             itemElement.className = 'instagram-marquee-item';
+//             itemElement.style.margin = '0 10px';
+//             itemElement.style.flex = '0 0 auto';
+            
+//             const imageElement = document.createElement('img');
+//             imageElement.src = images[j];
+//             imageElement.alt = 'Instagram image';
+//             imageElement.style.width = '300px';
+//             imageElement.style.height = '300px';
+//             imageElement.style.objectFit = 'cover';
+//             imageElement.style.borderRadius = '12px';
+            
+//             itemElement.appendChild(imageElement);
+//             rowElement.appendChild(itemElement);
+//         }
+        
+//         marqueeContainer.appendChild(rowElement);
+//     }
+    
+//     // 애니메이션 설정
+//     const rows_elements = marqueeContainer.querySelectorAll('.instagram-marquee-row');
+//     const speed = 1; // 기본 속도
+    
+//     // 각 행별 현재 위치와 방향 설정
+//     const rowPositions = Array.from(rows_elements).map((row, index) => ({
+//         element: row,
+//         position: 0,
+//         direction: index % 2 === 0 ? -1 : 1, // 홀수 행은 오른쪽, 짝수 행은 왼쪽으로
+//         speed: speed * (index % 2 === 0 ? 1 : 0.8) // 행마다 약간 다른 속도
+//     }));
+    
+//     // 각 행의 총 너비 계산
+//     rowPositions.forEach(rowData => {
+//         const items = rowData.element.querySelectorAll('.instagram-marquee-item');
+//         let totalWidth = 0;
+        
+//         items.forEach(item => {
+//             totalWidth += item.offsetWidth + parseInt(getComputedStyle(item).marginLeft) + parseInt(getComputedStyle(item).marginRight);
+//         });
+        
+//         rowData.totalWidth = totalWidth / 2; // 전체 아이템의 절반이 한 세트이므로
+//     });
+    
+//     // 애니메이션 함수
+//     function animateMarquee() {
+//         rowPositions.forEach(rowData => {
+//             // 현재 위치 업데이트
+//             rowData.position += rowData.speed * rowData.direction;
+            
+//             // 경계 확인 및 순환
+//             if (rowData.direction < 0 && Math.abs(rowData.position) >= rowData.totalWidth) {
+//                 rowData.position = 0;
+//             } else if (rowData.direction > 0 && rowData.position >= rowData.totalWidth) {
+//                 rowData.position = 0;
+//             }
+            
+//             // 위치 적용
+//             rowData.element.style.transform = `translateX(${rowData.position}px)`;
+//         });
+        
+//         requestAnimationFrame(animateMarquee);
+//     }
+    
+//     // 애니메이션 시작
+//     requestAnimationFrame(animateMarquee);
+    
+//     // 컨테이너 스타일 설정
+//     marqueeContainer.style.overflow = 'hidden';
+//     marqueeContainer.style.width = '100%';
+//     marqueeContainer.style.padding = '40px 0';
+// }
+
+// filter-wrapper에 양방향 마퀴 효과 적용
+function initFilterMarquee() {
+    const filterWrapper = document.querySelector('.filter-wrapper');
+    if (!filterWrapper) return;
+    
+    // 원본 컨텐츠 저장
+    const originalContent = filterWrapper.innerHTML;
+
+    // 복제 횟수 설정
+    const repeatCount = 5; // 복제 횟수 (필요에 따라 조정)
+    
+    // 마퀴 재구성
+    filterWrapper.innerHTML = '';
+    
+    // 첫 번째 행 (왼쪽 방향)
+    const row = document.createElement('div');
+    row.className = 'filter-marquee-row';
+
+    // 반복 메서드를 사용하여 콘텐츠 복제
+    row.innerHTML = originalContent.repeat(repeatCount);
+    row.setAttribute('data-direction', 'left');
+    
+    // 컨테이너에 행 추가
+    filterWrapper.appendChild(row);
+    
+    // 각 행 설정
+    const rows = filterWrapper.querySelectorAll('.filter-marquee-row');
+    
+    // 각 행의 너비 및 아이템 수 계산
+    const rowData = Array.from(rows).map((row, index) => {
+        const items = row.querySelectorAll('.filter-option');
+        const itemCount = items.length / 2; // 복제했으므로 절반이 원본 수
+        
+        // 각 아이템의 총 너비 계산 (마진 포함)
+        let totalWidth = 0;
+        for (let i = 0; i < itemCount; i++) {
+            const item = items[i];
+            const width = item.offsetWidth;
+            const marginRight = parseInt(getComputedStyle(item).marginRight);
+            totalWidth += width + marginRight;
+        }
+        
+        return {
+            element: row,
+            totalWidth: totalWidth,
+            position: index === 1 ? -totalWidth / 2 : 0, // 두 번째 행은 반대 위치에서 시작
+            direction: index === 0 ? -1 : 1, // 첫 번째 행은 왼쪽으로, 두 번째 행은 오른쪽으로
+            speed: 1.5 * (index === 0 ? 1 : 0.8) // 약간 다른 속도 적용
+        };
+    });
+
+    // 애니메이션 상태 관리
+    let isAnimating = true;
+    let animationId = null;
+    
+    // 마퀴 애니메이션 함수
+    function animateMarquee() {
+        if (!isAnimating) return;
+        
+        rowData.forEach(data => {
+            // 현재 위치 업데이트
+            data.position += data.speed * data.direction;
+            
+            // 경계 확인 및 순환
+            if (data.direction < 0 && Math.abs(data.position) >= data.totalWidth) {
+                data.position = 0;
+            } else if (data.direction > 0 && data.position >= data.totalWidth) {
+                data.position = 0;
+            }
+            
+            // 위치 적용
+            data.element.style.transform = `translateX(${data.position}px)`;
+        });
+        
+        animationId = requestAnimationFrame(animateMarquee);
+    }
+    
+    // 애니메이션 시작/정지 함수
+    function startAnimation() {
+        if (!isAnimating) {
+            isAnimating = true;
+            animationId = requestAnimationFrame(animateMarquee);
+        }
+    }
+    
+    function stopAnimation() {
+        isAnimating = false;
+        if (animationId) {
+            cancelAnimationFrame(animationId);
+            animationId = null;
+        }
+    }
+    
+    // 컨테이너와 행 스타일 설정
+    rows.forEach(row => {
+        row.style.display = 'flex';
+        row.style.flexWrap = 'nowrap';
+        row.style.marginBottom = '20px';
+        row.style.willChange = 'transform';
+    });
+    
+    // 모든 filter-option에 마우스 이벤트 리스너 추가
+    const filterOptions = filterWrapper.querySelectorAll('.filter-option');
+    filterOptions.forEach(option => {
+        option.addEventListener('mouseenter', () => {
+            stopAnimation();
+            
+            // 호버된 아이템 강조 효과
+            option.style.transform = 'translateY(-8px) scale(1.05)';
+            option.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.1)';
+        });
+        
+        option.addEventListener('mouseleave', () => {
+            startAnimation();
+            
+            // 강조 효과 제거
+            option.style.transform = '';
+            option.style.boxShadow = '';
+        });
+    });
+    
+    // 초기 애니메이션 시작
+    animationId = requestAnimationFrame(animateMarquee);
+    
+    // 페이지 가시성 변경 시 애니메이션 제어
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            stopAnimation();
+        } else {
+            startAnimation();
+        }
+    });
+    
+    return {
+        stop: stopAnimation,
+        start: startAnimation,
+        setSpeed: function(newSpeed) {
+            rowData.forEach((data, index) => {
+                data.speed = newSpeed * (index === 0 ? 1 : 0.8);
+            });
+        }
+    };
+}
+
+// 문서 로드 후 실행
+document.addEventListener('DOMContentLoaded', function() {
+    // 기존에 있던 initInfiniteCarousel 대신 새로운 함수 사용
+    const marqueeController = initFilterMarquee();
+});
+
+// 문서 로드 후 실행
+document.addEventListener('DOMContentLoaded', function() {
+    initInstagramMarquee();
+});
 
