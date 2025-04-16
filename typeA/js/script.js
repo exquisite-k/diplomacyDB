@@ -1,6 +1,7 @@
 // 문서가 완전히 로드된 후 실행
 document.addEventListener('DOMContentLoaded', function() {
-    // 스와이퍼 슬라이더 초기화 - 인물 섹션
+    /* 스와이퍼 슬라이더 초기화 */
+    // 인물 섹션
     const personSwiper = new Swiper('.person-slider', {
         slidesPerView: 1,
         spaceBetween: 20,
@@ -27,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
         }
     });
-    // 스와이퍼 슬라이더 초기화 - 키워드 섹션
+    // 키워드 섹션
     const keywordSwiper = new Swiper('.keyword-slider', {
         slidesPerView: 1,
         spaceBetween: 20,
@@ -54,17 +55,20 @@ document.addEventListener('DOMContentLoaded', function() {
             },
         }
     });
-    // amCharts 5 차트 생성
+
+    /* 차트 드롭다운 */
+    toggleChartDropdown();
+
+    /* amCharts5 차트 생성 */
     initCharts();
+    
+    /* 탭 버튼 초기화 */
+    initToggleButtonGroup('.tab-btn-box', '.tab-btn', null, false); // 항상 하나는 활성화 (토글 off 불가)
 
-
-    // 탭 버튼 초기화 - 항상 하나는 활성화 (토글 off 불가)
-    initToggleButtonGroup('.tab-btn-box', '.tab-btn', null, false);
-
-
-    // 키워드 버튼 클릭 이벤트
-    // 모든 keyword-wrap을 찾습니다
+    /* 키워드 버튼 클릭 이벤트 */
+    // 모든 keyword-wrap 요소 찾기
     const keywordWraps = document.querySelectorAll('.keyword-wrap');
+
     // 각 keyword-wrap에 대해 별도로 이벤트 리스너 설정
     keywordWraps.forEach(wrap => {
         // 해당 wrap 내의 모든 버튼을 찾습니다
@@ -84,8 +88,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    /* 필터 마퀴 효과 */
     // filter-wrapper에 무한 스크롤 효과 적용하는 함수
+    const marqueeController = initFilterMarquee();
     initInfiniteScroll();
+    
     // 창 크기 변경 시 다시 계산
     window.addEventListener('resize', function() {
         const filterWrapper = document.querySelector('.filter-wrapper');
@@ -98,104 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// 차트 초기화 함수
-function initCharts() {
-    // 데이터 세트 (샘플 데이터)
-    const chartData = [
-        {
-            category: "한국",
-            value: 35,
-            color: am5.color(0x1326A7)
-        },
-        {
-            category: "미국",
-            value: 25,
-            color: am5.color(0x2CD5AB)
-        },
-        {
-            category: "중국",
-            value: 20,
-            color: am5.color(0xF53C80)
-        },
-        {
-            category: "일본",
-            value: 10,
-            color: am5.color(0xE0E0E0)
-        },
-    ];
-
-    // 차트 생성 함수 - 파이 차트 생성 함수
-    function createPieChart(elementId, data) {
-        // 차트 요소 존재 확인
-        if (!document.getElementById(elementId)) return;
-
-        // 루트 요소 생성
-        let root = am5.Root.new(elementId);
-        root._logo.dispose();
-
-        // 테마 설정
-        root.setThemes([am5themes_Animated.new(root)]);
-
-        // 차트 생성
-        let chart = root.container.children.push(
-            am5percent.PieChart.new(root, {
-                layout: root.verticalLayout,
-                innerRadius: am5.percent(60)
-            })
-        );
-
-        // 시리즈 생성
-        let series = chart.series.push(
-            am5percent.PieSeries.new(root, {
-                valueField: "value",
-                categoryField: "category",
-                alignLabels: false,
-                legendLabelText: "[{fill}]{category}[/]",
-                legendValueText: "[bold {fill}]{value}[/]"
-            })
-        );
-
-        // 슬라이스 템플릿 설정
-        let sliceTemplate = series.slices.template;
-            
-        // 내부 색상 채우기 및 투명도 설정
-        sliceTemplate.setAll({
-            fillOpacity: 1,          // 내부 색상 투명도 (1 = 완전 불투명)
-            stroke: am5.color(0xffffff), // 테두리 색상 (흰색)
-            strokeWidth: 0,          // 테두리 두께
-            strokeOpacity: 0       // 테두리 투명도
-        });
-
-        // 색상 설정 - fill 속성 사용
-        sliceTemplate.adapters.add("fill", function(fill, target) {
-            let dataItem = target.dataItem;
-            if (dataItem && dataItem.dataContext && dataItem.dataContext.color) {
-                return dataItem.dataContext.color;
-            }
-            return fill;
-        });
-
-        // 시리즈에 데이터 추가
-        series.data.setAll(data);
-        
-        // 레이블 비활성화 (공간 부족으로)
-        series.labels.template.set("visible", false);
-        series.ticks.template.set("visible", false);
-
-        // 애니메이션 효과
-        series.appear(1000, 100);
-    }
-
-    // 모든 차트 생성
-    createPieChart("chart1", chartData);
-    createPieChart("chart2", chartData);
-    createPieChart("chart3", chartData);
-    createPieChart("chart4", chartData);
-    createPieChart("chart5", chartData);
-    createPieChart("chart6", chartData);
-}
-
-// 스크롤 위치에 따라 헤더 상태 변경하는 함수
+/* 스크롤 위치에 따라 헤더 상태 변경하는 이벤트 */
 document.addEventListener('DOMContentLoaded', function() {
     const header = document.querySelector('.header');
     if (!header) return; // 헤더가 없으면 실행하지 않음
@@ -203,10 +113,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // 스크롤 이벤트 성능 최적화를 위한 쓰로틀링 함수
     function throttle(callback, delay = 100) {
         let isThrottled = false;
-        
+
         return function() {
             if (isThrottled) return;
-            
+
             isThrottled = true;
             callback.apply(this, arguments);
             
@@ -239,29 +149,29 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', throttle(checkScrollPosition, 50));
 });
 
-// 검색 버튼 클릭 이벤트
+/* 검색 버튼 클릭 이벤트 */
 document.querySelector('.search-btn').addEventListener('click', function() {
     const searchInput = document.querySelector('.search-input');
     performSearch(searchInput.value);
 });
 
-// 검색 입력란 엔터 키 이벤트
+/* 검색 입력란 엔터 키 이벤트 */
 document.querySelector('.search-input').addEventListener('keyup', function(event) {
     if (event.key === 'Enter') {
         performSearch(this.value);
     }
 });
 
-// 검색 수행 함수
+/* 검색 수행 함수 */
 function performSearch(query) {
     if (!query.trim()) return; // 빈 검색어인 경우 무시
     
     console.log('검색어:', query);
     // 여기에 실제 검색 로직 구현 (API 호출 등)
     alert('검색 기능은 현재 구현 중입니다: ' + query);
-} 
+}
 
-// 네비게이션 버튼 클릭 이벤트
+/* 네비게이션 버튼 함수 */
 function toggleActive(element) {
     // 이미 active 상태인지 확인
     const isAlreadyActive = element.classList.contains('active');
@@ -285,8 +195,74 @@ function toggleActive(element) {
     return false; // 이벤트 전파 중지
 }
 
+/* 차트 드롭다운 토글 함수 */
+function toggleChartDropdown() {
+    // 모든 chart-title-wrap 요소 선택
+    const chartTitles = document.querySelectorAll('.chart-title-wrap');
 
-// 탭 버튼 함수
+    chartTitles.forEach(title => {
+        title.addEventListener('click', function() {
+            // 부모 요소인 chart-item 찾기
+            const chartItem = this.closest('.chart-item');
+            
+            // chart-item이 존재하면 active 클래스 토글
+            // if (chartItem) {
+            //     // active 클래스 토글
+            //     chartItem.classList.toggle('active');
+                
+            //     // 차트 컨테이너 찾기
+            //     const chartContent = chartItem.querySelector('.chart-content');
+                
+            //     if (chartContent) {
+            //         // active 상태에 따라 차트 컨테이너 표시/숨김
+            //         if (chartItem.classList.contains('active')) {
+            //             chartContent.style.display = 'block';
+            //         } else {
+            //             chartContent.style.display = 'none';
+            //         }
+            //     }
+            // }
+
+            if (chartItem) {
+                // 상위 차트 그룹 찾기 (.left-chart 또는 .right-chart)
+                const chartGroup = chartItem.closest('.left-chart') || chartItem.closest('.right-chart');
+                
+                if (chartGroup) {
+                    // 같은 그룹 내의 모든 차트 아이템에서 active 클래스 제거
+                    chartGroup.querySelectorAll('.chart-item').forEach(item => {
+                        // 현재 클릭한 아이템이 아닌 경우에만 active 제거
+                        if (item !== chartItem) {
+                            item.classList.remove('active');
+                            
+                            // 차트 컨텐츠 숨기기
+                            const content = item.querySelector('.chart-content');
+                            if (content) {
+                                content.style.display = 'none';
+                            }
+                        }
+                    });
+                    
+                    // 현재 아이템에 active 클래스 토글
+                    // chartItem.classList.toggle('active');
+                    chartItem.classList.add('active');
+                    
+                    // 차트 컨텐츠 표시/숨김 토글
+                    const chartContent = chartItem.querySelector('.chart-content');
+                    if (chartContent) {
+                        if (chartItem.classList.contains('active')) {
+                            chartContent.style.display = 'block';
+                        } else {
+                            chartContent.style.display = 'none';
+                        }
+                    }
+                }
+            }
+        });
+    });
+
+}
+
+/* 탭 버튼 함수 */
 /**
  * 토글 기능이 있는 탭 버튼 그룹 관리 함수
  * @param {String} containerSelector - 버튼 그룹을 포함하는 컨테이너 선택자
@@ -332,130 +308,7 @@ function initToggleButtonGroup(containerSelector, itemSelector, buttonSelector =
     });
 }
 
-
-
-// Instagram 스타일 마퀴 효과 구현
-// function initInstagramMarquee() {
-//     const marqueeContainer = document.querySelector('.page_instagramMarqueeContent__X1DAF');
-//     if (!marqueeContainer) return;
-    
-//     // 타임빌라스 스타일 인스타그램 이미지 데이터 (예시)
-//     const images = [
-//         '/images/marquee/image1.jpg',
-//         '/images/marquee/image2.jpg',
-//         '/images/marquee/image3.jpg',
-//         '/images/marquee/image4.jpg',
-//         '/images/marquee/image5.jpg',
-//         '/images/marquee/image6.jpg',
-//         '/images/marquee/image7.jpg',
-//         '/images/marquee/image8.jpg'
-//     ];
-    
-//     // 두 개의 행으로 마퀴 생성 (위/아래 반대 방향으로 움직임)
-//     const rows = 2;
-//     marqueeContainer.innerHTML = '';
-    
-//     for (let i = 0; i < rows; i++) {
-//         const rowElement = document.createElement('div');
-//         rowElement.className = 'instagram-marquee-row';
-//         rowElement.style.display = 'flex';
-//         rowElement.style.marginBottom = i < rows - 1 ? '20px' : '0';
-        
-//         // 각 행에 이미지 추가
-//         for (let j = 0; j < images.length; j++) {
-//             const itemElement = document.createElement('div');
-//             itemElement.className = 'instagram-marquee-item';
-//             itemElement.style.margin = '0 10px';
-//             itemElement.style.flex = '0 0 auto';
-            
-//             const imageElement = document.createElement('img');
-//             imageElement.src = images[j];
-//             imageElement.alt = 'Instagram image';
-//             imageElement.style.width = '300px';
-//             imageElement.style.height = '300px';
-//             imageElement.style.objectFit = 'cover';
-//             imageElement.style.borderRadius = '12px';
-            
-//             itemElement.appendChild(imageElement);
-//             rowElement.appendChild(itemElement);
-//         }
-        
-//         // 무한 스크롤을 위해 이미지 복제
-//         for (let j = 0; j < images.length; j++) {
-//             const itemElement = document.createElement('div');
-//             itemElement.className = 'instagram-marquee-item';
-//             itemElement.style.margin = '0 10px';
-//             itemElement.style.flex = '0 0 auto';
-            
-//             const imageElement = document.createElement('img');
-//             imageElement.src = images[j];
-//             imageElement.alt = 'Instagram image';
-//             imageElement.style.width = '300px';
-//             imageElement.style.height = '300px';
-//             imageElement.style.objectFit = 'cover';
-//             imageElement.style.borderRadius = '12px';
-            
-//             itemElement.appendChild(imageElement);
-//             rowElement.appendChild(itemElement);
-//         }
-        
-//         marqueeContainer.appendChild(rowElement);
-//     }
-    
-//     // 애니메이션 설정
-//     const rows_elements = marqueeContainer.querySelectorAll('.instagram-marquee-row');
-//     const speed = 1; // 기본 속도
-    
-//     // 각 행별 현재 위치와 방향 설정
-//     const rowPositions = Array.from(rows_elements).map((row, index) => ({
-//         element: row,
-//         position: 0,
-//         direction: index % 2 === 0 ? -1 : 1, // 홀수 행은 오른쪽, 짝수 행은 왼쪽으로
-//         speed: speed * (index % 2 === 0 ? 1 : 0.8) // 행마다 약간 다른 속도
-//     }));
-    
-//     // 각 행의 총 너비 계산
-//     rowPositions.forEach(rowData => {
-//         const items = rowData.element.querySelectorAll('.instagram-marquee-item');
-//         let totalWidth = 0;
-        
-//         items.forEach(item => {
-//             totalWidth += item.offsetWidth + parseInt(getComputedStyle(item).marginLeft) + parseInt(getComputedStyle(item).marginRight);
-//         });
-        
-//         rowData.totalWidth = totalWidth / 2; // 전체 아이템의 절반이 한 세트이므로
-//     });
-    
-//     // 애니메이션 함수
-//     function animateMarquee() {
-//         rowPositions.forEach(rowData => {
-//             // 현재 위치 업데이트
-//             rowData.position += rowData.speed * rowData.direction;
-            
-//             // 경계 확인 및 순환
-//             if (rowData.direction < 0 && Math.abs(rowData.position) >= rowData.totalWidth) {
-//                 rowData.position = 0;
-//             } else if (rowData.direction > 0 && rowData.position >= rowData.totalWidth) {
-//                 rowData.position = 0;
-//             }
-            
-//             // 위치 적용
-//             rowData.element.style.transform = `translateX(${rowData.position}px)`;
-//         });
-        
-//         requestAnimationFrame(animateMarquee);
-//     }
-    
-//     // 애니메이션 시작
-//     requestAnimationFrame(animateMarquee);
-    
-//     // 컨테이너 스타일 설정
-//     marqueeContainer.style.overflow = 'hidden';
-//     marqueeContainer.style.width = '100%';
-//     marqueeContainer.style.padding = '40px 0';
-// }
-
-// filter-wrapper에 양방향 마퀴 효과 적용
+/* 필터 마퀴 효과 함수 */
 function initFilterMarquee() {
     const filterWrapper = document.querySelector('.filter-wrapper');
     if (!filterWrapper) return;
@@ -596,14 +449,191 @@ function initFilterMarquee() {
     };
 }
 
-// 문서 로드 후 실행
-document.addEventListener('DOMContentLoaded', function() {
-    // 기존에 있던 initInfiniteCarousel 대신 새로운 함수 사용
-    const marqueeController = initFilterMarquee();
-});
+/* 차트 초기화 함수 */
+function initCharts() {
+    // 데이터 샘플 (샘플 데이터)
+    const chartData1 = [
+        {
+            category: "국내뉴스",
+            value: 1365,
+            color: am5.color(0x2CD5AB),
+        },
+        {
+            category: "트위터",
+            value: 320,
+            color: am5.color(0xF53C80),
+        },
+        {
+            category: "블로그",
+            value: 1514,
+            color: am5.color(0x1326A7),
+        },
+        {
+            category: "커뮤니티",
+            value: 867,
+            color: am5.color(0xE0E0E0),
+        },
+    ];
+    const chartData2 = [
+        {
+            category: "사건사고 현황",
+            value: 2442,
+            color: am5.color(0x2CD5AB),
+        },
+        {
+            category: "외교일지",
+            value: 4567,
+            color: am5.color(0xF53C80),
+        },
+        {
+            category: "여권발급 현황",
+            value: 879,
+            color: am5.color(0x1326A7),
+        },
+        {
+            category: "재외동포 현황",
+            value: 1153,
+            color: am5.color(0xE0E0E0),
+        },
+    ];
 
-// 문서 로드 후 실행
-document.addEventListener('DOMContentLoaded', function() {
-    initInstagramMarquee();
-});
+    function createPieChart(elementId, data) {
+        // 차트 요소 존재 확인
+        if (!document.getElementById(elementId)) return;
+    
+        // 루트 요소 생성
+        let root = am5.Root.new(elementId);
+        root._logo.dispose();
+        root.setThemes([am5themes_Animated.new(root)]);
+    
+        // 전체 컨테이너 생성
+        let container = root.container.children.push(
+            am5.Container.new(root, {
+                width: am5.percent(100),
+                height: am5.percent(100),
+                layout: root.horizontalLayout,
+            })
+        );
+    
+        // 차트 영역 생성
+        let chartContainer = container.children.push(
+            am5.Container.new(root, {
+                width: am5.percent(50),
+                height: am5.percent(100),
+            })
+        );
+    
+        // 차트 생성
+        let chart = chartContainer.children.push(
+            am5percent.PieChart.new(root, {
+                radius: am5.percent(90),
+                innerRadius: am5.percent(64),
+                paddingTop: 10,
+                paddingBottom: 10,
+                paddingLeft: 10,
+            })
+        );
+    
+        // 시리즈 생성
+        let series = chart.series.push(
+            am5percent.PieSeries.new(root, {
+                valueField: "value",
+                categoryField: "category",
+                alignLabels: false,
+                legendLabelText: "{category}[/]",
+                legendValueText: "{value}[/]",
+            })
+        );
+    
+        // 슬라이스 템플릿 설정
+        let sliceTemplate = series.slices.template;
+        sliceTemplate.setAll({
+            fillOpacity: 1,
+            stroke: am5.color(0xffffff),
+            strokeWidth: 0,
+            strokeOpacity: 0,
+        });
+    
+        // 색상 설정
+        sliceTemplate.adapters.add("fill", function(fill, target) {
+            let dataItem = target.dataItem;
+            if (dataItem && dataItem.dataContext && dataItem.dataContext.color) {
+                return dataItem.dataContext.color;
+            }
+            return fill;
+        });
+    
+        // 레이블 라벨 비활성화
+        series.ticks.template.setAll({
+            strokeOpacity: 0,
+        });
+        series.labels.template.setAll({
+            text: "",
+        });
+    
+        // 범례 영역 생성 (수정)
+        let legendContainer = container.children.push(
+            am5.Container.new(root, {
+                width: am5.percent(50),
+                height: am5.percent(100),
+                layout: root.verticalLayout,
+                paddingLeft: 36,
+            })
+        );
+    
+        // 범례 생성
+        let legend = legendContainer.children.push(
+            am5.Legend.new(root, {
+                width: am5.percent(100),
+                centerY: am5.percent(50),
+                y: am5.percent(50),
+                layout: root.verticalLayout,
+            })
+        );
 
+        // 범례 마커 스타일 설정
+        legend.markers.template.setAll({
+            width: 12,
+            height: 12,
+        });
+        legend.markerRectangles.template.setAll({
+            cornerRadiusTL: 10,
+            cornerRadiusTR: 10,
+            cornerRadiusBL: 10,
+            cornerRadiusBR: 10,
+        });
+    
+        // 범례 스타일 설정
+        legend.labels.template.setAll({
+            fontSize: 16,
+            fontWeight: "400",
+            textAlign: "left",
+            width: 100,
+            x: 20,
+        });
+        legend.valueLabels.template.setAll({
+            fontSize: 16,
+            fontWeight: "400",
+            textAlign: "right",
+            x: am5.percent(100),
+        });
+    
+        // 먼저 시리즈에 데이터 추가 (순서 중요)
+        series.data.setAll(data);
+        
+        // 범례에 데이터 설정
+        legend.data.setAll(series.dataItems);
+    
+        // 애니메이션 효과
+        series.appear(1000, 100);
+        legend.appear(1000, 100);
+    }
+
+    // 모든 차트 생성
+    createPieChart("chart1", chartData1);
+    createPieChart("chart2", chartData2);
+    createPieChart("chart3", chartData1);
+    createPieChart("chart4", chartData2);
+    createPieChart("chart5", chartData1);
+    createPieChart("chart6", chartData2);
+}

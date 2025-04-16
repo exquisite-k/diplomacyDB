@@ -63,7 +63,8 @@ section {
 
 /* 아이콘 */
 .icon-search,
-.icon-keyword-arrow {
+.icon-keyword-arrow,
+.icon-chart-dropdown {
   width: 100%;
   height: 100%;
   display: inline-block;
@@ -80,6 +81,13 @@ section {
   min-width: 24px;
   height: 24px;
   background-image: url("/images/icons/arrow_select_P.svg");
+}
+
+.icon-chart-dropdown {
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  background-image: url("/images/icons/chart_dropdown.svg");
 }
 
 /* 공통 키워드 영역 */
@@ -487,6 +495,83 @@ header .gnb-menu .user-info figure img {
   -moz-column-gap: 22px;
        column-gap: 22px;
 }
+.news-section .news-content {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  row-gap: 40px;
+}
+.news-section .news-content * {
+  transition: all 0.2s ease-in-out;
+}
+.news-section .news-content .news-title,
+.news-section .news-content .news-desc {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.news-section .news-content .news-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+.news-section .news-content .news-desc {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 16px;
+  -webkit-line-clamp: 3;
+}
+.news-section .news-content .news-info {
+  display: flex;
+  align-items: center;
+  -moz-column-gap: 12px;
+       column-gap: 12px;
+  font-size: 14px;
+  color: rgba(34, 34, 34, 0.8);
+}
+.news-section .news-content .info-line {
+  color: inherit;
+  font-size: 60%;
+}
+.news-section .news-item-best {
+  border-radius: 12px;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+.news-section .news-item-best:hover img, .news-section .news-item-best:focus-visible img {
+  transform: scale(1.1);
+}
+.news-section .news-item-best figure {
+  height: 400px;
+  display: flex;
+}
+.news-section .news-item-best figure img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  transition: all 0.2s ease-in-out;
+}
+.news-section .news-item-best .news-content {
+  width: 100%;
+  height: 100%;
+  justify-content: flex-end;
+  row-gap: 8px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.9));
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.news-section .news-item-best .news-content .news-title {
+  color: #fff;
+  font-size: 28px;
+}
+.news-section .news-item-best .news-content .news-info {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 16px;
+}
 .news-section .news-box {
   flex: 1;
   display: flex;
@@ -499,103 +584,24 @@ header .gnb-menu .user-info figure img {
 .news-section .news-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 24px;
 }
-
-.news-item {
+.news-section .news-item {
   background-color: #F6F6F6;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
   transition: all 0.2s ease-in-out;
 }
-.news-item:hover, .news-item:focus-visible {
+.news-section .news-item:hover, .news-section .news-item:focus-visible {
   background-color: #F53C80;
   box-shadow: 0 4px 15px 0 rgba(245, 60, 128, 0.5);
 }
-.news-item:hover .news-title, .news-item:focus-visible .news-title {
+.news-section .news-item:hover .news-title, .news-section .news-item:focus-visible .news-title {
   color: #fff;
 }
-.news-item:hover .news-info, .news-item:focus-visible .news-info {
+.news-section .news-item:hover .news-info, .news-section .news-item:focus-visible .news-info {
   color: rgba(255, 255, 255, 0.8);
-}
-
-.news-content {
-  padding: 20px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  row-gap: 40px;
-}
-.news-content * {
-  transition: all 0.2s ease-in-out;
-}
-.news-content .news-title,
-.news-content .news-desc {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-.news-content .news-title {
-  font-size: 20px;
-  font-weight: 800;
-}
-.news-content .news-desc {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 16px;
-  -webkit-line-clamp: 3;
-}
-.news-content .news-info {
-  display: flex;
-  align-items: center;
-  -moz-column-gap: 12px;
-       column-gap: 12px;
-  font-size: 14px;
-  color: rgba(34, 34, 34, 0.8);
-}
-.news-content .info-line {
-  color: inherit;
-  font-size: 60%;
-}
-
-.news-item-best {
-  border-radius: 12px;
-  flex: 1;
-  position: relative;
-  overflow: hidden;
-}
-.news-item-best:hover img, .news-item-best:focus-visible img {
-  transform: scale(1.1);
-}
-.news-item-best figure {
-  display: flex;
-}
-.news-item-best figure img {
-  width: 100%;
-  height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-  transition: all 0.2s ease-in-out;
-}
-.news-item-best .news-content {
-  width: 100%;
-  height: 100%;
-  row-gap: 8px;
-  justify-content: flex-end;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.9));
-  position: absolute;
-  bottom: 0;
-  left: 0;
-}
-.news-item-best .news-content .news-title {
-  color: #fff;
-  font-size: 28px;
-}
-.news-item-best .news-content .news-info {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 16px;
 }
 
 /* 인물 섹션 */
@@ -776,18 +782,35 @@ header .gnb-menu .user-info figure img {
   flex-direction: column;
   row-gap: 24px;
 }
-.stats-section .chart-grid .right-chart {
-  margin-top: 100px;
-}
 .stats-section .chart-item {
   padding: 24px;
   border-radius: 10px;
   background-color: #F6F6F6;
   color: #333;
 }
+.stats-section .chart-item.active .chart-container {
+  height: 220px;
+  margin-top: 28px;
+}
+.stats-section .chart-item.active .icon-chart-dropdown {
+  transform: rotate(0deg);
+}
+.stats-section .chart-title-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 .stats-section .chart-title {
+  display: flex;
+  align-items: center;
+  -moz-column-gap: 4px;
+       column-gap: 4px;
   font-size: 28px;
   font-weight: 500;
+}
+.stats-section .chart-title .icon-chart-dropdown {
+  transform: rotate(180deg);
+  transition: all 0.2s ease-in-out;
 }
 .stats-section .chart-value {
   font-size: 40px;
@@ -795,8 +818,12 @@ header .gnb-menu .user-info figure img {
   text-align: right;
 }
 .stats-section .chart-container {
-  height: 300px;
-  margin: 50px 0;
+  height: 0;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+}
+.stats-section .chart-container > div {
+  height: 220px;
 }
 
 /* AI 서비스 섹션 */
