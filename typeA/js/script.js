@@ -98,6 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
 // 차트 초기화 함수
 function initCharts() {
     // 데이터 세트 (샘플 데이터)
@@ -218,6 +219,29 @@ function performSearch(query) {
     alert('검색 기능은 현재 구현 중입니다: ' + query);
 } 
 
+// 네비게이션 버튼 클릭 이벤트
+function toggleActive(element) {
+    // 이미 active 상태인지 확인
+    const isAlreadyActive = element.classList.contains('active');
+    
+    // 부모 요소 찾기
+    const parent = element.parentNode;
+    
+    // 부모 안에 있는 모든 a 태그 형제 요소들 찾기
+    const siblings = parent.querySelectorAll('a');
+    
+    // 모든 형제 요소에서 active 클래스 제거
+    siblings.forEach(sibling => {
+        sibling.classList.remove('active');
+    });
+    
+    // 이미 active 상태가 아니었을 경우에만 현재 요소에 active 클래스 추가
+    if (!isAlreadyActive) {
+        element.classList.add('active');
+    }
+    
+    return false; // 이벤트 전파 중지
+}
 
 
 // 탭 버튼 함수
@@ -543,3 +567,4 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     initInstagramMarquee();
 });
+
