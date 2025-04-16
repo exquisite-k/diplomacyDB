@@ -98,7 +98,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-
 // 차트 초기화 함수
 function initCharts() {
     // 데이터 세트 (샘플 데이터)
@@ -196,6 +195,49 @@ function initCharts() {
     createPieChart("chart6", chartData);
 }
 
+// 스크롤 위치에 따라 헤더 상태 변경하는 함수
+document.addEventListener('DOMContentLoaded', function() {
+    const header = document.querySelector('.header');
+    if (!header) return; // 헤더가 없으면 실행하지 않음
+    
+    // 스크롤 이벤트 성능 최적화를 위한 쓰로틀링 함수
+    function throttle(callback, delay = 100) {
+        let isThrottled = false;
+        
+        return function() {
+            if (isThrottled) return;
+            
+            isThrottled = true;
+            callback.apply(this, arguments);
+            
+            setTimeout(() => {
+                isThrottled = false;
+            }, delay);
+        };
+    }
+    
+    // 스크롤 위치 체크 및 헤더 클래스 토글 함수
+    function checkScrollPosition() {
+        const scrollY = window.scrollY || window.pageYOffset;
+        const threshold = 100; // 임계값 (필요에 따라 조정)
+        
+        if (scrollY > threshold) {
+            // 스크롤이 임계값보다 아래에 있을 때
+            if (!header.classList.contains('active')) {
+                header.classList.add('active');
+            }
+        } else {
+            // 스크롤이 맨 위에 있을 때
+            header.classList.remove('active');
+        }
+    }
+    
+    // 초기 스크롤 위치 확인
+    checkScrollPosition();
+    
+    // 스크롤 이벤트에 쓰로틀링 적용하여 등록
+    window.addEventListener('scroll', throttle(checkScrollPosition, 50));
+});
 
 // 검색 버튼 클릭 이벤트
 document.querySelector('.search-btn').addEventListener('click', function() {
@@ -509,9 +551,6 @@ function initFilterMarquee() {
     // 컨테이너와 행 스타일 설정
     rows.forEach(row => {
         row.style.display = 'flex';
-        row.style.flexWrap = 'nowrap';
-        row.style.marginBottom = '20px';
-        row.style.willChange = 'transform';
     });
     
     // 모든 filter-option에 마우스 이벤트 리스너 추가
