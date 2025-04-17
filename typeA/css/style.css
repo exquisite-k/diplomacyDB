@@ -139,6 +139,9 @@ section {
 .keyword-wrap .keyword-wrap-item.active .icon-keyword-arrow {
   filter: opacity(1);
 }
+.keyword-wrap .keyword-wrap-item:hover .icon-keyword-arrow, .keyword-wrap .keyword-wrap-item:focus-visible .icon-keyword-arrow {
+  filter: opacity(1);
+}
 
 /* 검색 박스 */
 .search-box {
@@ -220,10 +223,14 @@ section {
   line-height: 30px;
   word-break: keep-all;
   position: relative;
+  transition: all 0.2s ease-in-out;
 }
 .tab-btn-box button.active {
   background-color: #333;
   color: #fff;
+}
+.tab-btn-box button:hover, .tab-btn-box button:focus-visible {
+  box-shadow: inset 0 -2px 5px -2px #333;
 }
 .tab-btn-box button::after {
   content: "";

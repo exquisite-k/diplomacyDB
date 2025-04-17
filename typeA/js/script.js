@@ -55,34 +55,9 @@ document.addEventListener('DOMContentLoaded', function() {
             },
         }
     });
-    /*
-    const keywordSwiper = new Swiper('.keyword-slider', {
-        slidesPerView: 1,
-        spaceBetween: 20,
-        scrollbar: {
-            el: ".swiper-scrollbar",
-            hide: false,
-            draggable: true,
-        },
-        breakpoints: {
-            // 576px 이상에서
-            576: {
-                slidesPerView: 2,
-                spaceBetween: 24,
-            },
-            // 768px 이상에서
-            768: {
-                slidesPerView: 3,
-                spaceBetween: 24,
-            },
-            // 1024px 이상에서
-            1024: {
-                slidesPerView: 4,
-                spaceBetween: 24,
-            },
-        }
-    });
-    */
+
+    /* 숫자 증가 애니메이션 */
+    setupCountUpObserver();
 
     /* 차트 드롭다운 */
     toggleChartDropdown();
@@ -131,6 +106,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 100);
         }
     });
+
+    
 });
 
 /* 스크롤 위치에 따라 헤더 상태 변경하는 이벤트 */
@@ -664,4 +641,74 @@ function initCharts() {
     createPieChart("chart4", chartData2);
     createPieChart("chart5", chartData1);
     createPieChart("chart6", chartData2);
+}
+
+/* 숫자 카운트업 애니메이션 함수 */
+function countUp(element) {
+    // 요소의 타겟 숫자 가져오기
+    const targetNumber = parseInt(element.textContent.replace(/,/g, ''));
+    let startNumber = 0;
+    
+    // 시작 시간
+    let startTime = null;
+    const duration = 2000; // 애니메이션 지속 시간 (ms)
+    
+    // 애니메이션 함수
+    function animateNumber(timestamp) {
+        if (!startTime) startTime = timestamp;
+        
+        // 경과 시간 계산
+        const elapsedTime = timestamp - startTime;
+        const progress = Math.min(elapsedTime / duration, 1);
+        
+        // easing 함수 (swing 효과)
+        const easedProgress = 0.5 - Math.cos(progress * Math.PI) / 2;
+        
+        // 현재 숫자 계산
+        const currentNumber = Math.ceil(easedProgress * targetNumber);
+        
+        // 숫자 포맷팅 (천 단위 콤마)
+        element.textContent = currentNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        
+        // 애니메이션 완료 체크
+        if (progress < 1) {
+            requestAnimationFrame(animateNumber);
+        }
+    }
+    
+    // 애니메이션 시작
+    requestAnimationFrame(animateNumber);
+    
+    // 애니메이션 실행 표시
+    element.dataset.animated = 'true';
+}
+
+/* 숫자 증가 애니메이션 관찰 */
+function setupCountUpObserver() {
+    const options = {
+        root: null, // 뷰포트를 기준으로 함
+        rootMargin: '10px',
+        threshold: 1 // 100% 이상 보일 때 실행
+    };
+    
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            // 요소가 화면에 보이고, 아직 애니메이션이 실행되지 않았을 때
+            if (entry.isIntersecting && entry.target.dataset.animated !== 'true') {
+                countUp(entry.target);
+                
+                // 선택적: 한 번만 실행하려면 관찰 중단
+                // observer.unobserve(entry.target);
+            }
+            // 선택적: 요소가 화면에서 사라질 때 애니메이션 초기화 (다시 보일 때 재실행하려면)
+            else if (!entry.isIntersecting) {
+                entry.target.dataset.animated = 'false';
+            }
+        });
+    }, options);
+    
+    // 모든 .number 요소 관찰 시작
+    document.querySelectorAll('.number').forEach(element => {
+        observer.observe(element);
+    });
 }
