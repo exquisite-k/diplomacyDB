@@ -31,6 +31,33 @@ document.addEventListener('DOMContentLoaded', function() {
     // 키워드 섹션
     const keywordSwiper = new Swiper('.keyword-slider', {
         slidesPerView: 1,
+        spaceBetween: 160,
+        scrollbar: {
+            el: ".keyword-section .swiper-scrollbar",
+            hide: false,
+            draggable: true,
+        },
+        breakpoints: {
+            // 576px 이상에서
+            576: {
+                slidesPerView: 1.5,
+                spaceBetween: 30,
+            },
+            // 768px 이상에서
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 80,
+            },
+            // 1024px 이상에서
+            1024: {
+                slidesPerView: 4,
+                spaceBetween: 160,
+            },
+        }
+    });
+    /*
+    const keywordSwiper = new Swiper('.keyword-slider', {
+        slidesPerView: 1,
         spaceBetween: 20,
         scrollbar: {
             el: ".swiper-scrollbar",
@@ -55,6 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
         }
     });
+    */
 
     /* 차트 드롭다운 */
     toggleChartDropdown();
