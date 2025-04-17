@@ -674,18 +674,55 @@ header .gnb-menu .user-info figure img {
   right: 100%;
   z-index: 3;
 }
+.keyword-section .section-container .swiper-scrollbar {
+  margin-top: 80px;
+}
 .keyword-section .keyword-wrap {
   position: relative;
   z-index: 5;
 }
 .keyword-section .keyword-slider {
-  padding-bottom: 40px;
+  position: relative;
 }
 .keyword-section .keyword-slider.swiper {
   overflow: unset;
 }
+.keyword-section .keyword-slider::before {
+  content: "";
+  width: 128%;
+  height: 1px;
+  background-color: #F53C80;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(0, -50%);
+  z-index: 2;
+}
 .keyword-section .keyword-card {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
   position: relative;
+}
+.keyword-section .keyword-card > * {
+  flex: 1;
+}
+.keyword-section .keyword-card.reverse .keyword-image-wrap::before {
+  top: 10px;
+  bottom: auto;
+}
+.keyword-section .keyword-card.reverse .keyword-image {
+  margin: 40px 0;
+  margin-bottom: 0;
+}
+.keyword-section .keyword-card.reverse .keyword-info {
+  grid-row: 1;
+  justify-content: flex-end;
+}
+.keyword-section .keyword-card.reverse .keyword-info::before, .keyword-section .keyword-card.reverse .keyword-info::after {
+  top: auto;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
 }
 .keyword-section .keyword-card:hover .keyword-image, .keyword-section .keyword-card:focus-visible .keyword-image {
   filter: brightness(1);
@@ -693,12 +730,42 @@ header .gnb-menu .user-info figure img {
 .keyword-section .keyword-card:hover .keyword-image img, .keyword-section .keyword-card:focus-visible .keyword-image img {
   transform: scale(1.1);
 }
+.keyword-section .keyword-card:hover .keyword-info::before, .keyword-section .keyword-card:focus-visible .keyword-info::before {
+  animation: scale 0.4s ease-in infinite alternate;
+}
+@keyframes scale {
+  0% {
+    width: 20px;
+    height: 20px;
+  }
+  100% {
+    width: 30px;
+    height: 30px;
+  }
+}
+.keyword-section .keyword-card:hover .keyword-info::after, .keyword-section .keyword-card:focus-visible .keyword-info::after {
+  width: 12px;
+  height: 12px;
+}
+.keyword-section .keyword-image-wrap {
+  position: relative;
+}
+.keyword-section .keyword-image-wrap::before {
+  content: "";
+  height: 30px;
+  border: 0.5px dashed rgba(245, 60, 128, 0.4);
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
 .keyword-section .keyword-image {
-  height: 300px;
-  border-radius: 12px;
+  height: 162px;
+  margin: 40px 0;
+  margin-top: 0;
+  border-radius: 4px;
+  display: flex;
   overflow: hidden;
-  filter: brightness(0.6);
-  transition: all 0.2s ease-in-out;
 }
 .keyword-section .keyword-image img {
   width: 100%;
@@ -708,19 +775,39 @@ header .gnb-menu .user-info figure img {
   transition: all 0.2s ease-in-out;
 }
 .keyword-section .keyword-info {
-  padding: 24px;
+  padding: 20px 0;
   display: flex;
   row-gap: 4px;
   flex-direction: column;
-  align-items: flex-end;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  color: #fff;
+  align-items: center;
+  color: #333;
   font-size: 16px;
+  text-align: center;
+  word-break: keep-all;
+  position: relative;
+}
+.keyword-section .keyword-info::before, .keyword-section .keyword-info::after {
+  content: "";
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  transition: all 0.2s ease-in-out;
+}
+.keyword-section .keyword-info::before {
+  width: 20px;
+  height: 20px;
+  background-color: #fbb1cc;
+}
+.keyword-section .keyword-info::after {
+  width: 8px;
+  height: 8px;
+  background-color: #f6538f;
 }
 .keyword-section .keyword-title {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 600;
 }
 
@@ -1035,14 +1122,16 @@ header .gnb-menu .user-info figure img {
   }
 }
 /* 스와이퍼 스타일 */
-section .swiper .swiper-scrollbar {
+section .swiper .swiper-scrollbar,
+section .swiper + .swiper-scrollbar {
   width: auto;
   height: 6px;
   margin-top: 40px;
   position: unset;
   background-color: #dedede;
 }
-section .swiper .swiper-scrollbar-drag {
+section .swiper .swiper-scrollbar .swiper-scrollbar-drag,
+section .swiper + .swiper-scrollbar .swiper-scrollbar-drag {
   border-radius: 100px;
   background-color: #F53C80;
   cursor: grab;
