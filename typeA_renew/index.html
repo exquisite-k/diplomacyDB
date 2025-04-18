@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>외교 정보 플랫폼</title>
+    <!-- CSS 파일 연결 -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- SwiperJS CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
+    <!-- 폰트 설정 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 헤더 영역 -->
+    <header class="header">
+        <div class="container">
+            <h1>
+                <a class="logo" href="/" title="메인 페이지로 이동">
+                    <img src="/images/logo/logo.svg" alt="로고">
+                </a>
+            </h1>
+            <nav class="main-nav">
+                <a href="javascript:void(0)" title="이슈 브리핑 페이지로 이동" onclick="toggleActive(this)">이슈 브리핑</a>
+                <a href="javascript:void(0)" title="데이터 수집 현황 페이지로 이동" onclick="toggleActive(this)">데이터 수집 현황</a>
+                <a href="javascript:void(0)" title="AI 도우미 페이지로 이동" onclick="toggleActive(this)">AI 도우미</a>
+                <a href="javascript:void(0)" title="고객지원 페이지로 이동" onclick="toggleActive(this)">고객지원</a>
+            </nav>
+            <div class="gnb-menu">
+                <a href="javascript:void(0)" title="마이페이지 페이지로 이동">마이페이지</a>
+                <a href="javascript:void(0)" title="로그아웃 페이지로 이동">로그아웃</a>
+                <div class="user-info">
+                    <span class="user-name">홍길동님</span>
+                    <figure>
+                        <img src="/images/header/default.svg" alt="프로필 기본 이미지">
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 섹션 -->
+    <main>
+        <!-- 배너 섹션 -->
+        <section class="banner-section">
+            <article class="container">
+                <h2 class="text-bg">키워드를 입력하셔서<br>원하시는 외교 정보를 찾아보세요</h2>
+                <div class="search-box">
+                    <select>
+                        <option value="0">통합검색</option>
+                        <option value="1">키워드</option>
+                        <option value="2">기타</option>
+                    </select>
+                    <div class="search-input-wrap">
+                        <input type="text" placeholder="검색어를 입력해 주세요." class="search-input">
+                        <button type="button" class="search-btn">
+                            <span class="icon-search"></span>
+                        </button>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <!-- 필터 섹션 -->
+        <section class="filter-section">
+            <article class="container">
+                <div class="filter-wrapper">
+                    <a class="filter-option" href="javascript:void(0)" title="해당 키워드의 페이지로 이동합니다.">트럼프 대통령</a>
+                    <a class="filter-option" href="javascript:void(0)" title="해당 키워드의 페이지로 이동합니다.">시진핑</a>
+                    <a class="filter-option" href="javascript:void(0)" title="해당 키워드의 페이지로 이동합니다.">환율</a>
+                    <a class="filter-option" href="javascript:void(0)" title="해당 키워드의 페이지로 이동합니다.">상호관세</a>
+                    <a class="filter-option" href="javascript:void(0)" title="해당 키워드의 페이지로 이동합니다.">러시아</a>
+                </div>
+            </article>
+        </section>
+
+        <!-- 국가 정보 섹션 -->
+        <section class="country-section">
+            <article class="container">
+
+                <!-- 키워드 박스 -->
+                <ul class="keyword-wrap">
+                    <li class="keyword-wrap-item active">
+                        <button type="button" title="미국 키워드 버튼">
+                            <span class="country">미국</span>
+                            <span class="keyword">상호관세</span>
+                            <span class="icon-keyword-arrow"></span>
+                        </button>
+                    </li>
+                    <li class="keyword-wrap-item">
+                        <button type="button" title="한국 키워드 버튼">
+                            <span class="country">한국</span>
+                            <span class="keyword">환율</span>
+                            <span class="icon-keyword-arrow"></span>
+                        </button>
+                    </li>
+                    <li class="keyword-wrap-item">
+                        <button type="button" title="일본 키워드 버튼">
+                            <span class="country">일본</span>
+                            <span class="keyword">시진핑</span>
+                            <span class="icon-keyword-arrow"></span>
+                        </button>
+                    </li>
+                    <li class="keyword-wrap-item">
+                        <button type="button" title="중국 키워드 버튼">
+                            <span class="country">중국</span>
+                            <span class="keyword">러시아</span>
+                            <span class="icon-keyword-arrow"></span>
+                        </button>
+                    </li>
+                </ul>
+                
+                <!-- 국가별 키워드 순위 -->
+                <div class="section-container">
+                    <div class="section-header">
+                        <h2 class="section-title">국가별 키워드 순위</h2>
+                    </div>
+                    <div class="country-list">
+
+                        <!-- 대한민국 -->
+                        <div class="country-item">
+                            <div class="country-flag">
+                                <figure>
+                                    <img src="/images/flag/aeac0f7728d4858dadb90514982da425.png" alt="대한민국">
+                                </figure>
+                                <span>대한민국</span>
+                            </div>
+                            <ul class="country-tags">
+                                <li class="tag"><span class="num">1</span><span class="keyword">개국방문</span></li>
+                                <li class="tag active"><span class="num">2</span><span class="keyword">상호관세</span></li>
+                                <li class="tag"><span class="num">3</span><span class="keyword">여행 욕구</span></li>
+                                <li class="tag"><span class="num">4</span><span class="keyword">흉상 이전 논란</span></li>
+                                <li class="tag"><span class="num">5</span><span class="keyword">런던 협약</span></li>
+                            </ul>
+                        </div>
+
+                        <!-- 미국 -->
+                        <div class="country-item">
+                            <div class="country-flag">
+                                <figure>
+                                    <img src="/images/flag/9152324b4b97a4211fb250c3d1be74a9.png" alt="미국">
+                                </figure>
+                                <span>미국</span>
+                            </div>
+                            <ul class="country-tags">
+                                <li class="tag active"><span class="num">1</span><span class="keyword">상호관세</span></li>
+                                <li class="tag"><span class="num">2</span><span class="keyword">개국방문</span></li>
+                                <li class="tag"><span class="num">3</span><span class="keyword">여행 욕구</span></li>
+                                <li class="tag"><span class="num">4</span><span class="keyword">흉상 이전 논란</span></li>
+                                <li class="tag"><span class="num">5</span><span class="keyword">런던 협약</span></li>
+                            </ul>
+                        </div>
+
+                        <!-- 일본 -->
+                        <div class="country-item">
+                            <div class="country-flag">
+                                <figure>
+                                    <img src="/images/flag/838986149177e77de389210d809ec212.png" alt="일본본">
+                                </figure>
+                                <span>일본</span>
+                            </div>
+                            <ul class="country-tags">
+                                <li class="tag"><span class="num">1</span><span class="keyword">개국방문</span></li>
+                                <li class="tag active"><span class="num">2</span><span class="keyword">상호관세</span></li>
+                                <li class="tag"><span class="num">3</span><span class="keyword">여행 욕구</span></li>
+                                <li class="tag"><span class="num">4</span><span class="keyword">흉상 이전 논란</span></li>
+                                <li class="tag"><span class="num">5</span><span class="keyword">런던 협약</span></li>
+                            </ul>
+                        </div>
+
+                        <!-- 중국 -->
+                        <div class="country-item">
+                            <div class="country-flag">
+                                <figure>
+                                    <img src="/images/flag/1c80cdae638296e7bee8fc2f2e98c699.png" alt="중국">
+                                </figure>
+                                <span>중국</span>
+                            </div>
+                            <ul class="country-tags">
+                                <li class="tag"><span class="num">1</span><span class="keyword">개국방문</span></li>
+                                <li class="tag"><span class="num">2</span><span class="keyword">여행 욕구</span></li>
+                                <li class="tag"><span class="num">3</span><span class="keyword">흉상 이전 논란란</span></li>
+                                <li class="tag active"><span class="num">4</span><span class="keyword">상호관세</span></li>
+                                <li class="tag"><span class="num">5</span><span class="keyword">런던 협약</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </article>
+        </section>
+
+        <!-- 뉴스 섹션 -->
+        <section class="news-section">
+            <article class="container">
+
+                <!-- 키워드 박스 -->
+                <ul class="keyword-wrap">
+                    <li class="keyword-wrap-item active">
+                        <button type="button" title="미국 키워드 버튼">
+                            <span class="country">미국</span>
+                            <span class="keyword">상호관세</span>
+                            <span class="icon-keyword-arrow"></span>
+                        </button>
+                    </li>
+                    <li class="keyword-wrap-item">
+                        <button type="button" title="한국 키워드 버튼">
+                            <span class="country">한국</span>
+                            <span class="keyword">환율</span>
+                            <span class="icon-keyword-arrow"></span>
+                        </button>
+                    </li>
+                    <li class="keyword-wrap-item">
+                        <button type="button" title="일본 키워드 버튼">
+                            <span class="country">일본</span>
+                            <span class="keyword">시진핑</span>
+                            <span class="icon-keyword-arrow"></span>
+                        </button>
+                    </li>
+                    <li class="keyword-wrap-item">
+                        <button type="button" title="중국 키워드 버튼">
+                            <span class="country">중국</span>
+                            <span class="keyword">러시아</span>
+                            <span class="icon-keyword-arrow"></span>
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- 키워드별 중심 뉴스 -->
+                <div class="section-container">
+                    <div class="section-header">
+                        <h2 class="section-title">키워드별 중심 뉴스</h2>
+                    </div>
+                    <div class="news-container">
+                        <a class="news-item-best" href="javascript:void(0)" title="뉴스 상세 페이지로 이동">
+                            <figure>
+                                <img src="/images/main/newsSection/7abb3c8c3013f303995e3c9f06932398.png" alt="뉴스 이미지">
+                            </figure>
+                            <div class="news-content">
+                                <h3 class="news-title">트럼프, 상호관세 유예 이유 묻자 "사람들이 겁먹고 불안해해" 트럼프, 상호관세 유예 이유 묻자 "사람들이 겁먹고 불안해해"</h3>
+                                <p class="news-desc">(워싱턴=연합뉴스) 강병철 김동현 특파원 = 도널드 트럼프 미국 대통령은 중국을 제외한 모든 국가들에 대한 상호관세를 90일 유예한 이유와 관련해 관세에 대한 금융시장의 부정적인 반응을 고려했음을 시사했다. 트럼프 대통령은 9일(현지시간) 백악관에서 자동차 경주 선수들과 개최한 행사에서 상호관세를 유예한 이유를 질문받고서 사람들이 "약간 겁을 먹었다"라고 답변했다. 그는 국채 시장의 반응 때문에 관세를 유예했냐는 질문에 "난 국채 시장을 보고 있었다. 국채 시장은 매우 까다롭다"면서 "내가 어젯밤에 보니까 사람들이 좀 불안해하더라"라고 말했다.(워싱턴=연합뉴스) 강병철 김동현 특파원 = 도널드 트럼프 미국 대통령은 중국을 제외한 모든 국가들에 대한 상호관세를 90일 유예한 이유와 관련해 관세에 대한 금융시장의 부정적인 반응을 고려했음을 시사했다. 트럼프 대통령은 9일(현지시간) 백악관에서 자동차 경주 선수들과 개최한 행사에서 상호관세를 유예한 이유를 질문받고서 사람들이 "약간 겁을 먹었다"라고 답변했다. 그는 국채 시장의 반응 때문에 관세를 유예했냐는 질문에 "난 국채 시장을 보고 있었다. 국채 시장은 매우 까다롭다"면서 "내가 어젯밤에 보니까 사람들이 좀 불안해하더라"라고 말했다.</p>
+                                <div class="news-info"> 
+                                    <span class="news-source">연합뉴스</span>
+                                    <span class="info-line">|</span>
+                                    <span class="news-date">2025.04.10</span>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="news-box">
+                            <div class="news-list-header tab-btn-box">
+                                <button class="tab-btn active" type="button" title="국내뉴스 탭 버튼">국내뉴스</button>
+                                <button class="tab-btn" type="button" title="SNS 탭 버튼">SNS</button>
+                                <button class="tab-btn" type="button" title="부내자료 탭 버튼">부내자료</button>
+                                <button class="tab-btn" type="button" title="외부자료 탭 버튼">외부자료</button>
+                            </div>
+                            <div class="news-list">
+                                <a class="news-item" href="javascript:void(0)" title="뉴스 상세 페이지로 이동">
+                                    <div class="news-content">
+                                        <h3 class="news-title">트럼프 “中 관세 125%로 더 올려... 다른 국가는 90일간 유예”</h3>
+                                        <div class="news-info"> 
+                                            <span class="news-source">조선일보</span>
+                                            <span class="info-line">|</span>
+                                            <span class="news-date">2025.04.10</span>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="news-item" href="javascript:void(0)" title="뉴스 상세 페이지로 이동">
+                                    <div class="news-content">
+                                        <h3 class="news-title">트럼프, 상호관세 90일 유예 이유는 "사람들이 약간 겁먹어서"</h3>
+                                        <div class="news-info"> 
+                                            <span class="news-source">연합뉴스</span>
+                                            <span class="info-line">|</span>
+                                            <span class="news-date">2025.04.10</span>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="news-item active" href="javascript:void(0)" title="뉴스 상세 페이지로 이동">
+                                    <div class="news-content">
+                                        <h3 class="news-title">미국, 한국 25% 등 상호관세 발효…중국엔 104%</h3>
+                                        <div class="news-info"> 
+                                            <span class="news-source">중앙일보</span>
+                                            <span class="info-line">|</span>
+                                            <span class="news-date">2025.04.10</span>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="news-item" href="javascript:void(0)" title="뉴스 상세 페이지로 이동">
+                                    <div class="news-content">
+                                        <h3 class="news-title">트럼프 “中 관세 125%로 더 올려... 다른 국가는 90일간 유예”</h3>
+                                        <div class="news-info"> 
+                                            <span class="news-source">조선일보</span>
+                                            <span class="info-line">|</span>
+                                            <span class="news-date">2025.04.10</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </article>
+        </section>
+
+        <!-- 인물 정보 섹션 -->
+        <section class="person-section">
+            <article class="container">
+
+                <!-- 키워드 박스 -->
+                <ul class="keyword-wrap">
+                    <li class="keyword-wrap-item active">
+                        <button type="button" title="미국 키워드 버튼">
+                            <span class="country">미국</span>
+                            <span class="keyword">상호관세</span>
+                            <span class="icon-keyword-arrow"></span>
+                        </button>
+                    </li>
+                    <li class="keyword-wrap-item">
+                        <button type="button" title="한국 키워드 버튼">
+                            <span class="country">한국</span>
+                            <span class="keyword">환율</span>
+                            <span class="icon-keyword-arrow"></span>
+                        </button>
+                    </li>
+                    <li class="keyword-wrap-item">
+                        <button type="button" title="일본 키워드 버튼">
+                            <span class="country">일본</span>
+                            <span class="keyword">시진핑</span>
+                            <span class="icon-keyword-arrow"></span>
+                        </button>
+                    </li>
+                    <li class="keyword-wrap-item">
+                        <button type="button" title="중국 키워드 버튼">
+                            <span class="country">중국</span>
+                            <span class="keyword">러시아</span>
+                            <span class="icon-keyword-arrow"></span>
+                        </button>
+                    </li>
+                </ul>
+                
+                <!-- 키워드별 연관 인물 -->
+                <div class="section-container">
+                    <div class="section-header">
+                        <h2 class="section-title">키워드별 연관 인물</h2>
+                    </div>
+
+                    <div class="person-slider swiper">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <a class="person-card" href="javascript:void(0)" title="인물 상세 페이지로 이동">
+                                    <figure class="person-image">
+                                        <img src="/images/main/personSection/e82f5b68acf97d651eafcc1db8f236fa.png" alt="도널드 트럼프">
+                                    </figure>
+                                    <div class="person-info">
+                                        <p class="person-name-en">Donald Trump</p>
+                                        <h3 class="person-name-ko">도널드 트럼프</h3>
+                                        <p class="person-position">
+                                            <span class="country">미합중국</span>
+                                            <span class="line">|</span>
+                                            <span class="position">대통령</span>
+                                        </p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a class="person-card" href="javascript:void(0)" title="인물 상세 페이지로 이동">
+                                    <figure class="person-image">
+                                        <img src="/images/main/personSection/41cccc4be7b243cfd5148cdcfdf2a4ce.png" alt="시진핑">
+                                    </figure>
+                                    <div class="person-info">
+                                        <p class="person-name-en">Xi Jinping</p>
+                                        <h3 class="person-name-ko">시진핑</h3>
+                                        <p class="person-position">
+                                            <span class="country">중화인민공화국</span>
+                                            <span class="line">|</span>
+                                            <span class="position">주석</span>
+                                        </p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a class="person-card" href="javascript:void(0)" title="인물 상세 페이지로 이동">
+                                    <figure class="person-image">
+                                        <img src="/images/main/personSection/48ca9786cace765d80bceacd9163c7bd.png" alt="도널드 트럼프">
+                                    </figure>
+                                    <div class="person-info">
+                                        <p class="person-name-en">Jamieson Lee Greer</p>
+                                        <h3 class="person-name-ko">제이미슨 리 그리어</h3>
+                                        <p class="person-position">
+                                            <span class="country">미합중국</span>
+                                            <span class="line">|</span>
+                                            <span class="position">무역대표부 대표</span>
+                                        </p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="swiper-scrollbar"></div>
+                         
+                    </div>
+                </div>
+                
+            </article>
+        </section>
+
+        <!-- 키워드 영역 섹션 -->
+        <section class="keyword-section">
+            <article class="container">
+
+                <!-- 키워드 박스 -->
+                <ul class="keyword-wrap">
+                    <li class="keyword-wrap-item active">
+                        <button type="button" title="미국 키워드 버튼">
+                            <span class="country">미국</span>
+                            <span class="keyword">상호관세</span>
+                            <span class="icon-keyword-arrow"></span>
+                        </button>
+                    </li>
+                    <li class="keyword-wrap-item">
+                        <button type="button" title="한국 키워드 버튼">
+                            <span class="country">한국</span>
+                            <span class="keyword">환율</span>
+                            <span class="icon-keyword-arrow"></span>
+                        </button>
+                    </li>
+                    <li class="keyword-wrap-item">
+                        <button type="button" title="일본 키워드 버튼">
+                            <span class="country">일본</span>
+                            <span class="keyword">시진핑</span>
+                            <span class="icon-keyword-arrow"></span>
+                        </button>
+                    </li>
+                    <li class="keyword-wrap-item">
+                        <button type="button" title="중국 키워드 버튼">
+                            <span class="country">중국</span>
+                            <span class="keyword">러시아</span>
+                            <span class="icon-keyword-arrow"></span>
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- 키워드별 연관 사건 -->
+                <div class="section-container">
+                    <div class="section-header">
+                        <h2 class="section-title">키워드별 연관 사건</h2>
+                    </div>
+                    <div class="keyword-slider swiper">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <a class="keyword-card" href="javascript:void(0)" title="사건 상세 페이지로 이동">
+                                    <div class="keyword-image-wrap">
+                                        <figure class="keyword-image">
+                                            <img src="/images/main/keywordSection/image01.png" alt="뉴스 이미지">
+                                        </figure>
+                                    </div>
+                                    <div class="keyword-info">
+                                        <span class="keyword-date">2022.09.18</span>
+                                        <h3 class="keyword-title">개국방문</h3>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a class="keyword-card reverse" href="javascript:void(0)" title="사건 상세 페이지로 이동">
+                                    <div class="keyword-image-wrap">
+                                        <figure class="keyword-image">
+                                            <img src="/images/main/keywordSection/image02.png" alt="뉴스 이미지">
+                                        </figure>
+                                    </div>
+                                    <div class="keyword-info">
+                                        <span class="keyword-date">2022.09.18</span>
+                                        <h3 class="keyword-title">인도네시아 외교 방문</h3>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a class="keyword-card" href="javascript:void(0)" title="사건 상세 페이지로 이동">
+                                    <div class="keyword-image-wrap">
+                                        <figure class="keyword-image">
+                                            <img src="/images/main/keywordSection/image03.png" alt="뉴스 이미지">
+                                        </figure>
+                                    </div>
+                                    <div class="keyword-info">
+                                        <span class="keyword-date">2022.09.18</span>
+                                        <h3 class="keyword-title">개국방문</h3>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a class="keyword-card reverse" href="javascript:void(0)" title="사건 상세 페이지로 이동">
+                                    <div class="keyword-image-wrap">
+                                        <figure class="keyword-image">
+                                            <img src="/images/main/keywordSection/image02.png" alt="뉴스 이미지">
+                                        </figure>
+                                    </div>
+                                    <div class="keyword-info">
+                                        <span class="keyword-date">2022.09.18</span>
+                                        <h3 class="keyword-title">인도네시아 외교 방문</h3>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a class="keyword-card" href="javascript:void(0)" title="사건 상세 페이지로 이동">
+                                    <div class="keyword-image-wrap">
+                                        <figure class="keyword-image">
+                                            <img src="/images/main/keywordSection/image01.png" alt="뉴스 이미지">
+                                        </figure>
+                                    </div>
+                                    <div class="keyword-info">
+                                        <span class="keyword-date">2022.09.18</span>
+                                        <h3 class="keyword-title">개국방문</h3>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a class="keyword-card reverse" href="javascript:void(0)" title="사건 상세 페이지로 이동">
+                                    <div class="keyword-image-wrap">
+                                        <figure class="keyword-image">
+                                            <img src="/images/main/keywordSection/image03.png" alt="뉴스 이미지">
+                                        </figure>
+                                    </div>
+                                    <div class="keyword-info">
+                                        <span class="keyword-date">2022.09.18</span>
+                                        <h3 class="keyword-title">인도네시아 외교 방문</h3>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-scrollbar"></div>
+                </div>
+            </article>
+        </section>
+
+        <!-- 통계 섹션 -->
+        <section class="stats-section">
+            <article class="container">
+                <div class="section-header">
+                    <h2 class="section-title">데이터 수집 현황</h2>
+                </div>
+                <div class="stats-container">
+                    <div class="chart-grid">
+                        
+                        <!-- 통계 영역 -->
+                        <div class="stats-wrapper">
+                            <div class="sticky">
+                                <div class="total-stats">
+                                    <h3 class="stats-title">전체 수집량</h3>
+                                    <div class="stats-number number">58,195,665</div>
+                                </div>
+                                <p class="stats-desc">
+                                    * 추가된 24개 국·내외 기관을 통해 41개의 새로운 데이터 항목을 수집하여,
+                                    MOFA 인사이트의 데이터 품질을 향상시켰습니다.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- 차트 영역 -->
+                        <div class="chart-grid">
+                            <div class="left-chart">
+                                <div class="chart-item active">
+                                    <a class="chart-title-wrap" href="javascript:void(0)" title="컨텐츠를 보여줍니다.">
+                                        <h3 class="chart-title">
+                                            국내뉴스 / SNS
+                                            <span class="icon-chart-dropdown"></span>
+                                        </h3>
+                                        <p class="chart-value number">3,671</p>
+                                    </a>
+                                    <div class="chart-container">
+                                        <div id="chart1"></div>
+                                    </div>
+                                </div>
+                                <div class="chart-item">
+                                    <a class="chart-title-wrap" href="javascript:void(0)" title="컨텐츠를 보여줍니다.">
+                                        <h3 class="chart-title">
+                                            외부자료
+                                            <span class="icon-chart-dropdown"></span>
+                                        </h3>
+                                        <p class="chart-value number">2,008</p>
+                                    </a>
+                                    <div class="chart-container">
+                                        <div id="chart2"></div>
+                                    </div>
+                                </div>
+                                <div class="chart-item">
+                                    <a class="chart-title-wrap" href="javascript:void(0)" title="컨텐츠를 보여줍니다.">
+                                        <h3 class="chart-title">
+                                            온나라 문서
+                                            <span class="icon-chart-dropdown"></span>
+                                        </h3>
+                                        <p class="chart-value number">3,245</p>
+                                    </a>
+                                    <div class="chart-container">
+                                        <div id="chart3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="right-chart">
+                                <div class="chart-item">
+                                    <a class="chart-title-wrap" href="javascript:void(0)" title="컨텐츠를 보여줍니다.">
+                                        <h3 class="chart-title">
+                                            일반문서
+                                            <span class="icon-chart-dropdown"></span>
+                                        </h3>
+                                        <p class="chart-value number">2,008</p>
+                                    </a>
+                                    <div class="chart-container">
+                                        <div id="chart4"></div>
+                                    </div>
+                                </div>
+                                <div class="chart-item">
+                                    <a class="chart-title-wrap" href="javascript:void(0)" title="컨텐츠를 보여줍니다.">
+                                        <h3 class="chart-title">
+                                            해외뉴스
+                                            <span class="icon-chart-dropdown"></span>
+                                        </h3>
+                                        <p class="chart-value number">1,223</p>
+                                    </a>
+                                    <div class="chart-container">
+                                        <div id="chart5"></div>
+                                    </div>
+                                </div>
+                                <div class="chart-item active">
+                                    <a class="chart-title-wrap" href="javascript:void(0)" title="컨텐츠를 보여줍니다.">
+                                        <h3 class="chart-title">
+                                            부내자료
+                                            <span class="icon-chart-dropdown"></span>
+                                        </h3>
+                                        <p class="chart-value number">3,671</p>
+                                    </a>
+                                    <div class="chart-container">
+                                        <div id="chart6"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </article>
+        </section>
+
+        <!-- AI 서비스 섹션 -->
+        <section class="ai-section">
+            <article class="container">
+                <div class="section-header">
+                    <h2 class="section-title">AI 서비스</h2>
+                    <p class="section-desc">외교부가 제공하는 AI 도구 모음</p>
+                </div>
+                <div class="ai-container">
+                    <div class="ai-wrapper">
+                        <a class="ai-item type-1" href="javascript:void(0)" title="요약 페이지로 이동합니다.">
+                            <h3 class="ai-title">요약</h3>
+                            <p class="ai-desc">핵심 정보 추출 솔루션</p>
+                        </a>
+                        <a class="ai-item" href="javascript:void(0)" title="번역 페이지로 이동합니다.">
+                            <h3 class="ai-title">번역</h3>
+                            <p class="ai-desc">정확하고 자연스러운 번역 서비스</p>
+                        </a>
+                    </div>
+                    <div class="ai-wrapper">
+                        <a class="ai-item" href="javascript:void(0)" title="보고서 생성 페이지로 이동합니다.">
+                            <h3 class="ai-title">보고서 생성</h3>
+                            <p class="ai-desc">자동화된 보고서 작성의 시작</p>
+                        </a>
+                        <a class="ai-item type-2" href="javascript:void(0)" title="전문 분석 페이지로 이동합니다.">
+                            <h3 class="ai-title">전문 분석툴</h3>
+                            <p class="ai-desc">AI 기반의 심층 분석 솔루션</p>
+                        </a>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <!-- 푸터 영역 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-info">
+                <nav class="footer-nav-wrap">
+                    <a class="footer-btn" href="javascript:void(0)">이용약관</a>
+                    <!-- <a class="footer-btn" href="javascript:void(0)">개인정보처리방침</a> -->
+                </nav>
+                <p class="footer-desc">
+                    <span class="footer-address">주소: 03172 서울특별시 종로구 사직로8길 60</span>
+                    <span class="footer-line">|</span>
+                    <span class="footer-phone">대표번호: 02-2100-2114</span>
+                </p>
+                <p class="copyright">Copyright © 2024 MOFA. All rights reserved</p>
+            </div>
+            <div class="footer-logo">
+                <h2 class="logo">외교부</h2>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript 라이브러리 -->
+    <!-- amCharts 5 -->
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/timeline.js"></script>
+
+
+    <!-- SwiperJS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <!-- 메인 JavaScript -->
+    <script src="js/script.js"></script>
+</body>
+</html> 
