@@ -1,8 +1,8 @@
 // 문서가 완전히 로드된 후 실행
 document.addEventListener('DOMContentLoaded', function() {
     /* 스와이퍼 슬라이더 초기화 */
-    // 인물 섹션
-    const personSwiper = new Swiper('.person-slider', {
+    // 관련 뉴스
+    const newsSwiper = new Swiper('.news-slider', {
         slidesPerView: 1,
         spaceBetween: 20,
         scrollbar: {
@@ -28,32 +28,23 @@ document.addEventListener('DOMContentLoaded', function() {
             },
         }
     });
-    // 키워드 섹션
-    const keywordSwiper = new Swiper('.keyword-slider', {
-        slidesPerView: 1,
-        spaceBetween: 160,
-        scrollbar: {
-            el: ".keyword-section .swiper-scrollbar",
-            hide: false,
-            draggable: true,
-        },
-        breakpoints: {
-            // 576px 이상에서
-            576: {
-                slidesPerView: 1.5,
-                spaceBetween: 30,
-            },
-            // 768px 이상에서
-            768: {
-                slidesPerView: 3,
-                spaceBetween: 80,
-            },
-            // 1024px 이상에서
-            1024: {
-                slidesPerView: 4,
-                spaceBetween: 160,
-            },
-        }
+
+    /* 뉴스 카드 클릭 이벤트 */
+    const newsCards = document.querySelectorAll('.news-section .news-card');
+    newsCards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            // 다른 모든 뉴스 카드에서 active 클래스 제거
+            newsCards.forEach(otherCard => {
+                if (otherCard !== card) {
+                    otherCard.classList.remove('active');
+                }
+            });
+            
+            // 현재 클릭한 카드에 active 클래스 추가 (이미 있어도 유지됨)
+            if (!card.classList.contains('active')) {
+                card.classList.add('active');
+            }
+        });
     });
 
     /* 숫자 증가 애니메이션 */
