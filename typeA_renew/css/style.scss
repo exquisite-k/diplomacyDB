@@ -837,7 +837,10 @@ header {
     }
     .chart-container {
         height: 180px;
-        border: 1px solid violet;
+        // border: 1px solid violet;
+        & > div {
+            height: 100%;
+        }
     }
 }
 
