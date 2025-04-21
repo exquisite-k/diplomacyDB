@@ -68,16 +68,175 @@ document.addEventListener('DOMContentLoaded', function() {
         // 해당 wrap 내의 모든 버튼을 찾습니다
         const buttons = wrap.querySelectorAll('.keyword-wrap-item button');
         
+        // 처음 로드 시 모든 keyword-ranking-wrap 요소 숨기기
+        const rankingWraps = wrap.querySelectorAll('.keyword-ranking-wrap');
+        rankingWraps.forEach(rankingWrap => {
+            // 초기 스타일 설정
+            rankingWrap.style.overflow = 'hidden';
+            rankingWrap.style.maxHeight = '0';
+            rankingWrap.style.transition = 'max-height 0.3s ease-in-out';
+            rankingWrap.style.display = 'none';
+            
+            // ranking-item 버튼 클릭 이벤트 설정
+            const rankingButtons = rankingWrap.querySelectorAll('.ranking-item button');
+            rankingButtons.forEach(rankingButton => {
+                rankingButton.addEventListener('click', function(e) {
+                    // 이벤트 버블링 중지 (부모로 이벤트가 전파되지 않도록)
+                    e.stopPropagation();
+                    
+                    // 현재 클릭된 항목의 부모 요소(ranking-item)
+                    const currentItem = this.closest('.ranking-item');
+                    
+                    // 이미 active 상태인지 확인
+                    if (currentItem.classList.contains('active')) {
+                        // 이미 active 상태면 아무 작업 없이 종료
+                        return;
+                    }
+                    
+                    // 문서 내 모든 ranking-item에서 active 클래스 제거 (모든 국가의 ranking-item 포함)
+                    document.querySelectorAll('.ranking-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    
+                    // 클릭된 항목에 active 클래스 추가
+                    currentItem.classList.add('active');
+                });
+            });
+        });
+        
+        // 초기 active 상태인 아이템의 랭킹 표시
+        const initialActiveItem = wrap.querySelector('.keyword-wrap-item.active');
+        if (initialActiveItem) {
+            // active 아이템과 연관된 ranking-wrap 찾기
+            // 형제 요소 또는 자식 요소일 수 있음
+            let targetRankingWrap = null;
+            
+            // 1. 다음 형제 요소 확인
+            if (initialActiveItem.nextElementSibling && 
+                initialActiveItem.nextElementSibling.classList.contains('keyword-ranking-wrap')) {
+                targetRankingWrap = initialActiveItem.nextElementSibling;
+            } 
+            // 2. 자식 요소 확인
+            else {
+                targetRankingWrap = initialActiveItem.querySelector('.keyword-ranking-wrap');
+            }
+            
+            // 3. 같은 부모 내에서 다음 요소 확인 (HTML 구조에 따라)
+            if (!targetRankingWrap) {
+                const index = Array.from(wrap.children).indexOf(initialActiveItem);
+                if (index !== -1 && index + 1 < wrap.children.length) {
+                    const nextElement = wrap.children[index + 1];
+                    if (nextElement.classList.contains('keyword-ranking-wrap')) {
+                        targetRankingWrap = nextElement;
+                    }
+                }
+            }
+            
+            // 관련 랭킹랩이 있다면 표시
+            if (targetRankingWrap) {
+                targetRankingWrap.style.display = 'block';
+                // 실제 높이 계산을 위해 임시로 auto 설정
+                targetRankingWrap.style.maxHeight = 'none';
+                const actualHeight = targetRankingWrap.scrollHeight;
+                // 다시 0으로 설정 후 애니메이션을 위해 실제 높이로 변경
+                targetRankingWrap.style.maxHeight = '0';
+                
+                // 다음 프레임에서 애니메이션 적용 (부드러운 전환 위해)
+                setTimeout(() => {
+                    targetRankingWrap.style.maxHeight = actualHeight + 'px';
+                }, 10);
+            }
+        }
+        
         // 해당 wrap 내의 각 버튼에 클릭 이벤트 리스너 추가
         buttons.forEach(button => {
             button.addEventListener('click', function() {
+                // 현재 클릭된 아이템의 상태 확인 (이미 active인지)
+                const item = this.closest('.keyword-wrap-item');
+                const isAlreadyActive = item.classList.contains('active');
+                
+                // 이미 활성화된 상태라면 아무것도 하지 않고 유지
+                if (isAlreadyActive) {
+                    return;
+                }
+                
+                // 현재 활성화된 랭킹 랩 찾기 및 슬라이드 업
+                const activeRankingWrap = wrap.querySelector('.keyword-ranking-wrap[style*="max-height"]:not([style*="max-height: 0"])');
+                if (activeRankingWrap) {
+                    activeRankingWrap.style.maxHeight = '0';
+                    
+                    // 트랜지션 완료 후 display none 처리
+                    activeRankingWrap.addEventListener('transitionend', function handler() {
+                        this.style.display = 'none';
+                        this.removeEventListener('transitionend', handler);
+                    }, { once: true });
+                }
+                
                 // 현재 wrap 내의 모든 keyword-wrap-item에서 active 클래스 제거
-                wrap.querySelectorAll('.keyword-wrap-item').forEach(item => {
-                    item.classList.remove('active');
+                wrap.querySelectorAll('.keyword-wrap-item').forEach(otherItem => {
+                    otherItem.classList.remove('active');
                 });
                 
                 // 클릭된 버튼의 부모 요소(keyword-wrap-item)에 active 클래스 추가
-                this.closest('.keyword-wrap-item').classList.add('active');
+                item.classList.add('active');
+                
+                // HTML 구조 확인을 통해 연관된 ranking-wrap 찾기
+                let targetRankingWrap = null;
+                
+                // 1. HTML 구조가 국가별로 분리되어 있는 경우 - 부모 컨테이너에서 관련 랭킹 찾기
+                const countryName = item.querySelector('.country')?.textContent;
+                if (countryName) {
+                    
+                    // 해당 국가명을 포함하는 랭킹 랩 찾기
+                    rankingWraps.forEach(rankingWrap => {
+                        // 랭킹 랩 내의 요소에서 국가명 확인
+                        const rankingCountry = rankingWrap.querySelector('.country')?.textContent;
+                        if (rankingCountry === countryName) {
+                            targetRankingWrap = rankingWrap;
+                        }
+                    });
+                    
+                    // 국가명이 없거나 매칭되지 않을 경우 다른 방법 시도
+                    if (!targetRankingWrap) {
+                        // 2. 직접 형제 요소 확인
+                        if (item.nextElementSibling && 
+                            item.nextElementSibling.classList.contains('keyword-ranking-wrap')) {
+                            targetRankingWrap = item.nextElementSibling;
+                        }
+                        // 3. 부모-자식 관계 확인
+                        else if (item.querySelector('.keyword-ranking-wrap')) {
+                            targetRankingWrap = item.querySelector('.keyword-ranking-wrap');
+                        }
+                        // 4. 부모의 다음 자식으로 확인
+                        else if (item.parentNode) {
+                            const index = Array.from(item.parentNode.children).indexOf(item);
+                            if (index !== -1 && index + 1 < item.parentNode.children.length) {
+                                const nextElement = item.parentNode.children[index + 1];
+                                if (nextElement.classList.contains('keyword-ranking-wrap')) {
+                                    targetRankingWrap = nextElement;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                // 연관된 랭킹랩을 찾았다면 표시
+                if (targetRankingWrap) {
+                    // 디스플레이 설정 후 높이 계산
+                    targetRankingWrap.style.display = 'block';
+                    
+                    // 실제 높이 구하기
+                    targetRankingWrap.style.maxHeight = 'none';
+                    const height = targetRankingWrap.scrollHeight;
+                    targetRankingWrap.style.maxHeight = '0';
+                    
+                    // 다음 프레임에서 애니메이션 실행
+                    requestAnimationFrame(() => {
+                        targetRankingWrap.style.maxHeight = height + 'px';
+                    });
+                } else {
+                    // console.warn('연관된 랭킹랩을 찾을 수 없습니다:', countryName);
+                }
             });
         });
     });
