@@ -808,7 +808,9 @@ header .gnb-menu .user-info figure img {
 }
 .chart-section .chart-container {
   height: 180px;
-  border: 1px solid violet;
+}
+.chart-section .chart-container > div {
+  height: 100%;
 }
 
 /* 통계 섹션 */

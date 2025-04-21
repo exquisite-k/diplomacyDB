@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
     /* 필터 마퀴 효과 */
     // filter-wrapper에 무한 스크롤 효과 적용하는 함수
     const marqueeController = initFilterMarquee();
-    initInfiniteScroll();
+    // initInfiniteScroll();
     
     // 창 크기 변경 시 다시 계산
     window.addEventListener('resize', function() {
@@ -98,7 +98,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    /* 키워드별 언급량 차트 초기화 */
+    initKeywordChart();
     
+    /* 연관어 차트 초기화 */
+    initRelatedChart();
 });
 
 /* 스크롤 위치에 따라 헤더 상태 변경하는 이벤트 */
@@ -499,7 +503,11 @@ function initCharts() {
     
         // 루트 요소 생성
         let root = am5.Root.new(elementId);
+
+        // 차트 로고 제거
         root._logo.dispose();
+
+        // 차트 테마 설정
         root.setThemes([am5themes_Animated.new(root)]);
     
         // 전체 컨테이너 생성
@@ -632,6 +640,424 @@ function initCharts() {
     createPieChart("chart4", chartData2);
     createPieChart("chart5", chartData1);
     createPieChart("chart6", chartData2);
+}
+
+/* 키워드별 언급량 차트 초기화 함수 */
+function initKeywordChart() {
+    // 차트 요소 존재 확인
+    if (!document.getElementById("chart7")) return;
+    
+    // 차트 데이터 - 날짜별로 3개 카테고리의 언급량 데이터 포함
+    const keywordData = [
+        {
+            date: "09-02",
+            "뉴스": 14,
+            "트위터": 18,
+            "블로그": 10,
+        },
+        {
+            date: "09-03",
+            "뉴스": 30,
+            "트위터": 37,
+            "블로그": 14,
+        },
+        {
+            date: "09-04",
+            "뉴스": 24,
+            "트위터": 28,
+            "블로그": 8,
+        },
+        {
+            date: "09-05",
+            "뉴스": 32,
+            "트위터": 40,
+            "블로그": 20,
+        },
+        {
+            date: "09-06",
+            "뉴스": 47,
+            "트위터": 49,
+            "블로그": 22,
+        },
+        {
+            date: "09-07",
+            "뉴스": 53,
+            "트위터": 53,
+            "블로그": 26,
+        },
+        {
+            date: "09-08",
+            "뉴스": 59,
+            "트위터": 55,
+            "블로그": 20,
+        },
+        {
+            date: "09-09",
+            "뉴스": 78,
+            "트위터": 54,
+            "블로그": 21,
+        }
+    ];
+    
+    // 시리즈별 색상 정의
+    const seriesColors = {
+        "뉴스": am5.color(0xF53C80),
+        "트위터": am5.color(0x1326A7),
+        "블로그": am5.color(0x39EABE),
+    };
+    
+    // amCharts가 로드된 후 차트 생성
+    am5.ready(function() {
+        // 차트 생성 함수 호출
+        createMultiLineChart("chart7", keywordData, seriesColors);
+    });
+    
+    // 다중 라인 차트 생성 함수
+    function createMultiLineChart(elementId, data, seriesColors) {
+        // 루트 요소 생성
+        let root = am5.Root.new(elementId);
+ 
+        // 차트 로고 제거
+        root._logo.dispose();
+ 
+        // 차트 테마 설정
+        root.setThemes([am5themes_Animated.new(root)]);
+        
+        // 그리드 테마 설정
+        let myTheme = am5.Theme.new(root);
+        myTheme.rule("Grid").setAll({
+            stroke: am5.color(0xF53C80),
+            strokeOpacity: 0.2,
+        });
+        root.setThemes([
+            am5themes_Animated.new(root),
+            myTheme,
+        ]);
+        
+        // 차트 생성
+        let chart = root.container.children.push(am5xy.XYChart.new(root, {
+            panX: false,
+            panY: false,
+            wheelX: "none",
+            wheelY: "none",
+            layout: root.verticalLayout,
+            paddingLeft: 0,
+            paddingRight: 0,
+            paddingTop: 10,
+            paddingBottom: 0,
+        }));
+        
+        // X축 생성
+        let xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
+            maxDeviation: 0.5,
+            groupData: false,
+            baseInterval: {
+                timeUnit: "day",
+                count: 1,
+            },
+            markUnitChange: false,
+            renderer: am5xy.AxisRendererX.new(root, {}),
+        }));
+        xAxis.data.setAll(data);
+
+        // X축 날짜 형식 설정
+        xAxis.get("dateFormats")["day"] = "MM.dd";
+        
+        // X축 렌더러 설정
+        let xRenderer = xAxis.get("renderer");
+        xRenderer.labels.template.setAll({
+            height: 2,
+            fill: am5.color(0xf9f9f9),
+            fontSize: 0,
+        });
+        xRenderer.grid.template.setAll({
+            forceHidden: true,
+        });
+        
+        // Y축 생성
+        let yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+            maxDeviation: 1,
+            renderer: am5xy.AxisRendererY.new(root, {}),
+            
+        }));
+        
+        // Y축 렌더러 설정
+        let yRenderer = yAxis.get("renderer");
+        yRenderer.labels.template.setAll({
+            forceHidden: true,
+        });
+
+        // 커서 설정 _ 설정은 되어있어야만 툴팁이 나옴
+        var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
+        cursor.lineY.set("visible", false);
+        cursor.lineX.set("visible", false);
+
+        // 시리즈 생성 함수
+        function createSeries(name, field, color) {
+            // 시리즈 생성
+            let series = chart.series.push(am5xy.SmoothedXLineSeries.new(root, {
+                name: name,
+                minBulletDistance: 10,
+                tension: 0.6,
+                connect: true,
+                xAxis: xAxis,
+                yAxis: yAxis,
+                valueYField: field,
+                valueXField: "date",
+                stroke: color,
+                fill: color,
+                tooltip: am5.Tooltip.new(root, {
+                    labelText: "{name} : {valueY}건",
+                }),
+            }));
+            
+            // 시리즈 스트로크 설정
+            series.strokes.template.setAll({
+                strokeWidth: 2,
+                visible: true,
+            });
+            
+            // 불릿 설정
+            series.bullets.push(function () {
+                return am5.Bullet.new(root, {
+                    sprite: am5.Circle.new(root, {
+                        radius: 5,
+                        fill: color,
+                    }),
+                });
+            });
+            
+            // 데이터 프로세서 설정
+            series.data.processor = am5.DataProcessor.new(root, {
+                dateFormat: "MM.dd",
+                dateFields: ["date"],
+            });
+            
+            // 데이터 설정
+            series.data.setAll(data);
+            series.appear(1000);
+            
+            return series;
+        }
+        
+        // 3개의 시리즈 생성
+        const diplomacySeries = createSeries("뉴스", "뉴스", seriesColors["뉴스"]);
+        const securitySeries = createSeries("트위터", "트위터", seriesColors["트위터"]);
+        const economySeries = createSeries("블로그", "블로그", seriesColors["블로그"]);
+        
+        // 애니메이션 효과
+        chart.series.each(function(series) {
+            series.appear(1000, 100);
+        });
+        
+        chart.appear(1000, 100);
+    }
+}
+
+/* 연관어 차트 초기화 함수 */
+function initRelatedChart() {
+
+    // 차트 요소 존재 확인 - chart8 ID 사용
+    const chartDiv = document.getElementById("chart8");
+    if (!chartDiv) { return; }
+        
+    // 차트가 이미 존재하는 경우 삭제 (메모리 누수 방지)
+    if (chartDiv._chart) { chartDiv._chart.dispose(); }
+        
+    // Root 엘리먼트 생성
+    let root = am5.Root.new(chartDiv);
+
+    // 차트 로고 제거
+    root._logo.dispose();
+
+    // 차트 테마 설정
+    root.setThemes([am5themes_Animated.new(root)]);
+        
+    // 차트 참조 저장 (재사용 목적)
+    chartDiv._chart = root;
+            
+    // 차트 생성 - 수평 레이아웃으로 차트와 범례 배치
+    const chart = root.container.children.push(
+        am5.Container.new(root, {
+            width: am5.percent(100),
+            height: am5.percent(100),
+            layout: root.horizontalLayout
+        })
+    );
+         
+    // 워드 클라우드 컨테이너 생성
+    const wordCloudContainer = chart.children.push(
+        am5.Container.new(root, {
+            width: am5.percent(100),
+            height: am5.percent(100),
+            layout: root.horizontalLayout
+        })
+    );
+        
+    // 범례 컨테이너 생성
+    const legendContainer = chart.children.push(
+        am5.Container.new(root, {
+            width: am5.percent(20),
+            height: am5.percent(100),
+            layout: root.verticalLayout,
+        })
+    );
+
+    // 카테고리 색상 정의
+    const categoryColors = {
+        "조직/빌딩": am5.color(0x6424AC),
+        "지역/장소": am5.color(0xBD26C9),
+        "학문/분야": am5.color(0xE729B5),
+        "문화/예술": am5.color(0x3245DB),
+    };
+        
+    // 단어 데이터를 배열로 관리
+    const wordData = [
+        { tag: "북한", value: 100, category: "조직/빌딩" },
+        { tag: "유엔", value: 80, category: "조직/빌딩" },
+        { tag: "안보리", value: 40, category: "조직/빌딩" },
+        { tag: "미사일", value: 35, category: "조직/빌딩" },
+        { tag: "안보실장", value: 28, category: "조직/빌딩" },
+        { tag: "외교장관", value: 60, category: "조직/빌딩" },
+        
+        { tag: "전투기", value: 38, category: "지역/장소" },
+        { tag: "탄도미사일", value: 12, category: "지역/장소" },
+        { tag: "행사", value: 20, category: "지역/장소" },
+        { tag: "한반도", value: 40, category: "지역/장소" },
+        
+        { tag: "함참의장", value: 37, category: "학문/분야" },
+        { tag: "후미오", value: 30, category: "학문/분야" },
+        { tag: "중거리탄도", value: 32, category: "학문/분야" },
+        { tag: "한미", value: 90, category: "학문/분야" },
+        { tag: "방위", value: 60, category: "학문/분야" },
+        { tag: "중거리", value: 30, category: "학문/분야" },
+        { tag: "속보", value: 3, category: "학문/분야" },
+        
+        { tag: "공조", value: 2, category: "문화/예술" },
+        { tag: "뉴스", value: 10, category: "문화/예술" },
+        { tag: "일본", value: 8, category: "문화/예술" },
+        { tag: "대량살상무기", value: 4, category: "문화/예술" },
+        { tag: "위반", value: 4, category: "문화/예술" },
+        { tag: "NCS", value: 4, category: "문화/예술" },
+        { tag: "주제", value: 58, category: "문화/예술" },
+        { tag: "한미동맹", value: 4, category: "문화/예술" },
+    ];
+        
+    // 데이터 전처리
+    const processedData = [];
+    wordData.forEach(item => {
+        if (!item || !item.tag || !item.value) return;
+        
+        // 값이 유효한지 확인
+        if (isNaN(item.value) || item.value <= 0) {
+            return;
+        }
+        
+        const color = categoryColors[item.category] || categoryColors.default;
+        
+        processedData.push({
+            category: item.category,
+            tag: item.tag,
+            weight: item.value,
+            color: color,
+        });
+    });
+        
+    // 워드 클라우드 시리즈 생성
+    const series = wordCloudContainer.children.push(
+        am5wc.WordCloud.new(root, {
+            labelField: "category",
+            categoryField: "tag",
+            valueField: "weight",
+            minFontSize: am5.percent(10),
+            maxFontSize: am5.percent(50),
+            minWordLength: 2,
+            randomness: 0.1,
+            // angles: [0]
+        })
+    );
+ 
+    // 라벨 스타일 설정
+    series.labels.template.setAll({
+        paddingTop: 5,
+        paddingBottom: 5,
+        paddingLeft: 5,
+        paddingRight: 5,
+        fontFamily: "Noto Sans KR, sans-serif",
+        cursorOverStyle: "pointer",
+        tooltipText: "{tag}[{category}]: {weight}"
+    });
+        
+    // 색상 설정
+    series.labels.template.adapters.add("fill", function(fill, target) {
+        if (target.dataItem && target.dataItem.dataContext) {
+            return target.dataItem.dataContext.color || categoryColors.default;
+        }
+        return fill;
+    });
+        
+    // 데이터 설정
+    series.data.setAll(processedData);
+    
+    // 범례 생성
+    const legend = legendContainer.children.push(
+        am5.Legend.new(root, {
+            nameField: "name",
+            fillField: "color",
+            strokeField: "color",
+            width: am5.percent(100),
+            height: am5.percent(100),
+            centerX: am5.percent(100),
+            centerY: am5.percent(100),
+            x: am5.percent(100),
+            y: am5.percent(100),
+            layout: root.verticalLayout,
+            paddingLeft: 10,
+        })
+    );
+        
+    // 범례 마커 설정
+    legend.markers.template.setAll({
+        width: 12,
+        height: 12,
+    });
+    legend.markerRectangles.template.setAll({
+        cornerRadiusTL: 10,
+        cornerRadiusTR: 10,
+        cornerRadiusBL: 10,
+        cornerRadiusBR: 10,
+    });
+    
+    // 범례 항목 스타일 설정
+    legend.labels.template.setAll({
+        fontSize: 14,
+        fontWeight: "400",
+        textAlign: "left",
+        width: 100,
+        x: 22,
+        fill: am5.color(0x555555),
+    });
+    
+    // 범례 항목 컨테이너 스타일
+    legend.itemContainers.template.setAll({
+        cursorOverStyle: "pointer"
+    });
+        
+    // 범례 데이터 생성
+    const legendData = Object.entries(categoryColors)
+        .filter(([category]) => category !== "default")
+        .map(([category, color]) => {
+            return {
+                name: category,
+                color: color,
+                category: category,
+                isActive: true,
+            };
+        });
+    
+    // 범례 데이터 설정
+    legend.data.setAll(legendData);
+    // legend.appear(1000, 100);
 }
 
 /* 숫자 카운트업 애니메이션 함수 */
