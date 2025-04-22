@@ -130,7 +130,6 @@ section {
     display: flex;
     flex-direction: column;
     row-gap:  12px;
-
     span {
         display: flex;
         align-items: center;
@@ -141,16 +140,12 @@ section {
         transition: all 0.2s ease-in-out;
         color: #333;
         line-height: 1.2;
-        &.country {
-
-        }
         &.rank {
             min-width: 24px;
         }
         &.keyword {
             flex: 1;
             position: relative;
-
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
@@ -207,14 +202,12 @@ section {
                 object-fit: contain;
             }
         }
-
         &.active {
             background-color: #333;
             span {
                 color: #fff;
             }
         }
-
     }
     .keyword-ranking-wrap {
         padding: 12px 24px;
@@ -253,7 +246,6 @@ section {
             }
         }
     }
-
 }
 
 /* 공통 컨텐츠 영역 */
@@ -713,8 +705,6 @@ header {
     }
 }
 
-
-
 /* 관련 뉴스 섹션 */
 .news-section {
     .section-title {
@@ -888,7 +878,6 @@ header {
                     }
                 }
             }
-            
             .person-content {
                 position: relative;
                 border-radius: 8px;
@@ -1029,7 +1018,7 @@ header {
             row-gap: 24px;
         }
         .right-chart {
-            // margin-top: 100px;
+            
         }
     }
     .chart-item {
