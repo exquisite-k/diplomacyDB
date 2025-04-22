@@ -81,7 +81,10 @@ section {
 /* 아이콘 */
 .icon-search,
 .icon-keyword-arrow,
-.icon-chart-dropdown {
+.icon-chart-dropdown,
+.icon-summary,
+.icon-translate,
+.icon-document {
   width: 100%;
   height: 100%;
   display: inline-block;
@@ -105,6 +108,24 @@ section {
   min-width: 24px;
   height: 24px;
   background-image: url("/images/icons/chart_dropdown.svg");
+}
+
+.icon-summary {
+  width: 56px;
+  height: 56px;
+  background-image: url("/images/main/aiSection/summation.svg");
+}
+
+.icon-translate {
+  width: 56px;
+  height: 56px;
+  background-image: url("/images/main/aiSection/translation.svg");
+}
+
+.icon-document {
+  width: 56px;
+  height: 56px;
+  background-image: url("/images/main/aiSection/creation.svg");
 }
 
 /* 키워드별 컨텐츠 영역 */
@@ -499,9 +520,6 @@ header .gnb-menu .user-info figure img {
 }
 
 /* 필터 섹션 */
-.filter-section {
-  margin-bottom: 200px;
-}
 .filter-section .container {
   max-width: none;
 }
@@ -530,8 +548,9 @@ header .gnb-menu .user-info figure img {
   transition: all 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 .filter-section .filter-option:hover {
-  background-color: #F53C80;
+  background-color: #333;
   color: #fff;
+  font-weight: 700;
   transform: translateY(-5px);
 }
 .filter-section .filter-option::before {
@@ -547,32 +566,24 @@ header .gnb-menu .user-info figure img {
 }
 
 /* AI 서비스 섹션 */
-.ai-section {
-  margin: 0;
-  padding: 146px 0;
-  background-image: url("/images/main/aiSection/photo-1614851099362-9adf73ccebe9.avif");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 150% 150%;
-}
-.ai-section .container {
-  align-items: flex-start;
+.ai-section .ai-section-wrapper {
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 3fr;
-  gap: 24px;
+  background-color: #f5f5f5;
+  border-radius: 16px;
 }
 .ai-section .section-header {
   width: 100%;
-  height: 196px;
   margin: 0;
-  padding: 24px;
-  border-radius: 12px;
-  background-color: #333;
-  flex: 1;
+  padding: 24px 32px;
+  border-radius: 16px;
+  background-color: #f53c80;
   display: flex;
   flex-direction: column;
   row-gap: 4px;
   color: #fff;
+  box-shadow: 4px 0 15px 0 rgba(245, 60, 128, 0.4);
 }
 .ai-section .section-title {
   font-size: 40px;
@@ -582,65 +593,29 @@ header .gnb-menu .user-info figure img {
 }
 .ai-section .ai-container {
   width: 100%;
-  flex: 2;
+  padding: 32px 0;
   display: flex;
-  flex-direction: column;
-  row-gap: 24px;
-}
-.ai-section .ai-wrapper {
-  display: flex;
-  gap: 24px;
 }
 .ai-section .ai-item {
   width: 100%;
-  height: 400px;
-  padding: 24px;
-  border-radius: 12px;
-  background-color: #fff;
+  padding: 4px 32px;
+  border-right: 1px solid #CDCDCD;
   flex: 1;
   display: flex;
-  row-gap: 4px;
-  flex-direction: column;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: center;
+  -moz-column-gap: 12px;
+       column-gap: 12px;
   color: #333;
-  box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.1);
+  font-size: 24px;
+  font-weight: 600;
   transition: all 0.2s ease-in-out;
 }
-.ai-section .ai-item:hover.type-1, .ai-section .ai-item:focus-visible.type-1 {
-  background-position: right 10px bottom 0px;
+.ai-section .ai-item:last-child {
+  border-right: 0;
 }
-.ai-section .ai-item:hover.type-2, .ai-section .ai-item:focus-visible.type-2 {
-  background-position: left 20px bottom 0px;
-}
-.ai-section .ai-item:hover:not(.type-1):not(.type-2), .ai-section .ai-item:focus-visible:not(.type-1):not(.type-2) {
-  background-color: #778dfb;
-  color: #fff;
-}
-.ai-section .ai-item.type-1, .ai-section .ai-item.type-2 {
-  flex: 2;
-  justify-content: flex-start;
-  color: #fff;
-}
-.ai-section .ai-item.type-1 {
-  background-color: #F53C80;
-  background-image: url("/images/main/aiSection/Group 145.png");
-  background-size: 350px;
-  background-repeat: no-repeat;
-  background-position: right -28px bottom -64px;
-}
-.ai-section .ai-item.type-2 {
-  align-items: flex-end;
-  background-color: #2CBAAA;
-  background-image: url("/images/main/aiSection/Group 146.png");
-  background-size: 350px;
-  background-repeat: no-repeat;
-  background-position: left -22px bottom -10px;
-}
-.ai-section .ai-title {
-  font-size: 40px;
-}
-.ai-section .ai-desc {
-  font-size: 20px;
+.ai-section .ai-item:hover, .ai-section .ai-item:focus-visible {
+  flex: 1.2;
 }
 
 /* 관련 뉴스 섹션 */
