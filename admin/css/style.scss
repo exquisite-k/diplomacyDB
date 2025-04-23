@@ -27,24 +27,22 @@ $breakpoint-mobile: 768px;
     padding: 0;
     box-sizing: border-box;
 }
-
 body {
     font-family: 'Pretendard', sans-serif;
     color: $dark-text;
-    background-color: #FAFAFA;
     line-height: 1.2;
-}
 
+    background-color: #F5F5F5;
+}
 a {
     text-decoration: none;
     color: inherit;
 }
-
 ul, li {
     list-style: none;
 }
 
-/* [수정] - 공통 컨테이너 스타일 추가 */
+/* 공통 컨테이너 스타일 추가 */
 .container {
     width: 100%;
     max-width: 1920px;
@@ -54,13 +52,28 @@ ul, li {
     align-items: center;
 }
 
+/* 고정 스크롤 영역 */
+.sticky {
+    height: auto;
+    position: sticky;
+    top: calc(108px + 10px);
+    z-index: 10;
+}
+
 // 헤더 영역
-.header {
+header {
+    width: 100%;
+    height: 108px;
+    padding: 20px 0;
     display: flex;
     align-items: center;
-    padding: 20px 0;
-    background-color: $white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+
+    background-color: rgba(255, 255, 255, 90%);
+    backdrop-filter: blur(10px);
+
     .container {
         justify-content: space-between;
         column-gap: 12px;
@@ -163,15 +176,108 @@ ul, li {
 }
 
 // 메인 콘텐츠 영역
-.main-content {
-    display: flex;
-    padding: 30px 40px;
-    gap: 30px;
+main {
+    padding: 10px 40px;
+    display: grid;
+    align-items: flex-start;
+    grid-template-columns: 3fr 1fr;
+    column-gap: 32px;
 
     /* [수정] - 반응형 레이아웃 조정 */
     @media (max-width: $breakpoint-tablet) {
         flex-direction: column-reverse;
         padding: 20px;
+    }
+}
+
+// 데이터 요약 카드
+.data-summary {
+    ul {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        row-gap: 20px;
+    }
+    .summary-card {
+        border-radius: 16px;
+        backdrop-filter: blur(10px);
+        a {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            column-gap: 40px;
+        }
+        &.blue {
+            background-color: rgba(72, 127, 238, 10%);
+            .icon-circle {
+                background-color: #487FEE;
+            }
+        }
+        &.cyan {
+            background-color: rgba(56, 207, 241, 10%);
+            .icon-circle {
+                background-color: #38CFF1;
+            }
+        }
+        &.purple {
+            background-color: rgba(171, 130, 232, 10%);
+            .icon-circle {
+                background-color: #AB82E8;
+            }
+        }
+        &.orange {
+            background-color: rgba(255, 183, 77, 10%);
+            .icon-circle {
+                background-color: #FFB74D;
+            }
+        }
+        .icon-circle {
+            width: 56px;
+            height: 56px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+        }
+        .card-info {
+            display: flex;
+            flex-direction: column;
+            row-gap: 4px;
+            .card-title {
+                font-size: 18px;
+                font-weight: 600;
+            }
+            .card-value {
+                display: flex;
+                align-items: center;
+                column-gap: 4px;
+                font-size: 24px;
+                font-weight: 500;
+                .number {
+                    font-size: 32px;
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+    
+    /* [수정] - 태블릿/모바일 대응 추가 */
+    @media (max-width: $breakpoint-tablet) {
+        width: 100%;
+        ul {
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .summary-card {
+            width: calc(50% - 10px);
+        }
+    }
+    
+    @media (max-width: $breakpoint-mobile) {
+        .summary-card {
+            width: 100%;
+        }
     }
 }
 
@@ -513,116 +619,14 @@ ul, li {
     }
 }
 
-// 데이터 요약 카드
-.sticky {
-    position: sticky;
-    top: 0;
-    height: 100%;
-    overflow-y: auto;
-}
-.data-summary {
-    width: 280px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    ul {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-    .summary-card {
-        display: flex;
-        align-items: center;
-        gap: 40px;
-        padding: 20px 24px;
-        border-radius: 16px;
-        backdrop-filter: blur(13px);
-        &.blue {
-            background-color: rgba(72, 127, 238, 0.1);
-        }
-        &.cyan {
-            background-color: rgba(56, 207, 241, 0.1);
-        }
-        &.purple {
-            background-color: rgba(171, 130, 232, 0.1);
-        }
-        &.orange {
-            background-color: rgba(255, 183, 77, 0.1);
-        }
-        .icon-circle {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            &.blue {
-                background-color: $blue;
-            }
-            &.cyan {
-                background-color: $cyan;
-            }
-            &.purple {
-                background-color: $purple;
-            }
-            &.orange {
-                background-color: $orange;
-            }
-            .card-icon {
-                width: 24px;
-                height: 24px;
-            }
-        }
-        .card-info {
-            display: flex;
-            flex-direction: column;
-            .card-title {
-                font-size: 18px;
-                font-weight: 600;
-                margin-bottom: 8px;
-            }
-            .card-value {
-                display: flex;
-                align-items: baseline;
-                .number {
-                    font-size: 32px;
-                    font-weight: 700;
-                }
-                .unit {
-                    font-size: 24px;
-                    font-weight: 500;
-                    margin-left: 4px;
-                }
-            }
-        }
-    }
-    
-    /* [수정] - 태블릿/모바일 대응 추가 */
-    @media (max-width: $breakpoint-tablet) {
-        width: 100%;
-        ul {
-            flex-direction: row;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-        .summary-card {
-            width: calc(50% - 10px);
-        }
-    }
-    
-    @media (max-width: $breakpoint-mobile) {
-        .summary-card {
-            width: 100%;
-        }
-    }
-}
-
-/* [수정] - 푸터 영역 스타일 추가 */
+/* 푸터 영역 */
 footer {
-    background-color: $white;
     padding: 20px 0;
+    background-color: #dfeaff;
     text-align: center;
-    border-top: 1px solid $gray-border;
     color: $gray-text;
     font-size: 14px;
+    .container {
+        background-color: red;
+    }
 }

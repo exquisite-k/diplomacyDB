@@ -21,7 +21,7 @@
 </head>
 <body>
     <!-- 헤더 영역 -->
-    <header class="header">
+    <header>
         <article class="container">
             <h1>
                 <a class="logo" href="/" title="외교 AI 분석 포털 관리자 대시보드 페이지로 이동합니다.">
@@ -50,8 +50,9 @@
         </article>
     </header> 
         
-    <!-- 메인 콘텐츠 영역 -->
-    <main class="main-content">
+    <!-- 메인 영역 -->
+    <main>
+        <!-- 메인 콘텐츠 -->
         <div class="left-section">
             <!-- 검색 섹션 -->
             <section class="search-box">
@@ -325,64 +326,66 @@
         <div class="data-summary sticky">
             <ul>
                 <li class="summary-card blue">
-                    <a href="">
-                        <div class="icon-circle blue">
-                            <img src="images/database-icon.svg" alt="데이터 수집" class="card-icon">
-                        </div>
+                    <a href="javascript:void(0)" title="데이터 수집 페이지로 이동">
+                        <figure class="icon-circle">
+                            <img src="/images/data-summary/icons-data.svg" alt="데이터 수집 아이콘">
+                        </figure>
                         <div class="card-info">
-                            <span class="card-title">데이터 수집</span>
-                            <div class="card-value">
-                                <span class="number">25,964</span>
-                                <span class="unit">건</span>
-                            </div>
+                            <h2 class="card-title">데이터 수집</h2>
+                            <p class="card-value">
+                                <span class="number">25,964</span>건
+                            </p>
                         </div>
                     </a>
                 </li>
-                
                 <li class="summary-card cyan">
-                    <div class="icon-circle cyan">
-                        <img src="images/ai-chip-icon.svg" alt="AI 처리" class="card-icon">
-                    </div>
-                    <div class="card-info">
-                        <span class="card-title">AI 처리 건수</span>
-                        <div class="card-value">
-                            <span class="number">670</span>
-                            <span class="unit">건</span>
+                    <a href="javascript:void(0)" title="AI 처리 건수 페이지로 이동">
+                        <figure class="icon-circle">
+                            <img src="/images/data-summary/icons-count.svg" alt="AI 처리 건수 아이콘">
+                        </figure>
+                        <div class="card-info">
+                            <h2 class="card-title">AI 처리 건수</h2>
+                            <p class="card-value">
+                                <span class="number">670</span>건
+                            </p>
                         </div>
-                    </div>
+                    </a>
                 </li>
-                
                 <li class="summary-card purple">
-                    <div class="icon-circle purple">
-                        <img src="images/check-icon.svg" alt="정확도" class="card-icon">
-                    </div>
-                    <div class="card-info">
-                        <span class="card-title">AI 응답 정확도</span>
-                        <div class="card-value">
-                            <span class="number">91.1</span>
-                            <span class="unit">%</span>
+                    <a href="javascript:void(0)" title="AI 응답 정확도 페이지로 이동">
+                        <figure class="icon-circle">
+                            <img src="/images/data-summary/icons-accuracy.svg" alt="AI 응답 정확도 아이콘">
+                        </figure>
+                        <div class="card-info">
+                            <h2 class="card-title">AI 응답 정확도</h2>
+                            <p class="card-value">
+                                <span class="number">91.1</span>%
+                            </p>
                         </div>
-                    </div>
+                    </a>
                 </li>
-                
                 <li class="summary-card orange">
-                    <div class="icon-circle orange">
-                        <img src="images/settings-icon.svg" alt="시스템" class="card-icon">
-                    </div>
-                    <div class="card-info">
-                        <span class="card-title">시스템 작동률</span>
-                        <div class="card-value">
-                            <span class="number">100</span>
-                            <span class="unit">%</span>
+                    <a href="javascript:void(0)" title="시스템 작동률 페이지로 이동">
+                        <figure class="icon-circle">
+                            <img src="/images/data-summary/icons-system.svg" alt="시스템 작동률 아이콘콘">
+                        </figure>
+                        <div class="card-info">
+                            <h2 class="card-title">시스템 작동률</h2>
+                            <p class="card-value">
+                                <span class="number">100</span>%
+                            </p>
                         </div>
-                    </div>
+                    </a>
                 </li>
             </ul>
         </div>
     </main>
 
+    <!-- 푸터 영역 -->
     <footer>
-        푸터 영역
+        <article class="container">
+            푸터 영역
+        </article>
     </footer>
     
     <!-- 스크립트 -->

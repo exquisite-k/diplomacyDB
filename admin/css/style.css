@@ -13,8 +13,8 @@
 body {
   font-family: "Pretendard", sans-serif;
   color: #333;
-  background-color: #FAFAFA;
   line-height: 1.2;
+  background-color: #F5F5F5;
 }
 
 a {
@@ -26,7 +26,7 @@ ul, li {
   list-style: none;
 }
 
-/* [수정] - 공통 컨테이너 스타일 추가 */
+/* 공통 컨테이너 스타일 추가 */
 .container {
   width: 100%;
   max-width: 1920px;
@@ -36,40 +36,54 @@ ul, li {
   align-items: center;
 }
 
-.header {
+/* 고정 스크롤 영역 */
+.sticky {
+  height: auto;
+  position: sticky;
+  top: 118px;
+  z-index: 10;
+}
+
+header {
+  width: 100%;
+  height: 108px;
+  padding: 20px 0;
   display: flex;
   align-items: center;
-  padding: 20px 0;
-  background-color: #FFF;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: rgba(255, 255, 255, 0.9);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
   /* [수정] - 반응형을 위한 미디어 쿼리 추가 */
 }
-.header .container {
+header .container {
   justify-content: space-between;
   -moz-column-gap: 12px;
        column-gap: 12px;
 }
-.header .container > * {
+header .container > * {
   flex: 1;
   display: flex;
   align-items: center;
 }
-.header .container .main-nav {
+header .container .main-nav {
   flex: 4;
 }
-.header .logo {
+header .logo {
   width: 202px;
   height: 30px;
   display: flex;
   font-size: 0;
 }
-.header .logo img {
+header .logo img {
   width: 100%;
   height: 100%;
   -o-object-fit: contain;
      object-fit: contain;
 }
-.header .main-nav {
+header .main-nav {
   display: flex;
   align-items: center;
   -moz-column-gap: 56px;
@@ -78,10 +92,10 @@ ul, li {
   font-size: 24px;
   font-weight: 700;
 }
-.header .main-nav a {
+header .main-nav a {
   position: relative;
 }
-.header .main-nav a.active::after {
+header .main-nav a.active::after {
   content: "";
   position: absolute;
   bottom: -5px;
@@ -90,16 +104,16 @@ ul, li {
   height: 3px;
   background-color: #0B468B;
 }
-.header .gnb-menu {
+header .gnb-menu {
   justify-content: flex-end;
   -moz-column-gap: 24px;
        column-gap: 24px;
   font-size: 14px;
 }
-.header .gnb-menu a {
+header .gnb-menu a {
   position: relative;
 }
-.header .gnb-menu a::after {
+header .gnb-menu a::after {
   content: "";
   width: 1px;
   height: 90%;
@@ -110,49 +124,145 @@ ul, li {
   top: 50%;
   transform: translateY(-50%);
 }
-.header .gnb-menu .user-info {
+header .gnb-menu .user-info {
   display: flex;
   align-items: center;
   -moz-column-gap: 12px;
        column-gap: 12px;
   font-weight: 600;
 }
-.header .gnb-menu .user-info figure {
+header .gnb-menu .user-info figure {
   width: 32px;
   height: 32px;
   border-radius: 50%;
   overflow: hidden;
 }
-.header .gnb-menu .user-info figure img {
+header .gnb-menu .user-info figure img {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
 }
 @media (max-width: 1024px) {
-  .header .main-nav ul {
+  header .main-nav ul {
     gap: 30px;
   }
-  .header .main-nav ul li a {
+  header .main-nav ul li a {
     font-size: 20px;
   }
 }
 @media (max-width: 768px) {
-  .header .main-nav {
+  header .main-nav {
     display: none;
   }
 }
 
-.main-content {
-  display: flex;
-  padding: 30px 40px;
-  gap: 30px;
+main {
+  padding: 10px 40px;
+  display: grid;
+  align-items: flex-start;
+  grid-template-columns: 3fr 1fr;
+  -moz-column-gap: 32px;
+       column-gap: 32px;
   /* [수정] - 반응형 레이아웃 조정 */
 }
 @media (max-width: 1024px) {
-  .main-content {
+  main {
     flex-direction: column-reverse;
     padding: 20px;
+  }
+}
+
+.data-summary {
+  /* [수정] - 태블릿/모바일 대응 추가 */
+}
+.data-summary ul {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+}
+.data-summary .summary-card {
+  border-radius: 16px;
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+}
+.data-summary .summary-card a {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  -moz-column-gap: 40px;
+       column-gap: 40px;
+}
+.data-summary .summary-card.blue {
+  background-color: rgba(72, 127, 238, 0.1);
+}
+.data-summary .summary-card.blue .icon-circle {
+  background-color: #487FEE;
+}
+.data-summary .summary-card.cyan {
+  background-color: rgba(56, 207, 241, 0.1);
+}
+.data-summary .summary-card.cyan .icon-circle {
+  background-color: #38CFF1;
+}
+.data-summary .summary-card.purple {
+  background-color: rgba(171, 130, 232, 0.1);
+}
+.data-summary .summary-card.purple .icon-circle {
+  background-color: #AB82E8;
+}
+.data-summary .summary-card.orange {
+  background-color: rgba(255, 183, 77, 0.1);
+}
+.data-summary .summary-card.orange .icon-circle {
+  background-color: #FFB74D;
+}
+.data-summary .summary-card .icon-circle {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+.data-summary .summary-card .card-info {
+  display: flex;
+  flex-direction: column;
+  row-gap: 4px;
+}
+.data-summary .summary-card .card-info .card-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+.data-summary .summary-card .card-info .card-value {
+  display: flex;
+  align-items: center;
+  -moz-column-gap: 4px;
+       column-gap: 4px;
+  font-size: 24px;
+  font-weight: 500;
+}
+.data-summary .summary-card .card-info .card-value .number {
+  font-size: 32px;
+  font-weight: 700;
+}
+@media (max-width: 1024px) {
+  .data-summary {
+    width: 100%;
+  }
+  .data-summary ul {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .data-summary .summary-card {
+    width: calc(50% - 10px);
+  }
+}
+@media (max-width: 768px) {
+  .data-summary .summary-card {
+    width: 100%;
   }
 }
 
@@ -484,117 +594,14 @@ ul, li {
   border-radius: 0 4px 4px 0;
 }
 
-.sticky {
-  position: sticky;
-  top: 0;
-  height: 100%;
-  overflow-y: auto;
-}
-
-.data-summary {
-  width: 280px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  /* [수정] - 태블릿/모바일 대응 추가 */
-}
-.data-summary ul {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-.data-summary .summary-card {
-  display: flex;
-  align-items: center;
-  gap: 40px;
-  padding: 20px 24px;
-  border-radius: 16px;
-  -webkit-backdrop-filter: blur(13px);
-          backdrop-filter: blur(13px);
-}
-.data-summary .summary-card.blue {
-  background-color: rgba(72, 127, 238, 0.1);
-}
-.data-summary .summary-card.cyan {
-  background-color: rgba(56, 207, 241, 0.1);
-}
-.data-summary .summary-card.purple {
-  background-color: rgba(171, 130, 232, 0.1);
-}
-.data-summary .summary-card.orange {
-  background-color: rgba(255, 183, 77, 0.1);
-}
-.data-summary .summary-card .icon-circle {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
-.data-summary .summary-card .icon-circle.blue {
-  background-color: #0B468B;
-}
-.data-summary .summary-card .icon-circle.cyan {
-  background-color: #38CFF1;
-}
-.data-summary .summary-card .icon-circle.purple {
-  background-color: #AB82E8;
-}
-.data-summary .summary-card .icon-circle.orange {
-  background-color: #FFB74D;
-}
-.data-summary .summary-card .icon-circle .card-icon {
-  width: 24px;
-  height: 24px;
-}
-.data-summary .summary-card .card-info {
-  display: flex;
-  flex-direction: column;
-}
-.data-summary .summary-card .card-info .card-title {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-.data-summary .summary-card .card-info .card-value {
-  display: flex;
-  align-items: baseline;
-}
-.data-summary .summary-card .card-info .card-value .number {
-  font-size: 32px;
-  font-weight: 700;
-}
-.data-summary .summary-card .card-info .card-value .unit {
-  font-size: 24px;
-  font-weight: 500;
-  margin-left: 4px;
-}
-@media (max-width: 1024px) {
-  .data-summary {
-    width: 100%;
-  }
-  .data-summary ul {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-  .data-summary .summary-card {
-    width: calc(50% - 10px);
-  }
-}
-@media (max-width: 768px) {
-  .data-summary .summary-card {
-    width: 100%;
-  }
-}
-
-/* [수정] - 푸터 영역 스타일 추가 */
+/* 푸터 영역 */
 footer {
-  background-color: #FFF;
   padding: 20px 0;
+  background-color: #dfeaff;
   text-align: center;
-  border-top: 1px solid #DDD;
   color: #666;
   font-size: 14px;
+}
+footer .container {
+  background-color: red;
 }/*# sourceMappingURL=style.css.map */
