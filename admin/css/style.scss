@@ -11,609 +11,618 @@ $cyan: #38CFF1;
 $teal: #43E1C3;
 $orange: #FFB74D;
 $gray-light: #F5F5F5;
-$gray-border: #DDDDDD;
-$gray-text: #666666;
-$dark-text: #333333;
-$black: #000000;
-$white: #FFFFFF;
+$gray-border: #DDD;
+$gray-text: #666;
+$dark-text: #333;
+$black: #000;
+$white: #FFF;
+
+/* [수정] - 모바일 대응을 위한 반응형 브레이크 포인트 추가 */
+$breakpoint-tablet: 1024px;
+$breakpoint-mobile: 768px;
 
 // 기본 리셋 및 공통 스타일
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  font-family: 'Pretendard', sans-serif;
-  color: $dark-text;
-  background-color: #FAFAFA;
-  line-height: 1.2;
+    font-family: 'Pretendard', sans-serif;
+    color: $dark-text;
+    background-color: #FAFAFA;
+    line-height: 1.2;
 }
 
 a {
-  text-decoration: none;
-  color: inherit;
+    text-decoration: none;
+    color: inherit;
 }
 
 ul, li {
-  list-style: none;
+    list-style: none;
 }
 
-// 레이아웃
-.admin-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+/* [수정] - 공통 컨테이너 스타일 추가 */
+.container {
+    width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
 }
 
 // 헤더 영역
 .header {
-  display: flex;
-  align-items: center;
-  padding: 20px 40px;
-  background-color: $white;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  
-  .logo {
     display: flex;
     align-items: center;
-    margin-right: 60px;
-    
-    .logo-symbol {
-      position: relative;
-      width: 30px;
-      height: 30px;
-      margin-right: 10px;
-      
-      .logo-rect {
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        background-color: $blue;
-        border-radius: 4px;
-      }
-      
-      .logo-rect-2 {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        width: 20px;
-        height: 20px;
-        background-color: #A2C5FF;
-        border-radius: 4px;
-      }
-    }
-    
-    h1 {
-      font-family: 'NanumSquareRound', sans-serif;
-      font-size: 25px;
-      font-weight: 800;
-      letter-spacing: 1%;
-      color: $dark-text;
-      
-      span {
-        font-size: 18px;
-        opacity: 0.8;
-      }
-    }
-  }
-  
-  .main-nav {
-    margin-right: auto;
-    
-    ul {
-      display: flex;
-      gap: 56px;
-      
-      li {
-        a {
-          font-size: 24px;
-          font-weight: 700;
-          color: $dark-text;
-          letter-spacing: -1%;
-          position: relative;
-          
-          &.active::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background-color: $blue;
-          }
+    padding: 20px 0;
+    background-color: $white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    .container {
+        justify-content: space-between;
+        column-gap: 12px;
+        & > * { 
+            flex: 1;
+            display: flex;
+            align-items: center;
         }
-      }
+        .main-nav {
+            flex: 4;
+        }
     }
-  }
-  
-  .user-info {
-    display: flex;
-    align-items: center;
-    
-    .user {
-      display: flex;
-      align-items: center;
-      
-      .user-icon {
-        width: 20px;
-        height: 20px;
-        margin-right: 5px;
-      }
-      
-      .user-name {
+    .logo {
+        width: 202px;
+        height: 30px;
+        display: flex;
+        font-size: 0;
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+    .main-nav {
+        display: flex;
+        align-items: center;
+        column-gap: 56px;
+        color: $dark-text;
+        font-size: 24px;
+        font-weight: 700;
+        a {
+            position: relative;
+            &.active {
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -5px;
+                    left: 0;
+                    width: 100%;
+                    height: 3px;
+                    background-color: $blue;
+                }
+            }
+        }
+    }
+    .gnb-menu {
+        justify-content: flex-end;
+        column-gap: 24px;
         font-size: 14px;
-        font-weight: 600;
-        color: $black;
-      }
+        a {
+            position: relative;
+            &::after {
+                content: '';
+                width: 1px;
+                height: 90%;
+                background-color: #ddd;
+                display: block;
+                position: absolute;
+                right: calc(-24px / 2);
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            column-gap: 12px;
+            font-weight: 600;
+            figure {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                overflow: hidden;
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+        }
     }
-    
-    .divider {
-      width: 1px;
-      height: 16px;
-      background-color: $gray-border;
-      margin: 0 12px;
+
+    /* [수정] - 반응형을 위한 미디어 쿼리 추가 */
+    @media (max-width: $breakpoint-tablet) {
+        .main-nav ul {
+            gap: 30px;
+            li {
+                a {
+                    font-size: 20px;
+                }
+            }
+        }
     }
-    
-    .logout {
-      font-size: 14px;
-      color: $black;
+
+    @media (max-width: $breakpoint-mobile) {
+        .main-nav {
+            display: none;
+        }
     }
-  }
 }
 
 // 메인 콘텐츠 영역
 .main-content {
-  display: flex;
-  padding: 30px 40px;
-  gap: 30px;
+    display: flex;
+    padding: 30px 40px;
+    gap: 30px;
+
+    /* [수정] - 반응형 레이아웃 조정 */
+    @media (max-width: $breakpoint-tablet) {
+        flex-direction: column-reverse;
+        padding: 20px;
+    }
 }
 
 // 왼쪽 섹션
 .left-section {
-  flex: 1;
-  
-  // 검색창
-  .search-box {
-    display: flex;
-    align-items: center;
-    background-color: $white;
-    border-radius: 46px;
-    padding: 16px 20px;
-    margin-bottom: 30px;
-    box-shadow: 0px 8px 30px rgba(11, 70, 139, 0.1);
-    
-    input {
-      flex: 1;
-      border: none;
-      outline: none;
-      font-size: 24px;
-      color: $black;
-      
-      &::placeholder {
-        color: #999999;
-      }
-    }
-    
-    .search-button {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background-color: $blue;
-      border: none;
-      border-radius: 55px;
-      padding: 10px 20px;
-      cursor: pointer;
-      
-      img {
-        width: 20px;
-        height: 20px;
-      }
-      
-      span {
-        color: $white;
-        font-size: 20px;
-        font-weight: 600;
-      }
-    }
-  }
-  
-  // 차트 컨테이너
-  .chart-container {
-    background-color: $gray-light;
-    border-radius: 16px;
-    padding: 30px;
-    
-    h2 {
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
-    
-    // 차트 박스
-    .chart-box {
-      background-color: $white;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-      
-      h3 {
-        font-size: 24px;
-        font-weight: 700;
-        margin-bottom: 15px;
-      }
-      
-      .chart-legend {
+    flex: 1;
+    // 검색창
+    .search-box {
         display: flex;
-        gap: 20px;
-        margin-bottom: 15px;
-        
-        .legend-item {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          
-          .legend-color {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            
-            &.blue {
-              background-color: $blue;
+        align-items: center;
+        background-color: $white;
+        border-radius: 46px;
+        padding: 16px 20px;
+        margin-bottom: 30px;
+        box-shadow: 0px 8px 30px rgba(11, 70, 139, 0.1);
+        input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 24px;
+            color: $black;
+            &::placeholder {
+                color: #999999;
             }
-            
-            &.light-blue {
-              background-color: $light-blue;
-            }
-            
-            &.purple {
-              background-color: $purple;
-            }
-            
-            &.teal {
-              background-color: $teal;
-            }
-            
-            &.orange {
-              background-color: $orange;
-            }
-            
-            &.cyan {
-              background-color: $cyan;
-            }
-          }
-          
-          span {
-            font-size: 16px;
-          }
         }
-      }
-      
-      .chart-area {
-        height: 250px;
-        margin-bottom: 20px;
-      }
-      
-      .chart-data {
-        display: flex;
-        justify-content: center;
-        gap: 40px;
-        
-        .data-item {
-          display: flex;
-          justify-content: center;
-          
-          .value {
-            font-size: 16px;
-            font-weight: 600;
-            color: $white;
-            background-color: $blue;
-            padding: 4px 10px;
-            border-radius: 4px;
-          }
-        }
-        
-        &.external-data {
-          flex-wrap: wrap;
-          gap: 20px;
-        }
-      }
-    }
-    
-    // 더보기 링크
-    .more-link {
-      position: relative;
-      margin: 30px 0;
-      
-      hr {
-        border: 0;
-        height: 1px;
-        background-color: #D3D3D3;
-      }
-      
-      span {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: $gray-light;
-        padding: 0 20px;
-        font-size: 18px;
-        font-weight: 500;
-        color: $dark-text;
-      }
-    }
-    
-    // 통계 박스 행
-    .statistics-row {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-    
-    // 통계 박스
-    .statistics-box {
-      background-color: $white;
-      border-radius: 12px;
-      padding: 20px;
-      
-      h3 {
-        font-size: 24px;
-        font-weight: 600;
-        margin-bottom: 15px;
-        letter-spacing: -1%;
-      }
-      
-      .statistics-content {
-        .stats-group {
-          display: flex;
-          align-items: center;
-          margin-bottom: 15px;
-          
-          .stats-item {
+        .search-button {
             display: flex;
             align-items: center;
             gap: 8px;
-            
-            .label {
-              font-size: 16px;
-              color: #444444;
+            background-color: $blue;
+            border: none;
+            border-radius: 55px;
+            padding: 10px 20px;
+            cursor: pointer;
+            img {
+                width: 20px;
+                height: 20px;
             }
-            
-            .value {
-              font-size: 18px;
-              font-weight: 500;
-              
-              &.blue {
-                color: $blue;
-              }
+            span {
+                color: $white;
+                font-size: 20px;
+                font-weight: 600;
             }
-          }
-          
-          .stats-divider {
-            width: 1px;
-            height: 20px;
-            background-color: #E4E4E4;
-            margin: 0 24px;
-          }
+        }
+
+        /* [수정] - 모바일 대응 */
+        @media (max-width: $breakpoint-mobile) {
+            padding: 12px 16px;
+            input {
+                font-size: 18px;
+            }
+            .search-button {
+                padding: 8px 16px;
+                span {
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+  
+    /* [수정] - section 태그로 변경된 차트 컨테이너 스타일 */
+    .chart-container {
+        background-color: $gray-light;
+        border-radius: 16px;
+        padding: 30px;
+        margin-bottom: 30px;
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
         }
         
-        .stats-date {
-          display: flex;
-          gap: 10px;
-          
-          span {
-            font-size: 14px;
-            font-weight: 300;
-            color: $gray-text;
-          }
+        // 차트 박스
+        .chart-box {
+            background-color: $white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            h3 {
+                font-size: 24px;
+                font-weight: 700;
+                margin-bottom: 15px;
+            }
+            .chart-legend {
+                display: flex;
+                gap: 20px;
+                margin-bottom: 15px;
+                .legend-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    .legend-color {
+                        width: 10px;
+                        height: 10px;
+                        border-radius: 50%;
+                        &.blue {
+                            background-color: $blue;
+                        }
+                        &.light-blue {
+                            background-color: $light-blue;
+                        }
+                        &.purple {
+                            background-color: $purple;
+                        }
+                        &.teal {
+                            background-color: $teal;
+                        }
+                        &.orange {
+                            background-color: $orange;
+                        }
+                        &.cyan {
+                            background-color: $cyan;
+                        }
+                    }
+                    span {
+                        font-size: 16px;
+                    }
+                }
+            }
+            .chart-area {
+                height: 250px;
+                margin-bottom: 20px;
+            }
+            .chart-data {
+                display: flex;
+                justify-content: center;
+                gap: 40px;
+                .data-item {
+                    display: flex;
+                    justify-content: center;
+                    .value {
+                        font-size: 16px;
+                        font-weight: 600;
+                        color: $white;
+                        background-color: $blue;
+                        padding: 4px 10px;
+                        border-radius: 4px;
+                    }
+                }
+                &.external-data {
+                    flex-wrap: wrap;
+                    gap: 20px;
+                }
+            }
         }
-      }
+        
+        // 더보기 링크
+        .more-link {
+            position: relative;
+            margin: 30px 0;
+            hr {
+                border: 0;
+                height: 1px;
+                background-color: #D3D3D3;
+            }
+            span {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: $gray-light;
+                padding: 0 20px;
+                font-size: 18px;
+                font-weight: 500;
+                color: $dark-text;
+            }
+        }
+        
+        // 통계 박스 행
+        .statistics-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        
+            /* [수정] - 모바일 대응 */
+            @media (max-width: $breakpoint-mobile) {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        // 통계 박스
+        .statistics-box {
+            background-color: $white;
+            border-radius: 12px;
+            padding: 20px;
+            h3 {
+                font-size: 24px;
+                font-weight: 600;
+                margin-bottom: 15px;
+                letter-spacing: -1%;
+            }
+            .statistics-content {
+                .stats-group {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 15px;
+                    .stats-item {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        .label {
+                            font-size: 16px;
+                            color: #444444;
+                        }
+                        .value {
+                            font-size: 18px;
+                            font-weight: 500;
+                            &.blue {
+                                color: $blue;
+                            }
+                        }
+                    }
+                    .stats-divider {
+                        width: 1px;
+                        height: 20px;
+                        background-color: #E4E4E4;
+                        margin: 0 24px;
+                    }
+                }
+                .stats-date {
+                    display: flex;
+                    gap: 10px;
+                    span {
+                        font-size: 14px;
+                        font-weight: 300;
+                        color: $gray-text;
+                    }
+                }
+            }
+        }
     }
     
-    // 시스템 인프라 상태
+    /* [수정] - section으로 분리된 시스템 인프라 상태 영역 */
     .system-status {
-      background-color: $white;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 30px;
-      
-      h3 {
-        font-size: 24px;
-        font-weight: 600;
-        margin-bottom: 20px;
-        letter-spacing: -1%;
-      }
-      
-      .infra-stats {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
+        background-color: $white;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 30px;
+        h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: -1%;
+        }
+        .infra-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
         
-        .circle-progress-container {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          
-          .circle-progress {
-            width: 120px;
-            height: 120px;
-            margin-bottom: 15px;
-          }
-          
-          .progress-text {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            
-            .label {
-              font-size: 18px;
-              color: $black;
-              margin-bottom: 5px;
+            /* [수정] - 반응형 그리드 레이아웃 */
+            @media (max-width: $breakpoint-tablet) {
+                grid-template-columns: repeat(2, 1fr);
             }
-            
-            .value {
-              font-size: 24px;
-              font-weight: 700;
-              color: $black;
+            @media (max-width: $breakpoint-mobile) {
+                grid-template-columns: 1fr;
             }
-          }
+            .circle-progress-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                .circle-progress {
+                    width: 120px;
+                    height: 120px;
+                    margin-bottom: 15px;
+                }
+                .progress-text {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    .label {
+                        font-size: 18px;
+                        color: $black;
+                        margin-bottom: 5px;
+                    }
+                    .value {
+                        font-size: 24px;
+                        font-weight: 700;
+                        color: $black;
+                    }
+                }
+            }
         }
-      }
     }
     
-    // 로그인 통계
+    /* [수정] - section으로 분리된 로그인 통계 영역 */
     .login-stats {
-      background-color: $white;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 30px;
-      
-      h3 {
-        font-size: 24px;
-        font-weight: 600;
-        margin-bottom: 20px;
-        letter-spacing: -1%;
-      }
-      
-      .login-chart-area {
-        height: 300px;
-      }
+        background-color: $white;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 30px;
+        h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: -1%;
+        }
+        .login-chart-area {
+            height: 300px;
+        }
     }
     
-    // AI 및 페이지 사용 통계
+    /* [수정] - section으로 분리된 AI 및 페이지 사용 통계 영역 */
     .ai-usage-stats, .page-usage-stats {
-      background-color: $white;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 30px;
-      
-      h3 {
-        font-size: 24px;
-        font-weight: 600;
-        margin-bottom: 20px;
-        letter-spacing: -1%;
-      }
-      
-      .bar-stats {
-        .bar-item {
-          display: flex;
-          align-items: center;
-          margin-bottom: 15px;
-          
-          .bar-label {
-            width: 70px;
-            font-size: 16px;
-            font-weight: 500;
-          }
-          
-          .bar-container {
-            flex: 1;
-            height: 24px;
-            background-color: #F5F5F5;
-            border-radius: 4px;
-            overflow: hidden;
-            
-            .bar-fill {
-              height: 100%;
-              background-color: $light-blue;
-              border-radius: 0 4px 4px 0;
-            }
-          }
+        background-color: $white;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 30px;
+        h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: -1%;
         }
-      }
+        .bar-stats {
+            .bar-item {
+                display: flex;
+                align-items: center;
+                margin-bottom: 15px;
+                .bar-label {
+                    width: 70px;
+                    font-size: 16px;
+                    font-weight: 500;
+                }
+                .bar-container {
+                    flex: 1;
+                    height: 24px;
+                    background-color: #F5F5F5;
+                    border-radius: 4px;
+                    overflow: hidden;
+                    .bar-fill {
+                        height: 100%;
+                        background-color: $light-blue;
+                        border-radius: 0 4px 4px 0;
+                    }
+                }
+            }
+        }
     }
-  }
 }
 
-// 오른쪽 섹션 (요약 카드)
-.right-section {
-  width: 280px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  
-  .summary-card {
+// 데이터 요약 카드
+.sticky {
+    position: sticky;
+    top: 0;
+    height: 100%;
+    overflow-y: auto;
+}
+.data-summary {
+    width: 280px;
     display: flex;
-    align-items: center;
-    gap: 40px;
-    padding: 20px 24px;
-    border-radius: 16px;
-    backdrop-filter: blur(13px);
-    
-    &.blue {
-      background-color: rgba(72, 127, 238, 0.1);
-    }
-    
-    &.cyan {
-      background-color: rgba(56, 207, 241, 0.1);
-    }
-    
-    &.purple {
-      background-color: rgba(171, 130, 232, 0.1);
-    }
-    
-    &.orange {
-      background-color: rgba(255, 183, 77, 0.1);
-    }
-    
-    .icon-circle {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      
-      &.blue {
-        background-color: $blue;
-      }
-      
-      &.cyan {
-        background-color: $cyan;
-      }
-      
-      &.purple {
-        background-color: $purple;
-      }
-      
-      &.orange {
-        background-color: $orange;
-      }
-      
-      .card-icon {
-        width: 24px;
-        height: 24px;
-      }
-    }
-    
-    .card-info {
-      display: flex;
-      flex-direction: column;
-      
-      .card-title {
-        font-size: 18px;
-        font-weight: 600;
-        margin-bottom: 8px;
-      }
-      
-      .card-value {
+    flex-direction: column;
+    gap: 20px;
+    ul {
         display: flex;
-        align-items: baseline;
-        
-        .number {
-          font-size: 32px;
-          font-weight: 700;
-        }
-        
-        .unit {
-          font-size: 24px;
-          font-weight: 500;
-          margin-left: 4px;
-        }
-      }
+        flex-direction: column;
+        gap: 20px;
     }
-  }
+    .summary-card {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+        padding: 20px 24px;
+        border-radius: 16px;
+        backdrop-filter: blur(13px);
+        &.blue {
+            background-color: rgba(72, 127, 238, 0.1);
+        }
+        &.cyan {
+            background-color: rgba(56, 207, 241, 0.1);
+        }
+        &.purple {
+            background-color: rgba(171, 130, 232, 0.1);
+        }
+        &.orange {
+            background-color: rgba(255, 183, 77, 0.1);
+        }
+        .icon-circle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            &.blue {
+                background-color: $blue;
+            }
+            &.cyan {
+                background-color: $cyan;
+            }
+            &.purple {
+                background-color: $purple;
+            }
+            &.orange {
+                background-color: $orange;
+            }
+            .card-icon {
+                width: 24px;
+                height: 24px;
+            }
+        }
+        .card-info {
+            display: flex;
+            flex-direction: column;
+            .card-title {
+                font-size: 18px;
+                font-weight: 600;
+                margin-bottom: 8px;
+            }
+            .card-value {
+                display: flex;
+                align-items: baseline;
+                .number {
+                    font-size: 32px;
+                    font-weight: 700;
+                }
+                .unit {
+                    font-size: 24px;
+                    font-weight: 500;
+                    margin-left: 4px;
+                }
+            }
+        }
+    }
+    
+    /* [수정] - 태블릿/모바일 대응 추가 */
+    @media (max-width: $breakpoint-tablet) {
+        width: 100%;
+        ul {
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .summary-card {
+            width: calc(50% - 10px);
+        }
+    }
+    
+    @media (max-width: $breakpoint-mobile) {
+        .summary-card {
+            width: 100%;
+        }
+    }
+}
+
+/* [수정] - 푸터 영역 스타일 추가 */
+footer {
+    background-color: $white;
+    padding: 20px 0;
+    text-align: center;
+    border-top: 1px solid $gray-border;
+    color: $gray-text;
+    font-size: 14px;
 }

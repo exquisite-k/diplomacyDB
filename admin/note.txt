@@ -82,3 +82,146 @@ root/
 - 이 구현은 Figma 디자인을 기반으로 하되, 실제 데이터는 가상 데이터로 대체
 - 차트는 amCharts 5 라이브러리를 사용하여 구현하였으며, 실제 환경에서는 데이터 API와 연동 필요
 - 실제 서비스에서는 환경에 맞는 번들러(Webpack, Vite 등)와 SCSS 컴파일러 설정 필요 
+
+## 1차 수정 내용
+
+### 1. HTML 구조 변경 대응
+- 기존 HTML 구조에서 시맨틱 요소를 더 명확하게 사용하도록 변경
+- 헤더 영역에 컨테이너 클래스 추가 및 article 태그 사용
+- 차트와 데이터 섹션을 section 태그로 적절히 분리
+- 우측 카드 섹션을 ul/li 구조로 변경하여 접근성 개선
+- 푸터 영역 추가
+
+### 2. SCSS 스타일 수정
+- 수정된 HTML 구조에 맞게 선택자 및 스타일 조정
+- 컨테이너 클래스에 align-items: center 추가
+- 헤더 내 컨테이너에 justify-content: space-between 적용
+- section 태그로 변경된 차트 컨테이너 스타일 조정
+- 각 영역에 margin-bottom 추가로 여백 조정
+- ul/li 구조로 변경된 카드 섹션의 스타일 업데이트
+- 푸터 영역 스타일 추가
+
+### 3. 반응형 디자인 강화
+- 모바일/태블릿 대응을 위한 브레이크 포인트 변수 추가
+  ```scss
+  $breakpoint-tablet: 1024px;
+  $breakpoint-mobile: 768px;
+  ```
+- 헤더 영역의 반응형 조정
+  - 태블릿: 메뉴 간격 및 폰트 크기 조정
+  - 모바일: 메인 네비게이션 숨김 처리
+- 메인 콘텐츠 영역 반응형 레이아웃
+  - 태블릿/모바일: 컬럼 리버스 레이아웃 적용
+- 검색창 모바일 대응 (패딩 및 폰트 크기 조정)
+- 통계 박스 모바일 레이아웃 변경 (1열로 변경)
+- 시스템 인프라 상태 그리드 반응형 처리
+  - 태블릿: 2열 그리드
+  - 모바일: 1열 그리드
+- 우측 카드 섹션 반응형 처리
+  - 태블릿: 2열 그리드로 변경
+  - 모바일: 1열로 카드 배치
+
+### 4. JavaScript 반응형 차트 구현
+- 브라우저 크기에 따른 조건 처리 추가
+  ```javascript
+  const isMobile = window.innerWidth < 768;
+  const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
+  ```
+- 창 크기 변경 시 차트 자동 리사이징 처리
+  ```javascript
+  window.addEventListener('resize', function() {
+    // 차트 크기 조정 로직...
+  });
+  ```
+- 모바일 환경에서 차트 패딩 및 간격 최적화
+  - 파이 차트: 작은 화면에서 패딩 감소
+  - 프로그레스 차트: 모바일에서 간격 축소
+  - 라인 차트: 축 레이블 크기 및 간격 조정
+- 모바일 환경의 축 레이블 가독성 향상
+  - 폰트 사이즈 축소
+  - 라벨 간격 조정으로 겹침 방지
+
+### 5. 코드 주석 개선
+- 모든 수정 사항에 "[수정] - 설명" 형식의 주석 추가
+- 각 섹션과 컴포넌트별 구분을 위한 명확한 주석 처리
+- 반응형 처리 로직에 설명 주석 추가
+- 브라우저 호환성 및 성능 최적화 관련 주석 추가 
+
+## 2차 수정 내용
+
+### 1. Swift 코드 기반 원형 프로그레스 바 JavaScript 구현
+- Swift 코드를 JavaScript로 변환하여 Canvas API 기반의 원형 프로그레스 바 구현
+- 기존 amCharts 기반 프로그레스 차트를 경량화된 커스텀 솔루션으로 대체
+- 브라우저 크기 변경에 대응하는 반응형 Canvas 구현
+
+### 2. CircularProgressBar 클래스 구조
+- 객체지향적 접근 방식으로 재사용 가능한 클래스 설계
+- 주요 메서드 구성:
+  ```javascript
+  class CircularProgressBar {
+    constructor(canvasId, options) { } // 생성자: 설정 초기화
+    resize() { }                       // 크기 조정 메서드
+    setValue(value) { }                // 값 설정 메서드
+    draw() { }                         // 캔버스 그리기 메서드
+  }
+  ```
+- 고도의 커스터마이징 지원을 위한 옵션 설정:
+  - lineWidth: 프로그레스 바 두께
+  - color: 프로그레스 바 색상
+  - backgroundColor: 배경 색상
+  - textColor: 텍스트 색상
+  - fontSize: 폰트 크기
+  - radius: 원의 반지름
+  - showText: 텍스트 표시 여부
+
+### 3. 개선된 프로그레스 바 구현
+- Canvas API를 활용하여 DOM 조작 최소화 및 렌더링 성능 향상
+- 반투명 배경을 통한 시각적 개선 (원본 색상의 20% 투명도 적용)
+- 반응형 Canvas 크기 조정을 통한 모바일 대응
+- 프로그레스 바와 텍스트 요소 분리로 유연한 레이아웃 구성
+
+### 4. 사용 방법
+- 기본 사용법:
+  ```javascript
+  // HTML에 canvas 요소 추가
+  <div id="progress-container">
+    <canvas id="my-progress-bar"></canvas>
+  </div>
+  
+  // JavaScript에서 인스턴스 생성
+  const progressBar = new CircularProgressBar("my-progress-bar", {
+    lineWidth: 10,
+    color: "#0B468B",
+    value: 0.75
+  });
+  ```
+- 프로그레스 설정 메서드:
+  ```javascript
+  // 값 설정 (0-1 사이 값)
+  progressBar.setValue(0.5);
+  
+  // 크기 조정 (창 크기 변경 시 호출)
+  progressBar.resize();
+  ```
+
+### 5. 변환 과정에서의 주요 고려사항
+- Swift의 UIBezierPath를 Canvas의 arc() 메서드로 변환
+- Swift의 CAShapeLayer 속성을 Canvas 컨텍스트 속성으로 맵핑
+- Swift의 레이아웃 제약 조건을 CSS 스타일로 변환
+- 12시 방향에서 시작하도록 각도 계산 조정 (-Math.PI/2)
+
+### 6. 기존 amCharts 대비 장점
+- 외부 라이브러리 의존성 감소로 페이지 로드 시간 단축
+- 최소한의 코드로 가벼운 구현 (약 100줄 이하)
+- 완전한 커스터마이징 가능성 제공
+- 모바일 환경에서 더 나은 렌더링 성능
+- 특정 사용 사례에 최적화된 솔루션
+
+### 7. 통합 및 응용
+- 현재 대시보드에서 다음 항목에 적용:
+  - CPU 사용률 (70%)
+  - 네트워크 트래픽 (30%)
+  - DR 백업 상태 (시간 표시: 01:52)
+  - 시스템 장애 여부 (상태 표시: 정상)
+- resize 이벤트와 연동하여 브라우저 크기 변경 시 자동 대응
+- 텍스트 컨테이너 분리로 다양한 형태의 정보 표시 가능 
