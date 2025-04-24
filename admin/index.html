@@ -68,166 +68,120 @@
 
                 <!-- 차트(일간,내부,외부) 섹션 -->
                 <section class="chart-container">
-                    <!-- 내부 차트 -->
-                    <div class="chart-box">
-                        <h3>내부 차트</h3>
-                        <div class="chart-legend">
-                            <div class="legend-item">
-                                <span class="legend-color blue"></span>
-                                <span>일반</span>
-                            </div>
-                            <div class="legend-item">
-                                <span class="legend-color light-blue"></span>
-                                <span>비밀</span>
-                            </div>
-                        </div>
-                        <div id="internal-pie-chart" class="chart-area"></div>
-                        <div class="chart-data">
-                            <div class="data-item">
-                                <span class="value">640</span>
-                            </div>
-                            <div class="data-item">
-                                <span class="value">1,901</span>
-                            </div>
-                        </div>
-                    </div>
+                    <article class="container grid grid-2_1">
+                        <h2 class="hidden">차트(일간,내부,외부) 섹션</h2>
 
-                    <!-- 외부 차트 -->
-                    <div class="chart-box">
-                        <h3>외부 차트</h3>
-                        <div class="chart-legend">
-                            <div class="legend-item">
-                                <span class="legend-color purple"></span>
-                                <span>SNS</span>
+                        <!-- 일간 차트 -->
+                        <div class="chart-box">
+                            <h3 class="cont-title">일간 차트</h3>
+                            <div id="daily-line-chart" class="chart-area"></div>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <!-- 내부 차트 -->
+                            <div class="chart-box">
+                                <h3 class="cont-title">내부 차트</h3>
+                                <div id="internal-pie-chart" class="chart-area"></div>
                             </div>
-                            <div class="legend-item">
-                                <span class="legend-color teal"></span>
-                                <span>뉴스</span>
-                            </div>
-                            <div class="legend-item">
-                                <span class="legend-color orange"></span>
-                                <span>그외</span>
-                            </div>
-                            <div class="legend-item">
-                                <span class="legend-color cyan"></span>
-                                <span>해외</span>
+
+                            <!-- 외부 차트 -->
+                            <div class="chart-box">
+                                <h3 class="cont-title">외부 차트</h3>
+                                <div id="external-pie-chart" class="chart-area"></div>
                             </div>
                         </div>
-                        <div id="external-pie-chart" class="chart-area"></div>
-                        <div class="chart-data external-data">
-                            <div class="data-item">
-                                <span class="value">1,203</span>
-                            </div>
-                            <div class="data-item">
-                                <span class="value">12,350</span>
-                            </div>
-                            <div class="data-item">
-                                <span class="value">5,550</span>
-                            </div>
-                            <div class="data-item">
-                                <span class="value">4,320</span>
-                            </div>
-                        </div>
-                    </div>
+
+                    </article>
+                    
                 </section>
                 
-                <!-- 카드 섹션 -->
-                <section class="chart-container">
-                    <!-- 기능별 통계 -->
-                    <div class="statistics-row">
-                        <div class="statistics-box">
-                            <h3>번역</h3>
-                            <div class="statistics-content">
-                                <div class="stats-group">
-                                    <div class="stats-item">
+                <!-- 통계 섹션 -->
+                <section class="statistics-container">
+                    <article class="container">
+                        <!-- 기능별 통계 -->
+                        <ul class="statistics-wrapper">
+                            <li class="statistics-item">
+                                <h3 class="cont-title">번역</h3>
+                                <div class="statistics-content">
+                                    <p class="stats-item">
                                         <span class="label">응답수</span>
-                                        <span class="value blue">244건</span>
-                                    </div>
+                                        <span class="value">244건</span>
+                                    </p>
                                     <div class="stats-divider"></div>
-                                    <div class="stats-item">
+                                    <p class="stats-item">
                                         <span class="label">평균속도</span>
-                                        <span class="value blue">0.5s</span>
-                                    </div>
+                                        <span class="value">0.5s</span>
+                                    </p>
                                 </div>
-                                <div class="stats-date">
+                                <p class="stats-date">
                                     <span>마지막 학습일시</span>
                                     <span>2025.09.25.</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="statistics-box">
-                            <h3>요약</h3>
-                            <div class="statistics-content">
-                                <div class="stats-group">
-                                    <div class="stats-item">
+                                </p>
+                            </li>
+                            <li class="statistics-item">
+                                <h3 class="cont-title">요약</h3>
+                                <div class="statistics-content">
+                                    <p class="stats-item">
                                         <span class="label">응답수</span>
-                                        <span class="value blue">244건</span>
-                                    </div>
+                                        <span class="value">89건</span>
+                                    </p>
                                     <div class="stats-divider"></div>
-                                    <div class="stats-item">
+                                    <p class="stats-item">
                                         <span class="label">평균속도</span>
-                                        <span class="value blue">0.7s</span>
-                                    </div>
+                                        <span class="value">1s</span>
+                                    </p>
                                 </div>
-                                <div class="stats-date">
+                                <p class="stats-date">
                                     <span>마지막 학습일시</span>
                                     <span>2025.09.25.</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="statistics-box">
-                            <h3>검색</h3>
-                            <div class="statistics-content">
-                                <div class="stats-group">
-                                    <div class="stats-item">
+                                </p>
+                            </li>
+                            <li class="statistics-item">
+                                <h3 class="cont-title">검색</h3>
+                                <div class="statistics-content">
+                                    <p class="stats-item">
                                         <span class="label">응답수</span>
-                                        <span class="value blue">450건</span>
-                                    </div>
+                                        <span class="value">257건</span>
+                                    </p>
                                     <div class="stats-divider"></div>
-                                    <div class="stats-item">
+                                    <p class="stats-item">
                                         <span class="label">평균속도</span>
-                                        <span class="value blue">1.8s</span>
-                                    </div>
+                                        <span class="value">0.3s</span>
+                                    </p>
                                 </div>
-                                <div class="stats-date">
+                                <p class="stats-date">
                                     <span>마지막 학습일시</span>
                                     <span>2025.09.25.</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="statistics-box">
-                            <h3>문서작성</h3>
-                            <div class="statistics-content">
-                                <div class="stats-group">
-                                    <div class="stats-item">
+                                </p>
+                            </li>
+                            <li class="statistics-item">
+                                <h3 class="cont-title">문서작성</h3>
+                                <div class="statistics-content">
+                                    <p class="stats-item">
                                         <span class="label">응답수</span>
-                                        <span class="value blue">130건</span>
-                                    </div>
+                                        <span class="value">164건</span>
+                                    </p>
                                     <div class="stats-divider"></div>
-                                    <div class="stats-item">
+                                    <p class="stats-item">
                                         <span class="label">평균속도</span>
-                                        <span class="value blue">7.8s</span>
-                                    </div>
+                                        <span class="value">0.35s</span>
+                                    </p>
                                 </div>
-                                <div class="stats-date">
+                                <p class="stats-date">
                                     <span>마지막 학습일시</span>
                                     <span>2025.09.25.</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                </p>
+                            </li>
+                        </ul>
+                    </article>
 
-                    <div class="more-link">
+                    <div class="more">
                         <hr>
-                        <span>더보기</span>
+                        <button class="more-btn" type="button">
+                            <span>더보기</span>
+                            <i class="icons icon-arrow-more"></i>
+                        </button>
                     </div>
-                    
-                    
-                    
-                    
                 </section>
 
                 <!-- 시스템 인프라 상태 -->
@@ -268,60 +222,30 @@
                     </div>
                 </section>
                 
-                <!-- 차트(시) 섹션 -->
-                <section class="login-stats">
-                    <h3>로그인 통계</h3>
-                    <div id="login-chart" class="login-chart-area"></div>
-                </section>
-                
-                <!-- AI별 사용통계 -->
-                <section class="ai-usage-stats">
-                    <h3>AI별 사용통계</h3>
-                    <div class="bar-stats">
-                        <div class="bar-item">
-                            <span class="bar-label">번역</span>
-                            <div class="bar-container">
-                                <div class="bar-fill" style="width: 80%;"></div>
-                            </div>
+                <!-- 차트(로그인 통계,AI별 사용통계,페이지별 이용량) 섹션 -->
+                <section class="chart-container">
+                    <article class="container grid grid-3">
+                        <h2 class="hidden">차트(로그인 통계,AI별 사용통계,페이지별 이용량) 섹션</h2>
+
+                        <!-- 로그인 통계 -->
+                        <div class="chart-box">
+                            <h3 class="cont-title">로그인 통계</h3>
+                            <div id="login-chart" class="chart-area"></div>
                         </div>
-                        <div class="bar-item">
-                            <span class="bar-label">번역</span>
-                            <div class="bar-container">
-                                <div class="bar-fill" style="width: 50%;"></div>
-                            </div>
+
+                        <!-- AI별 사용통계 -->
+                        <div class="chart-box">
+                            <h3 class="cont-title">AI별 사용통계</h3>
+                            <div id="internal-pie-chart" class="chart-area"></div>
                         </div>
-                        <div class="bar-item">
-                            <span class="bar-label">번역</span>
-                            <div class="bar-container">
-                                <div class="bar-fill" style="width: 65%;"></div>
-                            </div>
+
+                        <!-- 페이지별 이용량 -->
+                        <div class="chart-box">
+                            <h3 class="cont-title">페이지별 이용량</h3>
+                            <div id="external-pie-chart" class="chart-area"></div>
                         </div>
-                    </div>
-                </section>
-                
-                <!-- 페이지별 이용량 -->
-                <section class="page-usage-stats">
-                    <h3>페이지별 이용량</h3>
-                    <div class="bar-stats">
-                        <div class="bar-item">
-                            <span class="bar-label">번역</span>
-                            <div class="bar-container">
-                                <div class="bar-fill" style="width: 90%;"></div>
-                            </div>
-                        </div>
-                        <div class="bar-item">
-                            <span class="bar-label">번역</span>
-                            <div class="bar-container">
-                                <div class="bar-fill" style="width: 60%;"></div>
-                            </div>
-                        </div>
-                        <div class="bar-item">
-                            <span class="bar-label">번역</span>
-                            <div class="bar-container">
-                                <div class="bar-fill" style="width: 75%;"></div>
-                            </div>
-                        </div>
-                    </div>
+
+                    </article>
                 </section>
             </div>
             
