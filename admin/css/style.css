@@ -426,7 +426,21 @@ main > .container {
 }
 .chart-container .chart-box .chart-area {
   height: 100%;
-  min-height: 150px;
+  min-height: 176px;
+}
+.chart-container .chart-box.inner-title {
+  position: relative;
+}
+.chart-container .chart-box.inner-title .cont-title {
+  padding: 4px 10px;
+  border-radius: 6px;
+  position: absolute;
+  top: 16px;
+  left: 10px;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
 }
 
 .more {

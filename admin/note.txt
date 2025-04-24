@@ -225,3 +225,93 @@ root/
   - 시스템 장애 여부 (상태 표시: 정상)
 - resize 이벤트와 연동하여 브라우저 크기 변경 시 자동 대응
 - 텍스트 컨테이너 분리로 다양한 형태의 정보 표시 가능 
+
+## 3차 수정 내용
+
+### 1. 파이 차트 생성 함수 통합 및 모듈화
+- 기존의 `createInternalPieChart()`와 `createExternalPieChart()` 함수를 하나의 `createPieChart()` 함수로 통합
+- 차트 생성 로직은 동일하되 데이터와 요소 ID만 다른 점을 활용한 리팩토링
+- 함수 매개변수화를 통해 재사용성 향상 및 코드 중복 제거
+
+### 2. 통합된 차트 생성 함수 구조
+- 기능적으로 동일한 두 함수의 중복 코드 제거
+- 매개변수를 통한 유연한 데이터 및 타겟 엘리먼트 지정:
+  ```javascript
+  /**
+   * 파이 차트 생성 함수
+   * @param {string} elementId - 차트를 생성할 요소의 ID
+   * @param {Array} data - 차트에 표시할 데이터 배열
+   */
+  function createPieChart(elementId, data) {
+    // 차트 생성 로직...
+  }
+  ```
+- 차트 데이터를 전역 스코프 또는 함수 내부에서 함수 호출 시점으로 이동
+
+### 3. 데이터 구조 분리
+- 차트 데이터를 별도로 정의하여 관리 용이성 향상:
+  ```javascript
+  // 내부 데이터 정의
+  const internalData = [
+    {
+      category: "일반",
+      value: 1901,
+      color: am5.color(0x0B468B)
+    },
+    {
+      category: "비밀",
+      value: 640,
+      color: am5.color(0x487FEE)
+    }
+  ];
+  
+  // 외부 데이터 정의
+  const externalData = [
+    {
+      category: "SNS",
+      value: 1203,
+      color: am5.color(0xAB82E8)
+    },
+    // 추가 데이터...
+  ];
+  ```
+- 데이터와 표현 로직을 분리하여 향후 데이터 변경 시 유지보수 용이
+
+### 4. 함수 호출 방식 개선
+- 기존 방식:
+  ```javascript
+  createInternalPieChart();
+  createExternalPieChart();
+  ```
+- 개선된 방식:
+  ```javascript
+  createPieChart("internal-pie-chart", internalData);
+  createPieChart("external-pie-chart", externalData);
+  ```
+- 명확한 매개변수 전달로 함수 호출 의도 파악 용이
+
+### 5. 코드 문서화 강화
+- JSDoc 형식을 사용한 함수 문서화로 개발자 가이드 제공
+- 매개변수 타입 및 용도 명시로 코드 이해도 향상
+- 통합 함수에 대한 명확한 주석 처리로 유지보수성 개선
+
+### 6. 사용 가이드
+- **새로운 파이 차트 추가 방법**:
+  1. 차트에 사용할 데이터 배열 정의 (category, value, color 포함)
+  2. HTML에 차트를 표시할 요소 추가 (ID 부여)
+  3. `createPieChart("element-id", chartData)` 형식으로 함수 호출
+  
+- **기존 차트 데이터 수정 방법**:
+  1. DOM 로드 이벤트 리스너 내부의 데이터 배열 수정
+  2. 필요한 경우 색상 값 변경 (am5.color() 함수 사용)
+  
+- **차트 스타일 커스터마이징**:
+  1. `createPieChart()` 함수 내부에서 chart 또는 series 객체의 속성 수정
+  2. 공통 스타일 변경은 함수 내부에서, 개별 스타일은 데이터 객체에서 처리
+
+### 7. 추가 개선 가능 사항
+- 향후 차트 옵션 매개변수화를 통한 완전한 커스터마이징 지원
+- 차트 기능 추가 (레전드, 애니메이션 옵션, 인터랙션 등)
+- 데이터 소스 연결 기능 추가 (API 연동, JSON 데이터 로드 등)
+- 실시간 데이터 업데이트 지원을 위한 메서드 확장
+- 추가 차트 유형(바 차트, 영역 차트 등)에 대한 통합 인터페이스 개발 

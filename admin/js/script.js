@@ -4,11 +4,50 @@ document.addEventListener('DOMContentLoaded', function() {
     const isMobile = window.innerWidth < 768;
     const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
     
+    // 내부 차트트 데이터 정의
+    const internalData = [
+        {
+            category: "일반",
+            value: 1901,
+            color: am5.color(0x0B468B),
+        },
+        {
+            category: "비밀",
+            value: 640,
+            color: am5.color(0x487FEE),
+        },
+    ];
+    
+    // 외부 차트트 데이터 정의
+    const externalData = [
+        {
+            category: "뉴스",
+            value: 5550,
+            color: am5.color(0x38CFF1),
+        },
+        {
+            category: "해외",
+            value: 4320,
+            color: am5.color(0x43E1C3),
+        },
+        {
+            category: "SNS",
+            value: 12350,
+            color: am5.color(0xAB82E8),
+        },
+        
+        {
+            category: "그외",
+            value: 1203,
+            color: am5.color(0xFFB74D),
+        },
+    ];
+    
     // 내부 파이 차트 생성
-    createInternalPieChart();
+    createPieChart("internal-pie-chart", internalData);
     
     // 외부 파이 차트 생성
-    createExternalPieChart();
+    createPieChart("external-pie-chart", externalData);
     
     // 원형 프로그레스 차트 생성
     createCircleProgressCharts();
@@ -37,141 +76,61 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /* ########## amchart 생성 ########## */
-/* 내부 차트 (파이 차트) 생성 함수 */
-function createInternalPieChart() {
+/**
+ * 파이 차트 생성 함수
+ * @param {string} elementId - 차트를 생성할 요소의 ID
+ * @param {Array} data - 차트에 표시할 데이터 배열
+ */
+function createPieChart(elementId, data) {
     // amCharts 5 루트 요소 생성
-    let root = am5.Root.new("internal-pie-chart");
+    let root = am5.Root.new(elementId);
+    root._logo.dispose();
     
     // 애니메이션 테마 설정
     root.setThemes([
         am5themes_Animated.new(root)
     ]);
     
-    /* [수정] - 모바일 대응 반응형 패딩 설정 */
+    /* 모바일 대응 반응형 패딩 설정 */
     let isMobile = window.innerWidth < 768;
     
-    // 차트 생성
-    let chart = root.container.children.push(
+    // 메인 컨테이너 생성 (수평 레이아웃)
+    let mainContainer = root.container.children.push(
+        am5.Container.new(root, {
+            width: am5.percent(100),
+            height: am5.percent(100),
+            layout: root.horizontalLayout,
+        })
+    );
+    
+    // 차트 생성 (오른쪽에 배치)
+    let chart = mainContainer.children.push(
         am5percent.PieChart.new(root, {
-            layout: root.verticalLayout,
-            innerRadius: am5.percent(50),
-            /* [수정] - 반응형 패딩 */
-            paddingLeft: isMobile ? 0 : 10,
-            paddingRight: isMobile ? 0 : 10
+            width: am5.percent(70),
+            radius: am5.percent(90),
+            centerX: am5.percent(82),
+            centerY: am5.percent(50),
+            x: am5.percent(100),
+            y: am5.percent(50),
+            layout: root.horizontalLayout,
         })
     );
   
-    // 데이터 설정
-    let data = [
-        {
-            category: "일반",
-            value: 1901,
-            color: am5.color(0x0B468B)
-        },
-        {
-            category: "비밀",
-            value: 640,
-            color: am5.color(0x487FEE)
-        }
-    ];
-  
-  // 시리즈 생성
-    let series = chart.series.push(
-        am5percent.PieSeries.new(root, {
-            valueField: "value",
-            categoryField: "category",
-            alignLabels: false
-        })
-    );
-    
-    // 슬라이스 설정
-    series.slices.template.setAll({
-        stroke: am5.color(0xffffff),
-        strokeWidth: 2,
-        tooltipText: "{category}: {value}"
-    });
-    
-    // 색상 설정을 위한 어댑터
-    series.slices.template.adapters.add("fill", function(fill, target) {
-        let dataItem = target.dataItem;
-        if (dataItem) {
-            return dataItem.dataContext.color;
-        }
-        return fill;
-    });
-    
-    // 레이블 제거
-    series.labels.template.set("visible", false);
-    series.ticks.template.set("visible", false);
-  
-    // 데이터 설정
-    series.data.setAll(data);
-    
-    // 애니메이션 설정
-    series.appear(1000, 100);
-}
-
-/* 외부 차트 (파이 차트) 생성 함수 */
-function createExternalPieChart() {
-    // amCharts 5 루트 요소 생성
-    let root = am5.Root.new("external-pie-chart");
-    
-    // 애니메이션 테마 설정
-    root.setThemes([
-        am5themes_Animated.new(root)
-    ]);
-    
-    /* [수정] - 모바일 대응 반응형 패딩 설정 */
-    let isMobile = window.innerWidth < 768;
-    
-    // 차트 생성
-    let chart = root.container.children.push(
-        am5percent.PieChart.new(root, {
-            layout: root.verticalLayout,
-            innerRadius: am5.percent(50),
-            /* [수정] - 반응형 패딩 */
-            paddingLeft: isMobile ? 0 : 10,
-            paddingRight: isMobile ? 0 : 10
-        })
-    );
-    
-    // 데이터 설정
-    let data = [
-        {
-            category: "SNS",
-            value: 1203,
-            color: am5.color(0xAB82E8)
-        },
-        {
-            category: "뉴스",
-            value: 4320,
-            color: am5.color(0x43E1C3)
-        },
-        {
-            category: "그외",
-            value: 5550,
-            color: am5.color(0xFFB74D)
-        },
-        {
-            category: "해외",
-            value: 12350,
-            color: am5.color(0x38CFF1)
-        }
-    ];
-    
     // 시리즈 생성
     let series = chart.series.push(
         am5percent.PieSeries.new(root, {
             valueField: "value",
             categoryField: "category",
-            alignLabels: false
+            alignLabels: false,
+            legendValueText: "{valueY}",
         })
     );
     
     // 슬라이스 설정
     series.slices.template.setAll({
+        strokeWidth: 0,
         stroke: am5.color(0xffffff),
-        strokeWidth: 2,
+        strokeOpacity: 0,
         tooltipText: "{category}: {value}"
     });
     
@@ -183,16 +142,71 @@ function createExternalPieChart() {
         }
         return fill;
     });
-    
-    // 레이블 제거
-    series.labels.template.set("visible", false);
+
+    // 라벨 설정
+    series.labels.template.setAll({
+        text: "[#fff][fontSize:16][fontWeight:600]{value}",
+        inside: true,
+        radius: 40,
+    });
+
+    // 라벨 연결선 제거
+    series.ticks.template.setAll({
+        stroke: am5.color(0xffffff),
+        strokeWidth: 0,
+        strokeOpacity: 0,
+    });
     series.ticks.template.set("visible", false);
+
+    // 범례 생성 (좌측에 배치)
+    let legend = mainContainer.children.push(
+        am5.Legend.new(root, {
+            width: am5.percent(30),
+            x: am5.percent(0),
+            y: am5.percent(100),
+            centerX: am5.percent(0),
+            centerY: am5.percent(100),
+            marginRight: 15,
+            layout: am5.GridLayout.new(root, {
+                maxColumns: 2,
+                fixedWidthGrid: true
+            }),
+        })
+    );
     
+    // 범례 폰트 크기 설정
+    legend.labels.template.setAll({
+        fontSize: 16,
+        fontWeight: "400"
+    });
+
+    // 범례 마커 모서리 둥글게 설정
+    legend.markerRectangles.template.setAll({
+        width: 10,
+        height: 10,
+        centerX: am5.percent(50),
+        centerY: am5.percent(50),
+        x: am5.percent(50),
+        y: am5.percent(50),
+        cornerRadiusTL: 10,
+        cornerRadiusTR: 10,
+        cornerRadiusBL: 10,
+        cornerRadiusBR: 10,
+    });
+
+    // 범례 간격 제거
+    legend.valueLabels.template.set("forceHidden", true);
+    
+  
     // 데이터 설정
     series.data.setAll(data);
     
+    // 범례와 시리즈 연결
+    legend.data.setAll(series.dataItems);
+    
     // 애니메이션 설정
     series.appear(1000, 100);
+    legend.appear(1000, 100);
 }
 
 /* 로그인 통계 라인 차트 생성 함수 */

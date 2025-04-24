@@ -433,9 +433,22 @@ main {
         display: flex;
         flex-direction: column;
         row-gap: 20px;
-        .chart-area {
+        .chart-area { 
             height: 100%;
-            min-height: 150px;
+            min-height: 176px;
+        }
+        &.inner-title {
+            position: relative;
+            .cont-title {
+                padding: 4px 10px;
+                border-radius: 6px;
+                position: absolute;
+                top: 16px;
+                left: 10px;
+                z-index: 1;
+                background-color: rgba(255, 255, 255, 10%);
+                backdrop-filter: blur(6px);
+            }
         }
     }
 }
