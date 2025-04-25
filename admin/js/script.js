@@ -77,6 +77,40 @@ document.addEventListener('DOMContentLoaded', function() {
         },
     ];
 
+    // 데이터 생성
+    const loginData = [
+        { day: 1, value: 97, },
+        { day: 2, value: 105, },
+        { day: 3, value: 113, },
+        { day: 4, value: 67, },
+        { day: 5, value: 32, },
+        { day: 6, value: 77, },
+        { day: 7, value: 151, },
+        { day: 8, value: 138, },
+        { day: 9, value: 120, },
+        { day: 10, value: 177, },
+        { day: 11, value: 215, },
+        { day: 12, value: 186, },
+        { day: 13, value: 118, },
+        { day: 14, value: 103, },
+        { day: 15, value: 97, },
+        { day: 16, value: 162, },
+        { day: 17, value: 212, },
+        { day: 18, value: 194, },
+        { day: 19, value: 187, },
+        { day: 20, value: 261, },
+        { day: 21, value: 325, },
+        { day: 22, value: 330, },
+        { day: 23, value: 337, },
+        { day: 24, value: 342, },
+        { day: 25, value: 349, },
+        { day: 26, value: 327, },
+        { day: 27, value: 315, },
+        { day: 28, value: 304, },
+        { day: 29, value: 347, },
+        { day: 30, value: 367, },
+    ];
+
     // 일간 차트 생성
     createDailyLineChart("daily-line-chart", dailyData);
     
@@ -90,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
     createCircleProgressCharts();
     
     // 로그인 라인 차트 생성
-    createLoginLineChart();
+    createLoginLineChart("login-chart", loginData);
     
     /* [수정] - 창 크기 변경 시 차트 반응형 처리 */
     window.addEventListener('resize', function() {
@@ -365,9 +399,9 @@ function createDailyLineChart(elementId, data) {
 }
 
 /* 로그인 통계 라인 차트 생성 함수 */
-function createLoginLineChart() {
+function createLoginLineChart(elementId, data) {
     // amCharts 5 루트 요소 생성
-    let root = am5.Root.new("login-chart");
+    let root = am5.Root.new(elementId);
     root._logo.dispose();
     
     // 애니메이션 테마 설정
@@ -375,43 +409,42 @@ function createLoginLineChart() {
         am5themes_Animated.new(root)
     ]);
     
-    /* [수정] - 모바일/태블릿 대응 */
-    let isMobile = window.innerWidth < 768;
-    let isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
-    
     // 차트 생성
     let chart = root.container.children.push(
         am5xy.XYChart.new(root, {
-            panX: true,
-            panY: true,
-            wheelX: "panX",
-            wheelY: "zoomX",
+            panX: false,
+            panY: false,
+            wheelX: "none",
+            wheelY: "none",
+            pinchZoomX: false,
+            pinchZoomY: false,
             layout: root.verticalLayout,
-            pinchZoomX: true,
-            /* [수정] - 반응형 패딩 조정 */
-            paddingLeft: isMobile ? 10 : 20,
-            paddingRight: isMobile ? 10 : 20
         })
     );
-    
+
+    let xRenderer = am5xy.AxisRendererX.new(root, {});
+    xRenderer.grid.template.setAll({visible: false,});
+    xRenderer.labels.template.setAll({
+        fontSize: 12,
+        step: 10,
+    });
+    let yRenderer = am5xy.AxisRendererY.new(root, {});
+    yRenderer.labels.template.setAll({
+        fontSize: 12,
+        step: 10,
+        paddingRight: 8,
+    });
+
     // X축 생성
     let xAxis = chart.xAxes.push(
         am5xy.ValueAxis.new(root, {
-            maxDeviation: 0.1,
+            maxDeviation: 100,
             min: 1,
-            max: 30,
+            max: 31,
             strictMinMax: true,
-            renderer: am5xy.AxisRendererX.new(root, {})
+            renderer: xRenderer,
         })
     );
-    
-    /* [수정] - 모바일에서는 X축 레이블 간격 조정 */
-    if (isMobile) {
-        xAxis.get("renderer").labels.template.setAll({
-            fontSize: 10,
-            step: 2
-        });
-    }
     
     // Y축 생성
     let yAxis = chart.yAxes.push(
@@ -420,56 +453,47 @@ function createLoginLineChart() {
             min: 0,
             max: 400,
             strictMinMax: true,
-            renderer: am5xy.AxisRendererY.new(root, {})
+            renderer: yRenderer,
         })
     );
     
-    /* [수정] - 모바일에서는 Y축 레이블 간격 조정 */
-    if (isMobile) {
-        yAxis.get("renderer").labels.template.setAll({
-            fontSize: 10
-        });
-    }
-    
     // 시리즈 생성
     let series = chart.series.push(
-        am5xy.LineSeries.new(root, {
+        am5xy.SmoothedXLineSeries.new(root, {
+            tension: 0.3,
+            connect: true,
             name: "로그인 수",
             xAxis: xAxis,
             yAxis: yAxis,
             valueYField: "value",
             valueXField: "day",
+            minDistance: 16,
             tooltip: am5.Tooltip.new(root, {
-            labelText: "{valueY}회"
-            })
+                labelText: "{valueY}회",
+            }),
         })
     );
+
+    // 컬러 설정
+    let color = am5.color(0x1B5292);
+    let rangeDataItem = yAxis.makeDataItem({});
+    let range = series.createAxisRange(rangeDataItem);
+    range.strokes.template.setAll({
+        stroke: color,
+    });
     
     // 선 스타일 설정
     series.strokes.template.setAll({
+        stroke: am5.color(0x000000),
         strokeWidth: 2,
-        stroke: am5.color(0x1B5292)
     });
     
     // 커서 설정
     chart.set("cursor", am5xy.XYCursor.new(root, {
         behavior: "none",
         xAxis: xAxis,
-        yAxis: yAxis
+        yAxis: yAxis,
     }));
-    
-    // 가상의 로그인 데이터 생성 (실제로는 서버에서 데이터를 불러와야 함)
-    let data = [];
-    for (let i = 1; i <= 30; i++) {
-        // 주말에는 로그인이 적고, 평일에는 많은 패턴 생성
-        let isWeekend = i % 7 === 0 || i % 7 === 6;
-        let base = isWeekend ? 100 : 200;
-        let randomFactor = Math.random() * 150;
-        data.push({
-            day: i,
-            value: Math.round(base + randomFactor)
-        });
-    }
     
     // 데이터 설정
     series.data.setAll(data);
