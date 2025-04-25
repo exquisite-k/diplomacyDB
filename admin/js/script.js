@@ -314,7 +314,9 @@ function createDailyLineChart(elementId, data) {
   
     // Create axes
     // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-    let xRenderer = am5xy.AxisRendererX.new(root, {});
+    let xRenderer = am5xy.AxisRendererX.new(root, {
+        minGridDistance: 10,
+    });
     xRenderer.labels.template.setAll({
         paddingTop: 16,
         paddingBottom: 16,
