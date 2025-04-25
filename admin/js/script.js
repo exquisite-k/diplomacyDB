@@ -177,11 +177,11 @@ function createPieChart(elementId, data) {
     // 차트 생성 (오른쪽에 배치)
     let chart = mainContainer.children.push(
         am5percent.PieChart.new(root, {
-            width: am5.percent(70),
+            width: am5.percent(50),
             radius: am5.percent(90),
-            centerX: am5.percent(82),
+            centerX: am5.percent(80),
             centerY: am5.percent(50),
-            x: am5.percent(100),
+            x: am5.percent(90),
             y: am5.percent(50),
             layout: root.horizontalLayout,
         })
@@ -419,26 +419,34 @@ function createLoginLineChart(elementId, data) {
             pinchZoomX: false,
             pinchZoomY: false,
             layout: root.verticalLayout,
+            paddingBottom: 0,
+            paddingTop: 10,
+            paddingLeft: 0,
+            paddingRight: 0,
         })
     );
 
-    let xRenderer = am5xy.AxisRendererX.new(root, {});
+    let xRenderer = am5xy.AxisRendererX.new(root, {
+        minGridDistance: 20,
+    });
     xRenderer.grid.template.setAll({visible: false,});
     xRenderer.labels.template.setAll({
         fontSize: 12,
-        step: 10,
+        step: 0.1,
     });
-    let yRenderer = am5xy.AxisRendererY.new(root, {});
+    let yRenderer = am5xy.AxisRendererY.new(root, {
+        minGridDistance: 50,
+    });
     yRenderer.labels.template.setAll({
         fontSize: 12,
-        step: 10,
+        step: 1,
         paddingRight: 8,
     });
 
     // X축 생성
     let xAxis = chart.xAxes.push(
         am5xy.ValueAxis.new(root, {
-            maxDeviation: 100,
+            maxDeviation: 1,
             min: 1,
             max: 31,
             strictMinMax: true,
@@ -449,7 +457,8 @@ function createLoginLineChart(elementId, data) {
     // Y축 생성
     let yAxis = chart.yAxes.push(
         am5xy.ValueAxis.new(root, {
-            maxDeviation: 0,
+            maxDeviation: 1,
+            extraMax: 0.01,
             min: 0,
             max: 400,
             strictMinMax: true,
@@ -467,7 +476,7 @@ function createLoginLineChart(elementId, data) {
             yAxis: yAxis,
             valueYField: "value",
             valueXField: "day",
-            minDistance: 16,
+            minDistance: 10,
             tooltip: am5.Tooltip.new(root, {
                 labelText: "{valueY}회",
             }),
