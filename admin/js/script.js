@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
     ];
 
-    // 데이터 생성
+    // 로그인 통계 데이터 생성
     const loginData = [
         { day: 1, value: 97, },
         { day: 2, value: 105, },
@@ -111,6 +111,22 @@ document.addEventListener('DOMContentLoaded', function() {
         { day: 30, value: 367, },
     ];
 
+    // AI별 사용통계 데이터 생성
+    const aiUsageData = [
+        { title: "문서작성", value: 164, },
+        { title: "검색", value: 257, },
+        { title: "요약", value: 89, },
+        { title: "번역", value: 244, },
+    ];
+
+    // 페이지별 이용량 데이터 생성
+    const pageUsageData = [
+        { title: "고객지원", value: 31 },
+        { title: "AI 도우미", value: 754 },
+        { title: "외교 인사 분석", value: 375 },
+        { title: "이슈 브리핑", value: 414 },
+    ];
+
     // 일간 차트 생성
     createDailyLineChart("daily-line-chart", dailyData);
     
@@ -119,6 +135,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 외부 파이 차트 생성
     createPieChart("external-pie-chart", externalData);
+
+    // AI별 사용통계 가로 바 차트 생성
+    createHorizontalBarChart("ai-usage-chart", aiUsageData);
+    
+    // 페이지별 이용량 가로 바 차트 생성
+    createHorizontalBarChart("page-usage-chart", pageUsageData);
+
     
     // 원형 프로그레스 차트 생성
     createCircleProgressCharts();
@@ -148,10 +171,132 @@ document.addEventListener('DOMContentLoaded', function() {
 
 /* ########## amchart 생성 ########## */
 /**
- * 파이 차트 생성 함수
- * @param {string} elementId - 차트를 생성할 요소의 ID
- * @param {Array} data - 차트에 표시할 데이터 배열
- */
+    * 차트 아이디, 데이터 배열을 인자로 받아 차트 생성
+    * @param {string} elementId - 차트를 생성할 요소의 ID
+    * @param {Array} data - 차트에 표시할 데이터 배열
+*/
+
+/* 세로 바(일간) 차트 생성 함수 */
+function createDailyLineChart(elementId, data) {
+    // amCharts 5 루트 요소 생성
+    let root = am5.Root.new(elementId);
+    root._logo.dispose();
+  
+    // Set themes
+    // https://www.amcharts.com/docs/v5/concepts/themes/
+    root.setThemes([am5themes_Animated.new(root)]);
+  
+    // Create chart
+    let chart = root.container.children.push(
+        am5xy.XYChart.new(root, {
+            panX: false,
+            panY: false,
+            wheelX: "none",
+            wheelY: "none",
+            pinchZoomX: false,
+            pinchZoomY: false,
+            paddingLeft: 0,
+            paddingRight: 0,
+            paddingTop: 0,
+            paddingBottom: 0,
+        })
+    );
+
+    // Add cursor
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+    let cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
+    cursor.lineX.set("visible", false);
+    cursor.lineY.set("visible", false);
+  
+    // Create axes
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+    let xRenderer = am5xy.AxisRendererX.new(root, {
+        minGridDistance: 10,
+    });
+    xRenderer.labels.template.setAll({
+        paddingTop: 16,
+        paddingBottom: 16,
+        fontSize: 18,
+    });
+    xRenderer.grid.template.setAll({visible: false,});
+    let xAxis = chart.xAxes.push(
+        am5xy.CategoryAxis.new(root, {
+            maxDeviation: 0.3,
+            categoryField: "country",
+            renderer: xRenderer,
+        })
+    );
+    let yRenderer = am5xy.AxisRendererY.new(root, {});
+    yRenderer.labels.template.setAll({visible: false,});
+    yRenderer.grid.template.setAll({visible: false,});
+    let yAxis = chart.yAxes.push(
+        am5xy.ValueAxis.new(root, {
+            maxDeviation: 0.3,
+            renderer: yRenderer,
+        })
+    );
+  
+    // Create series
+    let series = chart.series.push(
+        am5xy.ColumnSeries.new(root, {
+            name: "Series 1",
+            xAxis: xAxis,
+            yAxis: yAxis,
+            valueYField: "value",
+            sequencedInterpolation: true,
+            categoryXField: "country",
+            tooltip: am5.Tooltip.new(root, {
+                labelText: "{valueY}",
+            }),
+        })
+    );
+    series.columns.template.setAll({
+        width: am5.percent(70),
+        cornerRadiusTL: am5.percent(20),
+        cornerRadiusTR: am5.percent(20),
+        cornerRadiusBL: am5.percent(0),
+        cornerRadiusBR: am5.percent(0),
+    });
+    
+    // 데이터의 color 속성을 사용하도록 어댑터 수정
+    series.columns.template.adapters.add("fill", function (fill, target) {
+        let dataItem = target.dataItem;
+        if (dataItem && dataItem.dataContext) {
+            return dataItem.dataContext.color;
+        }
+        return fill;
+    });
+    series.columns.template.adapters.add("stroke", function (stroke, target) {
+        let dataItem = target.dataItem;
+        if (dataItem && dataItem.dataContext) {
+            return dataItem.dataContext.color;
+        }
+        return stroke;
+    });
+    
+    // 차트 내부에 값 표시
+    // series.bullets.push(function () {
+    //     return am5.Bullet.new(root, {
+    //         locationY: 0.5,
+    //         sprite: am5.Label.new(root, {
+    //             text: "{valueY}",
+    //             fill: root.interfaceColors.get("alternativeText"),
+    //             centerX: am5.p50,
+    //             centerY: am5.p50,
+    //             populateText: true,
+    //         }),
+    //     });
+    // });
+  
+    xAxis.data.setAll(data);
+    series.data.setAll(data);
+  
+    // Make stuff animate on load
+    series.appear(1000);
+    chart.appear(1000, 100);
+}
+
+/* 파이 차트(내부, 외부) 생성 함수 */
 function createPieChart(elementId, data) {
     // amCharts 5 루트 요소 생성
     let root = am5.Root.new(elementId);
@@ -280,127 +425,7 @@ function createPieChart(elementId, data) {
     legend.appear(1000, 100);
 }
 
-/* 일간 차트 생성 함수 */
-function createDailyLineChart(elementId, data) {
-    // amCharts 5 루트 요소 생성
-    let root = am5.Root.new(elementId);
-    root._logo.dispose();
-  
-    // Set themes
-    // https://www.amcharts.com/docs/v5/concepts/themes/
-    root.setThemes([am5themes_Animated.new(root)]);
-  
-    // Create chart
-    let chart = root.container.children.push(
-        am5xy.XYChart.new(root, {
-            panX: false,
-            panY: false,
-            wheelX: "none",
-            wheelY: "none",
-            pinchZoomX: false,
-            pinchZoomY: false,
-            paddingLeft: 0,
-            paddingRight: 0,
-            paddingTop: 0,
-            paddingBottom: 0,
-        })
-    );
-
-    // Add cursor
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-    let cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
-    cursor.lineX.set("visible", false);
-    cursor.lineY.set("visible", false);
-  
-    // Create axes
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-    let xRenderer = am5xy.AxisRendererX.new(root, {
-        minGridDistance: 10,
-    });
-    xRenderer.labels.template.setAll({
-        paddingTop: 16,
-        paddingBottom: 16,
-        fontSize: 18,
-    });
-    xRenderer.grid.template.setAll({visible: false,});
-    let xAxis = chart.xAxes.push(
-        am5xy.CategoryAxis.new(root, {
-            maxDeviation: 0.3,
-            categoryField: "country",
-            renderer: xRenderer,
-        })
-    );
-    let yRenderer = am5xy.AxisRendererY.new(root, {});
-    yRenderer.labels.template.setAll({visible: false,});
-    yRenderer.grid.template.setAll({visible: false,});
-    let yAxis = chart.yAxes.push(
-        am5xy.ValueAxis.new(root, {
-            maxDeviation: 0.3,
-            renderer: yRenderer,
-        })
-    );
-  
-    // Create series
-    let series = chart.series.push(
-        am5xy.ColumnSeries.new(root, {
-            name: "Series 1",
-            xAxis: xAxis,
-            yAxis: yAxis,
-            valueYField: "value",
-            sequencedInterpolation: true,
-            categoryXField: "country",
-            tooltip: am5.Tooltip.new(root, {
-                labelText: "{valueY}",
-            }),
-        })
-    );
-    series.columns.template.setAll({
-        width: am5.percent(70),
-        cornerRadiusTL: am5.percent(20),
-        cornerRadiusTR: am5.percent(20),
-        cornerRadiusBL: am5.percent(0),
-        cornerRadiusBR: am5.percent(0),
-    });
-    
-    // 데이터의 color 속성을 사용하도록 어댑터 수정
-    series.columns.template.adapters.add("fill", function (fill, target) {
-        let dataItem = target.dataItem;
-        if (dataItem && dataItem.dataContext) {
-            return dataItem.dataContext.color;
-        }
-        return fill;
-    });
-    series.columns.template.adapters.add("stroke", function (stroke, target) {
-        let dataItem = target.dataItem;
-        if (dataItem && dataItem.dataContext) {
-            return dataItem.dataContext.color;
-        }
-        return stroke;
-    });
-    
-    // 차트 내부에 값 표시
-    // series.bullets.push(function () {
-    //     return am5.Bullet.new(root, {
-    //         locationY: 0.5,
-    //         sprite: am5.Label.new(root, {
-    //             text: "{valueY}",
-    //             fill: root.interfaceColors.get("alternativeText"),
-    //             centerX: am5.p50,
-    //             centerY: am5.p50,
-    //             populateText: true,
-    //         }),
-    //     });
-    // });
-  
-    xAxis.data.setAll(data);
-    series.data.setAll(data);
-  
-    // Make stuff animate on load
-    series.appear(1000);
-    chart.appear(1000, 100);
-}
-
-/* 로그인 통계 라인 차트 생성 함수 */
+/* 라인(로그인 통계) 차트 생성 함수 */
 function createLoginLineChart(elementId, data) {
     // amCharts 5 루트 요소 생성
     let root = am5.Root.new(elementId);
@@ -468,6 +493,24 @@ function createLoginLineChart(elementId, data) {
         })
     );
     
+    // 단일 컬러 설정
+    let color = am5.color(0x1B5292);
+
+    // 툴팁 설정
+    let tooltip = am5.Tooltip.new(root, {
+        getFillFromSprite: false,
+        autoTextColor: false,
+        labelText: "{valueX}일 {valueY}회",
+    });
+    tooltip.label.setAll({
+        fontSize: 14,
+        fill: am5.color(0xffffff),
+    });
+    tooltip.get("background").setAll({
+        fill: color,
+        fillOpacity: 0.8,
+    });
+
     // 시리즈 생성
     let series = chart.series.push(
         am5xy.SmoothedXLineSeries.new(root, {
@@ -479,14 +522,11 @@ function createLoginLineChart(elementId, data) {
             valueYField: "value",
             valueXField: "day",
             minDistance: 10,
-            tooltip: am5.Tooltip.new(root, {
-                labelText: "{valueY}회",
-            }),
+            tooltip: tooltip,
         })
     );
 
-    // 컬러 설정
-    let color = am5.color(0x1B5292);
+    // 차트 컬러 설정
     let rangeDataItem = yAxis.makeDataItem({});
     let range = series.createAxisRange(rangeDataItem);
     range.strokes.template.setAll({
@@ -508,10 +548,118 @@ function createLoginLineChart(elementId, data) {
     
     // 데이터 설정
     series.data.setAll(data);
+
+    // 툴팁 설정
+    series.set("tooltip", tooltip);
     
     // 애니메이션 설정
     series.appear(1000, 100);
 }
+
+/* 가로 바(AI별 사용통계, 페이지별 이용량) 차트 생성 함수 */
+function createHorizontalBarChart(elementId, data) {
+    // Create root element
+    let root = am5.Root.new(elementId);
+    root._logo.dispose();
+
+    // Set themes
+    root.setThemes([am5themes_Animated.new(root)]);
+
+    // Create chart
+    let chart = root.container.children.push(
+        am5xy.XYChart.new(root, {
+            panX: false,
+            panY: false,
+            wheelX: "none",
+            wheelY: "none",
+            pinchZoomX: false,
+            pinchZoomY: false,
+            paddingLeft: 0,
+            paddingRight: 0,
+            paddingTop: 0,
+            paddingBottom: 0,
+        })
+    );
+
+    // Add cursor
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+    let cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
+    cursor.lineX.set("visible", false);
+    cursor.lineY.set("visible", false);
+
+    // 단일 컬러 설정
+    chart.set("colors",
+        am5.ColorSet.new(root, {
+            colors: [am5.color(0x487FEE)],
+        })
+    );
+
+    // Create Renderer
+    let xRenderer = am5xy.AxisRendererX.new(root, {
+        minGridDistance: 10,
+    });
+    xRenderer.grid.template.setAll({visible: false,});
+
+    let yRenderer = am5xy.AxisRendererY.new(root, {
+        minorGridEnabled: false,
+    });
+    yRenderer.labels.template.setAll({
+        fontSize: 14,
+        oversizedBehavior: "wrap",
+        maxWidth: 70,
+        textAlign: "right",
+    });
+    yRenderer.grid.template.setAll({visible: false,});
+
+    // Create axes
+    let yAxis = chart.yAxes.push(
+        am5xy.CategoryAxis.new(root, {
+            maxDeviation: 0.3,
+            paddingLeft: 0,
+            paddingRight: 10,
+            categoryField: "title",
+            renderer: yRenderer,
+        })
+    );
+    let xAxis = chart.xAxes.push(
+        am5xy.ValueAxis.new(root, {
+            maxDeviation: 0,
+            min: 0,
+            renderer: xRenderer,
+            forceHidden: true,
+        })
+    );
+
+    // Create series
+    let series = chart.series.push(
+        am5xy.ColumnSeries.new(root, {
+            xAxis: xAxis,
+            yAxis: yAxis,
+            valueXField: "value",
+            sequencedInterpolation: true,
+            categoryYField: "title",
+            tooltip: am5.Tooltip.new(root, {
+                labelText: "[fontSize:14px]{title}: {value}",
+            }),
+        })
+    );
+    series.columns.template.setAll({
+        height: am5.percent(50),
+        cornerRadiusTL: 0,
+        cornerRadiusTR: 4,
+        cornerRadiusBL: 0,
+        cornerRadiusBR: 4,
+    });
+
+    yAxis.data.setAll(data);
+    series.data.setAll(data);
+
+    // Make stuff animate on load
+    // https://www.amcharts.com/docs/v5/concepts/animations/
+    series.appear(1000);
+    chart.appear(1000, 100);
+};
+  
 
 
 
