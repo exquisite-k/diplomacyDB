@@ -3,9 +3,255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>AI 분석 포털</title>
+    <!-- CSS 파일 로드 -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Swiper.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <!-- 폰트 로드 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
+
+    <!-- JavaScript 파일 로드 -->
+    <!-- amCharts5 -->
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/forceDirected.js"></script>
+    <!-- Swiper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </head>
 <body>
+    <!-- 헤더 영역 -->
+    <header class="header">
+        <div class="header__inner">
+            <h1 class="logo">
+                <a href="/"><img src="images/logo.png" alt="AI 분석 포털"></a>
+            </h1>
+            <div class="search-bar">
+                <input type="text" placeholder="국정과제 입법 키워드를 입력하세요.">
+                <div class="search-buttons">
+                    <button type="button" class="btn btn-enter">엔터</button>
+                    <button type="button" class="btn btn-search">AI 검색</button>
+                </div>
+            </div>
+            <div class="util-menu">
+                <a href="#" class="util-menu__item">고객센터</a>
+                <a href="#" class="util-menu__item">이용안내</a>
+                <button type="button" class="util-menu__item login-btn">로그인</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 네비게이션 영역 -->
+    <nav class="gnb">
+        <div class="gnb__inner">
+            <ul class="gnb__list">
+                <li class="gnb__item"><a href="#">이슈 서비스</a></li>
+                <li class="gnb__item"><a href="#">정보 인사 검색</a></li>
+                <li class="gnb__item"><a href="#">스포트라이트</a></li>
+                <li class="gnb__item"><a href="#">고객지원</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 메인 배너 영역 -->
+    <section class="main-banner">
+        <div class="swiper main-banner__swiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="main-banner__content">
+                        <div class="main-banner__label">데이터맵 1번</div>
+                        <h2 class="main-banner__title">트럼프 미국 관세</h2>
+                        <div class="main-banner__tags">
+                            <span class="tag">무역</span>
+                            <span class="tag">관세</span>
+                            <span class="tag">트럼프</span>
+                            <span class="tag">환율</span>
+                            <span class="tag">정부비판</span>
+                        </div>
+                    </div>
+                    <div class="main-banner__bg" style="background-image: url('images/main-banner.jpg');"></div>
+                </div>
+                <!-- 추가 슬라이드는 필요에 따라 복제 -->
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+    </section>
+
+    <!-- 주요 콘텐츠 영역 -->
+    <main class="main-content">
+        <!-- AI 서비스 소개 섹션 -->
+        <section class="service-intro">
+            <div class="service-intro__left">
+                <h3 class="section-title">외교부가 제공하는<br>AI 서비스 모음</h3>
+                <p class="section-desc">빠르게 지나가는 뉴스와 대외정책 트렌드, 어제와 오늘은 무엇이 다른지, 해석과 이해의 폭을 넓혀 주는 정보 기술을 제공합니다.</p>
+            </div>
+            <div class="service-intro__right">
+                <div class="service-blocks">
+                    <div class="service-block ai-service">
+                        <h4 class="service-block__title">AI 요약</h4>
+                        <div class="service-block__content">
+                            <img src="images/ai-service.png" alt="AI 요약 서비스">
+                            <p>복잡한 외교적 해외정치적 이슈를 짧고 명확하게 정리해 드리고 이에 대한 핵심만 추려서 제공합니다.</p>
+                        </div>
+                        <a href="#" class="more-link">더보기</a>
+                    </div>
+                    <div class="service-block translation">
+                        <h4 class="service-block__title">번역</h4>
+                        <a href="#" class="more-link">더보기</a>
+                    </div>
+                    <div class="service-block document">
+                        <h4 class="service-block__title">문서 작성</h4>
+                        <a href="#" class="more-link">더보기</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 데이터맵 섹션 -->
+        <section class="data-map">
+            <div class="data-map__header">
+                <div class="data-map__title">
+                    <img src="images/icon-datamap.png" alt="데이터맵 아이콘">
+                    <h3>데이터맵 1위</h3>
+                </div>
+                <h3 class="data-map__name">트럼프 미국 관세</h3>
+                <button type="button" class="data-map__toggle"><i class="arrow-down-icon"></i></button>
+            </div>
+
+            <!-- 순위 목록 -->
+            <div class="ranking-list">
+                <div class="ranking-list__header">
+                    <span class="col-rank">키워드순위</span>
+                    <span class="col-topic">토픽</span>
+                    <span class="col-count">미국</span>
+                    <span class="col-count">중국</span>
+                </div>
+                <ul class="ranking-list__body">
+                    <li class="ranking-item">
+                        <span class="col-rank">1</span>
+                        <span class="col-topic">초인두세 관세 폭탄</span>
+                        <span class="col-count">3+</span>
+                        <span class="col-count"></span>
+                    </li>
+                    <li class="ranking-item">
+                        <span class="col-rank">2</span>
+                        <span class="col-topic">신임대사 임기시작</span>
+                        <span class="col-count"></span>
+                        <span class="col-count">4+</span>
+                    </li>
+                    <li class="ranking-item">
+                        <span class="col-rank">3</span>
+                        <span class="col-topic">한때품 무역흑자 확대</span>
+                        <span class="col-count">11+</span>
+                        <span class="col-count"></span>
+                    </li>
+                    <!-- 추가 랭킹 아이템은 필요에 따라 복제 -->
+                </ul>
+            </div>
+        </section>
+
+        <!-- 키워드 중심 뉴스 -->
+        <section class="keyword-news">
+            <h3 class="section-title">키워드별 중심 뉴스</h3>
+            <div class="news-slider swiper">
+                <div class="swiper-wrapper">
+                    <!-- 뉴스 아이템 1 -->
+                    <div class="swiper-slide news-item">
+                        <div class="news-item__image">
+                            <img src="images/news1.jpg" alt="뉴스 이미지">
+                        </div>
+                        <div class="news-item__content">
+                            <h4 class="news-item__title">"윤석열은 국가에 재난 사상 세 번째로 대담한 망언"</h4>
+                            <p class="news-item__desc">미국 CNN '트럼프 관세 폭탄에 한국이 가장 취약' 트럼프 당선인의 관세 정책이 임기 시작과 동시에 이전보다 더 극단적으로 변할 수 있다는 점에서 한국으로는 대비가 필요하다는 주장이 나왔다.</p>
+                            <div class="news-item__footer">
+                                <span class="news-source">조선일보</span>
+                                <span class="news-date">2024.01.11</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 추가 뉴스 아이템은 필요에 따라 복제 -->
+                </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+        </section>
+
+        <!-- 인물 관계도 -->
+        <section class="person-network">
+            <h3 class="section-title">인물 관계도</h3>
+            <div class="network-chart" id="personNetworkChart"></div>
+        </section>
+
+        <!-- 키워드별 언급량 -->
+        <section class="keyword-chart-section">
+            <div class="section-row">
+                <section class="keyword-trend">
+                    <h3 class="section-title">키워드별 언급량</h3>
+                    <div class="trend-chart" id="keywordTrendChart"></div>
+                </section>
+                
+                <section class="keyword-mention">
+                    <h3 class="section-title">언급어</h3>
+                    <div class="mention-chart" id="keywordMentionChart"></div>
+                </section>
+            </div>
+        </section>
+
+        <!-- 데이터 수집 현황 -->
+        <section class="data-stats">
+            <h3 class="section-title">데이터 수집 현황</h3>
+            <div class="stats-counter">
+                <span class="stats-counter__value">58,195,869</span>
+                <span class="stats-counter__label">전체 수집</span>
+            </div>
+            <div class="stats-row">
+                <div class="stats-box">
+                    <h4 class="stats-box__title">매체/SNS</h4>
+                    <div class="stats-box__value">3,671</div>
+                    <div class="stats-chart" id="mediaChart"></div>
+                </div>
+                <div class="stats-box">
+                    <h4 class="stats-box__title">캐릭터스</h4>
+                    <div class="stats-box__value">1,233</div>
+                    <div class="stats-chart" id="characterChart"></div>
+                </div>
+                <div class="stats-box">
+                    <h4 class="stats-box__title">의회자료</h4>
+                    <div class="stats-box__value">2,008</div>
+                    <div class="stats-chart" id="congressChart"></div>
+                </div>
+                <div class="stats-box">
+                    <h4 class="stats-box__title">정부자료</h4>
+                    <div class="stats-box__value"></div>
+                    <div class="stats-chart" id="governmentChart"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 푸터 영역 -->
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__info">
+                <p>부산 스타트업 파크 연구센터동 중앙대학교 AI 연구소</p>
+                <p>대표번호: 02-3280-2584</p>
+                <p>Copyright © 2023 MOFAT. All rights reserved</p>
+            </div>
+            <div class="footer__logo">
+                <img src="images/logo-footer.png" alt="외교부 로고">
+            </div>
+        </div>
+    </footer>
+
     
+    <!-- 사용자 정의 스크립트 -->
+    <script src="js/slide.js"></script>
+    <script src="js/chart.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
