@@ -479,7 +479,7 @@ main > .container {
   background-color: rgba(255, 255, 255, 0.7);
   box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.2);
 }
-.more-btn.active i, .more-btn:active i {
+.more-btn.active i {
   transform: rotate(-540deg);
 }
 
@@ -545,59 +545,56 @@ main > .container {
   font-weight: 300;
 }
 
-/* [수정] - section으로 분리된 시스템 인프라 상태 영역 */
+/* 시스템 인프라 상태 영역 */
 .system-status {
   background-color: #FFF;
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 30px;
 }
-.system-status h3 {
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  letter-spacing: -1%;
+.system-status .container {
+  flex-direction: column;
+  align-items: flex-start;
+  row-gap: 32px;
 }
 .system-status .infra-stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  /* [수정] - 반응형 그리드 레이아웃 */
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
 }
-@media (max-width: 1024px) {
-  .system-status .infra-stats {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.system-status .infra-stats > * {
+  flex: 1;
 }
-@media (max-width: 768px) {
-  .system-status .infra-stats {
-    grid-template-columns: 1fr;
-  }
-}
-.system-status .infra-stats .circle-progress-container {
+
+/* 원형 프로그레스 컨테이너 */
+.circle-progress-container {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.system-status .infra-stats .circle-progress-container .circle-progress {
-  width: 120px;
-  height: 120px;
-  margin-bottom: 15px;
+.circle-progress-container .circle-progress {
+  position: relative;
 }
-.system-status .infra-stats .circle-progress-container .progress-text {
+.circle-progress-container .progress-text {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-.system-status .infra-stats .circle-progress-container .progress-text .label {
+  justify-content: center;
+  row-gap: 4px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #222;
   font-size: 18px;
-  color: #000;
-  margin-bottom: 5px;
+  word-break: keep-all;
+  text-align: center;
 }
-.system-status .infra-stats .circle-progress-container .progress-text .value {
+.circle-progress-container .progress-text .value {
   font-size: 24px;
   font-weight: 700;
-  color: #000;
 }
 
 /* [수정] - section으로 분리된 로그인 통계 영역 */

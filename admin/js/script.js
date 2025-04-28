@@ -3,7 +3,9 @@ document.addEventListener('DOMContentLoaded', function() {
     /* [수정] - 브라우저 사이즈 정보 추적 */
     const isMobile = window.innerWidth < 768;
     const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
-    
+
+
+    /* ##### 데이터 정의 ##### */
     // 일간 차트 데이터 정의
     const dailyData = [
         {
@@ -127,6 +129,136 @@ document.addEventListener('DOMContentLoaded', function() {
         { title: "이슈 브리핑", value: 414 },
     ];
 
+    // 통계 데이터 정의
+    const statisticsData = [
+        {
+            title: "번역",
+            stats: [
+                { label: "응답수", value: "244건" },
+                { label: "평균속도", value: "0.5s" }
+            ],
+            lastUpdateDate: "2025.09.25."
+        },
+        {
+            title: "요약",
+            stats: [
+                { label: "응답수", value: "89건" },
+                { label: "평균속도", value: "1s" }
+            ],
+            lastUpdateDate: "2025.09.25."
+        },
+        {
+            title: "검색",
+            stats: [
+                { label: "응답수", value: "257건" },
+                { label: "평균속도", value: "0.3s" }
+            ],
+            lastUpdateDate: "2025.09.25."
+        },
+        {
+            title: "문서작성",
+            stats: [
+                { label: "응답수", value: "164건" },
+                { label: "평균속도", value: "0.35s" }
+            ],
+            lastUpdateDate: "2025.09.25."
+        }
+    ];
+
+    // 추가 생성 될될 통계 데이터 정의
+    const statisticsAddData = [
+        {
+            title: "추가내용01",
+            stats: [
+                { label: "응답수", value: "244건" },
+                { label: "평균속도", value: "0.5s" }
+            ],
+            lastUpdateDate: "2025.09.25."
+        },
+        {
+            title: "추가내용02",
+            stats: [
+                { label: "응답수", value: "89건" },
+                { label: "평균속도", value: "1s" }
+            ],
+            lastUpdateDate: "2025.09.25."
+        },
+        {
+            title: "추가내용03",
+            stats: [
+                { label: "응답수", value: "257건" },
+                { label: "평균속도", value: "0.3s" }
+            ],
+            lastUpdateDate: "2025.09.25."
+        },
+        {
+            title: "추가내용04",
+            stats: [
+                { label: "응답수", value: "164건" },
+                { label: "평균속도", value: "0.35s" }
+            ],
+            lastUpdateDate: "2025.09.25."
+        },
+        {
+            title: "추가내용05",
+            stats: [
+                { label: "응답수", value: "244건" },
+                { label: "평균속도", value: "0.5s" }
+            ],
+            lastUpdateDate: "2025.09.25."
+        },
+        {
+            title: "추가내용06",
+            stats: [
+                { label: "응답수", value: "89건" },
+                { label: "평균속도", value: "1s" }
+            ],
+            lastUpdateDate: "2025.09.25."
+        },
+        {
+            title: "추가내용07",
+            stats: [
+                { label: "응답수", value: "257건" },
+                { label: "평균속도", value: "0.3s" }
+            ],
+            lastUpdateDate: "2025.09.25."
+        },
+        {
+            title: "추가내용08",
+            stats: [
+                { label: "응답수", value: "164건" },
+                { label: "평균속도", value: "0.35s" }
+            ],
+            lastUpdateDate: "2025.09.25."
+        },
+        {
+            title: "추가내용09",
+            stats: [
+                { label: "응답수", value: "89건" },
+                { label: "평균속도", value: "1s" }
+            ],
+            lastUpdateDate: "2025.09.25."
+        },
+        {
+            title: "추가내용10",
+            stats: [
+                { label: "응답수", value: "257건" },
+                { label: "평균속도", value: "0.3s" }
+            ],
+            lastUpdateDate: "2025.09.25."
+        },
+        {
+            title: "추가내용11",
+            stats: [
+                { label: "응답수", value: "164건" },
+                { label: "평균속도", value: "0.35s" }
+            ],
+            lastUpdateDate: "2025.09.25."
+        }
+    ];
+
+    
+    /* ##### 차트 생성 ##### */
     // 일간 차트 생성
     createDailyLineChart("daily-line-chart", dailyData);
     
@@ -142,14 +274,44 @@ document.addEventListener('DOMContentLoaded', function() {
     // 페이지별 이용량 가로 바 차트 생성
     createHorizontalBarChart("page-usage-chart", pageUsageData);
 
-    
+    // 로그인 라인 차트 생성
+    createLoginLineChart("login-chart", loginData);
+
+
+    /* ##### 기타 생성 ##### */
     // 원형 프로그레스 차트 생성
     createCircleProgressCharts();
     
-    // 로그인 라인 차트 생성
-    createLoginLineChart("login-chart", loginData);
+    // 통계 데이터 렌더링
+    renderStatisticsItems(statisticsData);
     
-    /* [수정] - 창 크기 변경 시 차트 반응형 처리 */
+    // 더보기 버튼 이벤트 설정
+    setupMoreButton(statisticsData, statisticsAddData);
+    
+    // 메인 네비게이션 활성화 설정
+    setupMainNavigation();
+
+
+    /* ##### 기타 ##### */
+    // 데이터 관리 함수를 전역으로 노출
+    window.addStatisticsItem = (title, stats, lastUpdateDate) => {
+        const newItem = { title, stats, lastUpdateDate };
+        statisticsData.push(newItem);
+        renderStatisticsItems(statisticsData);
+        return statisticsData;
+    };
+    window.updateStatisticsItem = (index, newData) => {
+        if (index >= 0 && index < statisticsData.length) {
+            Object.assign(statisticsData[index], newData);
+            renderStatisticsItems(statisticsData);
+        }
+        return statisticsData;
+    };
+    window.getStatisticsData = () => {
+        return [...statisticsData]; // 복사본 반환
+    };
+    
+    /* 창 크기 변경 시 차트 반응형 처리 */
     window.addEventListener('resize', function() {
         // 차트 사이즈 리셋을 위한 타이머 설정
         if (this.resizeTimer) clearTimeout(this.resizeTimer);
@@ -175,7 +337,6 @@ document.addEventListener('DOMContentLoaded', function() {
     * @param {string} elementId - 차트를 생성할 요소의 ID
     * @param {Array} data - 차트에 표시할 데이터 배열
 */
-
 /* 세로 바(일간) 차트 생성 함수 */
 function createDailyLineChart(elementId, data) {
     // amCharts 5 루트 요소 생성
@@ -659,7 +820,6 @@ function createHorizontalBarChart(elementId, data) {
     series.appear(1000);
     chart.appear(1000, 100);
 };
-  
 
 
 
@@ -777,45 +937,172 @@ function createCanvasCircleProgress(elementId, value, color, labelText, valueTex
     // canvas 요소 생성
     const canvas = document.createElement('canvas');
     canvas.id = `${elementId}-canvas`;
-    canvas.style.width = '100%';
-    canvas.style.height = '120px';
+    let size = 230;
+    canvas.style.width = `${size}px`;
+    canvas.style.height = `${size}px`;
     element.appendChild(canvas);
     
     // 프로그레스 바 인스턴스 생성
     const progressBar = new CircularProgressBar(canvas.id, {
-        lineWidth: 10,
+        lineWidth: 20,
         color: color,
-        backgroundColor: `${color}20`, // 20% 투명도
+        backgroundColor: `${color}1c`, // 11% 투명도
         value: value,
-        showText: false
+        showText: false,
     });
     
     // 프로그레스 인스턴스 저장
     element.progressInstance = progressBar;
     
     // 텍스트 요소 추가
-    const textContainer = document.createElement('div');
+    const textContainer = document.createElement('p');
     textContainer.className = 'progress-text';
-    textContainer.style.textAlign = 'center';
-    textContainer.style.marginTop = '10px';
     
     const labelSpan = document.createElement('span');
     labelSpan.className = 'label';
-    labelSpan.style.display = 'block';
-    labelSpan.style.fontSize = '18px';
-    labelSpan.style.color = '#222222';
-    labelSpan.style.marginBottom = '5px';
     labelSpan.textContent = labelText;
     
     const valueSpan = document.createElement('span');
     valueSpan.className = 'value';
-    valueSpan.style.display = 'block';
-    valueSpan.style.fontSize = '24px';
-    valueSpan.style.fontWeight = 'bold';
-    valueSpan.style.color = '#222222';
     valueSpan.textContent = valueText;
     
     textContainer.appendChild(labelSpan);
     textContainer.appendChild(valueSpan);
     element.appendChild(textContainer);
+}
+
+/* ########## 통계 아이템 생성 ########## */
+/* 통계 아이템을 동적으로 생성하는 함수 */
+function renderStatisticsItems(data) {
+    const statisticsWrapper = document.querySelector('.statistics-wrapper');
+    
+    // 기존 내용 비우기
+    if (statisticsWrapper) {
+        statisticsWrapper.innerHTML = '';
+        
+        // 각 통계 데이터로 HTML 생성
+        data.forEach(item => {
+            const statsItemHTML = `
+                <li class="statistics-item">
+                    <h3 class="cont-title">${item.title}</h3>
+                    <div class="statistics-content">
+                        ${item.stats.map((stat, index, array) => `
+                            <p class="stats-item">
+                                <span class="label">${stat.label}</span>
+                                <span class="value">${stat.value}</span>
+                            </p>
+                            ${index < array.length - 1 ? '<div class="stats-divider"></div>' : ''}
+                        `).join('')}
+                    </div>
+                    <p class="stats-date">
+                        <span>마지막 학습일시</span>
+                        <span>${item.lastUpdateDate}</span>
+                    </p>
+                </li>
+            `;
+            
+            statisticsWrapper.innerHTML += statsItemHTML;
+        });
+    }
+}
+
+/* 더보기 버튼 설정 함수 */
+function setupMoreButton(originalData, additionalData) {
+    const moreBtn = document.querySelector('.more-btn');
+    if (!moreBtn) return;
+    
+    moreBtn.addEventListener('click', function() {
+        // active 클래스 토글
+        this.classList.toggle('active');
+        
+        // 기존 추가 통계 요소 찾기
+        const additionalWrapper = document.querySelector('.statistics-wrapper.additional');
+        
+        // active 상태에 따른 처리
+        if (this.classList.contains('active')) {
+            // active 상태: 추가 통계 요소 생성
+            if (!additionalWrapper) {
+                const statisticsContainer = document.querySelector('.statistics-container article.container');
+                if (statisticsContainer) {
+                    // 새로운 statistics-wrapper 생성
+                    const newWrapper = document.createElement('ul');
+                    newWrapper.className = 'statistics-wrapper additional';
+                    
+                    // 원래 요소 뒤에 추가
+                    const originalWrapper = document.querySelector('.statistics-wrapper:not(.additional)');
+                    if (originalWrapper && originalWrapper.nextSibling) {
+                        statisticsContainer.insertBefore(newWrapper, originalWrapper.nextSibling);
+                    } else {
+                        statisticsContainer.appendChild(newWrapper);
+                    }
+                    
+                    // 내용 생성
+                    additionalData.forEach(item => {
+                        const statsItemHTML = `
+                            <li class="statistics-item">
+                                <h3 class="cont-title">${item.title}</h3>
+                                <div class="statistics-content">
+                                    ${item.stats.map((stat, index, array) => `
+                                        <p class="stats-item">
+                                            <span class="label">${stat.label}</span>
+                                            <span class="value">${stat.value}</span>
+                                        </p>
+                                        ${index < array.length - 1 ? '<div class="stats-divider"></div>' : ''}
+                                    `).join('')}
+                                </div>
+                                <p class="stats-date">
+                                    <span>마지막 학습일시</span>
+                                    <span>${item.lastUpdateDate}</span>
+                                </p>
+                            </li>
+                        `;
+                        
+                        newWrapper.innerHTML += statsItemHTML;
+                    });
+                }
+            } else {
+                // 이미 존재하면 표시
+                additionalWrapper.style.display = 'grid';
+            }
+            
+            // 버튼 텍스트 변경
+            const btnTextSpan = this.querySelector('span');
+            if (btnTextSpan) {
+                btnTextSpan.textContent = '접기';
+            }
+        } else {
+            // inactive 상태: 추가 통계 요소 제거
+            if (additionalWrapper) {
+                additionalWrapper.style.display = 'none';
+            }
+            
+            // 버튼 텍스트 복원
+            const btnTextSpan = this.querySelector('span');
+            if (btnTextSpan) {
+                btnTextSpan.textContent = '더보기';
+            }
+        }
+    });
+}
+
+/* 메인 네비게이션 활성화 함수 */
+function setupMainNavigation() {
+    const mainNavItems = document.querySelectorAll('.main-nav-item');
+    
+    mainNavItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            // 이미 active 클래스가 있으면 아무 작업 하지 않음
+            if (this.classList.contains('active')) {
+                return;
+            }
+            
+            // 다른 모든 메뉴 아이템에서 active 클래스 제거
+            mainNavItems.forEach(navItem => {
+                navItem.classList.remove('active');
+            });
+            
+            // 현재 클릭한 항목에만 active 클래스 추가
+            this.classList.add('active');
+        });
+    });
 }
