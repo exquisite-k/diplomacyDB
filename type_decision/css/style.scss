@@ -279,89 +279,115 @@ header {
 /* 메인 배너 */
 .main-banner {
     position: relative;
-    height: 400px;
-    overflow: hidden;
-    
-    &__swiper {
-        height: 100%;
+    .main-banner__swiper {
+        margin: 0;
+        height: 400px;
+        position: relative;
+        .swiper-wrapper {
+            width: 100%;
+        }
+        .swiper-slide {
+            border: 1px solid red;
+            background-color: #ddd;
+        }
     }
-    
-    &__content {
+    .main-banner__swiper-controls {
         position: absolute;
         top: 50%;
-        left: 100px;
-        transform: translateY(-50%);
-        z-index: 2;
-        color: $white;
-        max-width: 500px;
-    }
-    
-    &__label {
-        display: inline-block;
-        padding: 5px 10px;
-        background-color: rgba($primary-color, 0.8);
-        border-radius: $border-radius;
-        font-size: 14px;
-        margin-bottom: 10px;
-    }
-    
-    &__title {
-        font-size: 36px;
-        font-weight: bold;
-        margin-bottom: 20px;
-        text-shadow: 0 2px 4px rgba($black, 0.2);
-    }
-    
-    &__bg {
-        position: absolute;
-        top: 0;
         left: 0;
+        z-index: 1;
+
+        border: 1px solid blue;
+        background-color: #777;
+        .main-banner__label {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: rgba($primary-color, 0.8);
+            border-radius: $border-radius;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .main-banner__title {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba($black, 0.2);
+        }
+    }
+    .tags-wrapper {
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background-color: rgba($white, 0.2);
+            border-radius: 20px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+    }
+    
+    .swiper-control-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        > * {
+            flex: 1;
+        }
+    }
+    
+    .autoplay-progress {
+        flex: 2;
         width: 100%;
-        height: 100%;
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        
-        &::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to right, rgba($black, 0.7), rgba($black, 0.3));
+        height: auto;
+        appearance: none;
+        &::-webkit-progress-bar {
+            height: 4px;
+            background-color: #ffffff66;
+        }
+        &::-webkit-progress-value {
+            background-color: #3B82F6; /* 진행 부분 색상 */
+        }
+        &::-moz-progress-bar {
+            height: 4px;
+            background-color: #ffffff66;
+        }
+        &::-moz-progress-value {
+            background-color: #3B82F6; /* 진행 부분 색상 */
         }
     }
-    
-    .tag {
-        display: inline-block;
-        padding: 4px 12px;
-        background-color: rgba($white, 0.2);
-        border-radius: 20px;
-        margin-right: 8px;
-        margin-bottom: 8px;
-        font-size: 14px;
+    .swiper-btn-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        column-gap: 16px;
     }
-    
-    .swiper-pagination {
-        text-align: center;
-        bottom: 20px;
-        
-        .swiper-pagination-bullet {
-            width: 10px;
-            height: 10px;
-            background: rgba($white, 0.5);
-            opacity: 1;
-            
-            &-active {
-                background: $white;
-            }
-        }
-    }
-    
     .swiper-button-prev,
     .swiper-button-next {
+        width: 16px;
+        height: 16px;
+        margin: 0;
         color: $white;
+        position: unset;
+        top: auto;
+        left: auto;
+        &::after {
+            width: 100%;
+            height: 100%;
+            font-size: 100%;
+        }
+    }
+    .swiper-pagination {
+        width: fit-content;
+        position: unset;
+        &.swiper-pagination-fraction {
+            font-size: 16px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.6);
+            .swiper-pagination-current {
+                color: $white;
+                font-weight: 700;
+            }
+        }
     }
 }
 

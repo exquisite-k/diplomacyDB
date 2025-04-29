@@ -50,6 +50,7 @@ function initMainBannerSlider() {
     const useLoop = slides.length > 1;
     
     try {
+        const progressCircle = document.querySelector(".main-banner .autoplay-progress");
         const mainBannerSwiper = new Swiper('.main-banner__swiper', {
             // 기본 설정
             slidesPerView: 1,
@@ -67,6 +68,7 @@ function initMainBannerSlider() {
             pagination: {
                 el: '.main-banner .swiper-pagination',
                 clickable: true,
+                type: 'fraction',
             },
             
             // 네비게이션 화살표
@@ -74,6 +76,13 @@ function initMainBannerSlider() {
                 nextEl: '.main-banner .swiper-button-next',
                 prevEl: '.main-banner .swiper-button-prev',
             },
+
+            // 자동 재생 시간 표시
+            on: {
+                autoplayTimeLeft(s, time, progress) {
+                    progressCircle.value = 1 - progress;
+                }
+            }
         });
         
         console.log("메인 배너 슬라이드 초기화 완료", mainBannerSwiper);
