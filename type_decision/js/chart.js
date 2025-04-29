@@ -5,17 +5,28 @@
  * - 데이터 수집 현황 차트
  */
 
+// amCharts 라이브러리 로드 확인을 위한 디버깅 로그
+console.log("amCharts 로드 확인:", typeof am5, typeof am5?.Root, typeof am5themes_Animated);
+
 // DOM이 로드된 후 차트 초기화
 document.addEventListener('DOMContentLoaded', function() {
+    // amCharts 라이브러리가 로드되었는지 확인
+    if (typeof am5 === 'undefined') {
+        console.error("amCharts 라이브러리가 로드되지 않았습니다.");
+        return;
+    }
+    
+    console.log("차트 초기화 시작");
+    
     // 인물 관계도 차트 초기화
     initPersonNetworkChart();
-
+    
     // 키워드 언급량 차트 초기화
     initKeywordTrendChart();
-
+    
     // 언급어 차트 초기화
     initKeywordMentionChart();
-
+    
     // 데이터 수집 현황 차트 초기화
     initDataStatsCharts();
 });
@@ -67,69 +78,83 @@ const personNetworkData = {
 };
 
 /**
-    * 인물 관계도 차트 초기화 함수
-    * - 포스 다이렉티드 그래프 사용
-*/
+ * 인물 관계도 차트 초기화 함수
+ * - 포스 다이렉티드 그래프 사용
+ */
 function initPersonNetworkChart() {
+    console.log("인물 관계도 차트 초기화 시작");
+    
     // 차트 영역 확인
     const chartDiv = document.getElementById('personNetworkChart');
-    if (!chartDiv) return;
+    console.log("차트 영역:", chartDiv);
+    if (!chartDiv) {
+        console.error("차트 영역 요소가 없습니다: #personNetworkChart");
+        return;
+    }
 
-    // Root 생성
-    const root = am5.Root.new(chartDiv);
-    
-    // 테마 설정
-    root.setThemes([
-        am5themes_Animated.new(root)
-    ]);
-  
-    // 차트 생성
-    const chart = root.container.children.push(
-        am5.ForceDirected.new(root, {
-            downDepth: 1,
-            initialDepth: 2,
-            valueField: "value",
-            categoryField: "name",
-            childDataField: "children",
-            centerStrength: 0.5,
-            minRadius: 20,
-            maxRadius: 50,
-            manyBodyStrength: -15,
-            linkWithStrength: true,
-        })
-    );
-  
-    // 차트 데이터 적용
-    chart.data.setAll([personNetworkData]);
-    
-    // 노드 템플릿 설정
-    const nodeTemplate = chart.nodes.template;
-    
-    // 노드 스타일링
-    nodeTemplate.set("tooltipText", "{name}: {role}");
-    nodeTemplate.set("fillOpacity", 0.8);
-    
-    // 원형 불릿 스타일
-    nodeTemplate.setAll({
-        strokeWidth: 2,
-        stroke: am5.color(0xffffff),
-        fill: am5.color(0x0052cc),
-    });
-  
-    // 텍스트 레이블 설정
-    nodeTemplate.label.setAll({
-        fontSize: 12,
-        fill: am5.color(0x333333),
-        text: "{name}",
-        paddingLeft: 0,
-        paddingRight: 0,
-        centerX: am5.p50,
-        centerY: am5.p100
-    });
-  
-    // 링크 스타일
-    chart.links.template.set("strokeWidth", 2);
-    chart.links.template.set("strokeOpacity", 0.5);
+    try {
+        // Root 생성
+        console.log("am5.Root 생성 시도:", typeof am5?.Root);
+        const root = am5.Root.new(chartDiv);
+        
+        // 테마 설정
+        console.log("테마 설정 시도:", typeof am5themes_Animated);
+        root.setThemes([
+            am5themes_Animated.new(root)
+        ]);
+        
+        // 차트 생성
+        const chart = root.container.children.push(
+            am5.ForceDirected.new(root, {
+                downDepth: 1,
+                initialDepth: 2,
+                valueField: "value",
+                categoryField: "name",
+                childDataField: "children",
+                centerStrength: 0.5,
+                minRadius: 20,
+                maxRadius: 50,
+                manyBodyStrength: -15,
+                linkWithStrength: true
+            })
+        );
+        
+        // 차트 데이터 적용
+        chart.data.setAll([personNetworkData]);
+        
+        // 노드 템플릿 설정
+        const nodeTemplate = chart.nodes.template;
+        
+        // 노드 스타일링
+        nodeTemplate.set("tooltipText", "{name}: {role}");
+        nodeTemplate.set("fillOpacity", 0.8);
+        
+        // 원형 불릿 스타일
+        nodeTemplate.setAll({
+            strokeWidth: 2,
+            stroke: am5.color(0xffffff),
+            fill: am5.color(0x0052cc)
+        });
+        
+        // 텍스트 레이블 설정
+        nodeTemplate.label.setAll({
+            fontSize: 12,
+            fill: am5.color(0x333333),
+            text: "{name}",
+            paddingLeft: 0,
+            paddingRight: 0,
+            centerX: am5.p50,
+            centerY: am5.p100
+        });
+        
+        // 링크 스타일
+        chart.links.template.set("strokeWidth", 2);
+        chart.links.template.set("strokeOpacity", 0.5);
+        
+        console.log("인물 관계도 차트 초기화 완료");
+    } catch (error) {
+        console.error("인물 관계도 차트 초기화 오류:", error);
+    }
 }
 
 /**
@@ -152,98 +177,109 @@ const keywordTrendData = [
  * - 라인 시리즈로 시간에 따른 추이 표시
  */
 function initKeywordTrendChart() {
+    console.log("키워드 언급량 차트 초기화 시작");
+    
     // 차트 영역 확인
     const chartDiv = document.getElementById('keywordTrendChart');
-    if (!chartDiv) return;
+    if (!chartDiv) {
+        console.error("차트 영역 요소가 없습니다: #keywordTrendChart");
+        return;
+    }
 
-    // Root 생성
-    const root = am5.Root.new(chartDiv);
-    
-    // 테마 설정
-    root.setThemes([
-        am5themes_Animated.new(root)
-    ]);
-    
-    // 차트 생성
-    const chart = root.container.children.push(
-        am5xy.XYChart.new(root, {
-            panX: true,
-            panY: true,
-            wheelX: "panX",
-            wheelY: "zoomX",
-            layout: root.verticalLayout,
-        })
-    );
-    
-    // 데이터 생성
-    chart.data.setAll(keywordTrendData);
-    
-    // X축 생성
-    const xAxis = chart.xAxes.push(
-        am5xy.CategoryAxis.new(root, {
-            categoryField: "date",
-            renderer: am5xy.AxisRendererX.new(root, {}),
-            tooltip: am5.Tooltip.new(root, {}),
-        })
-    );
-    
-    xAxis.data.setAll(keywordTrendData);
-    
-    // Y축 생성
-    const yAxis = chart.yAxes.push(
-        am5xy.ValueAxis.new(root, {
-            renderer: am5xy.AxisRendererY.new(root, {}),
-        })
-    );
-    
-    // 시리즈 생성 함수
-    function createSeries(name, field) {
-        const series = chart.series.push(
-            am5xy.LineSeries.new(root, {
-                name: name,
-                xAxis: xAxis,
-                yAxis: yAxis,
-                valueYField: field,
-                categoryXField: "date",
-                tooltip: am5.Tooltip.new(root, {
-                    labelText: "{name}: {valueY}",
-                }),
+    try {
+        // Root 생성
+        const root = am5.Root.new(chartDiv);
+        
+        // 테마 설정
+        root.setThemes([
+            am5themes_Animated.new(root)
+        ]);
+        
+        // 차트 생성
+        const chart = root.container.children.push(
+            am5xy.XYChart.new(root, {
+                panX: true,
+                panY: true,
+                wheelX: "panX",
+                wheelY: "zoomX",
+                layout: root.verticalLayout
             })
         );
         
-        series.strokes.template.setAll({
-            strokeWidth: 2
-        });
+        // 데이터 생성
+        chart.data.setAll(keywordTrendData);
         
-        series.data.setAll(keywordTrendData);
+        // X축 생성
+        const xAxis = chart.xAxes.push(
+            am5xy.CategoryAxis.new(root, {
+                categoryField: "date",
+                renderer: am5xy.AxisRendererX.new(root, {}),
+                tooltip: am5.Tooltip.new(root, {})
+            })
+        );
         
-        return series;
+        xAxis.data.setAll(keywordTrendData);
+        
+        // Y축 생성
+        const yAxis = chart.yAxes.push(
+            am5xy.ValueAxis.new(root, {
+                renderer: am5xy.AxisRendererY.new(root, {})
+            })
+        );
+        
+        // 시리즈 생성 함수
+        function createSeries(name, field) {
+            const series = chart.series.push(
+                am5xy.LineSeries.new(root, {
+                    name: name,
+                    xAxis: xAxis,
+                    yAxis: yAxis,
+                    valueYField: field,
+                    categoryXField: "date",
+                    tooltip: am5.Tooltip.new(root, {
+                        labelText: "{name}: {valueY}"
+                    })
+                })
+            );
+            
+            series.strokes.template.setAll({
+                strokeWidth: 2
+            });
+            
+            series.data.setAll(keywordTrendData);
+            
+            return series;
+        }
+        
+        // 각 키워드별 시리즈 생성
+        createSeries("관세", "관세");
+        createSeries("무역", "무역");
+        createSeries("경제", "경제");
+        
+        // 범례 추가
+        const legend = chart.children.push(
+            am5.Legend.new(root, {
+                centerX: am5.p50,
+                x: am5.p50
+            })
+        );
+        
+        legend.data.setAll(chart.series.values);
+        
+        // 차트 커서 추가
+        chart.set("cursor", am5xy.XYCursor.new(root, {
+            behavior: "zoomX"
+        }));
+        
+        console.log("키워드 언급량 차트 초기화 완료");
+    } catch (error) {
+        console.error("키워드 언급량 차트 초기화 오류:", error);
     }
-    
-    // 각 키워드별 시리즈 생성
-    createSeries("관세", "관세");
-    createSeries("무역", "무역");
-    createSeries("경제", "경제");
-    
-    // 범례 추가
-    const legend = chart.children.push(
-        am5.Legend.new(root, {
-            centerX: am5.p50,
-            x: am5.p50,
-        })
-    );
-    
-    legend.data.setAll(chart.series.values);
-    
-    // 차트 커서 추가
-    chart.set("cursor", am5xy.XYCursor.new(root, {
-        behavior: "zoomX",
-    }));
 }
 
 /**
-    * 언급어 차트 데이터
-*/
+ * 언급어 차트 데이터
+ */
 const mentionData = [
     { category: "관세", value: 30 },
     { category: "무역", value: 25 },
@@ -258,124 +294,135 @@ const mentionData = [
 ];
 
 /**
-    * 언급어 차트 초기화 함수
-    * - 레이더 차트 사용
-*/
+ * 언급어 차트 초기화 함수
+ * - 레이더 차트 사용
+ */
 function initKeywordMentionChart() {
+    console.log("언급어 차트 초기화 시작");
+    
     // 차트 영역 확인
     const chartDiv = document.getElementById('keywordMentionChart');
-    if (!chartDiv) return;
+    if (!chartDiv) {
+        console.error("차트 영역 요소가 없습니다: #keywordMentionChart");
+        return;
+    }
 
-    // Root 생성
-    const root = am5.Root.new(chartDiv);
-    
-    // 테마 설정
-    root.setThemes([
-        am5themes_Animated.new(root)
-    ]);
-    
-    // 색상 설정
-    const colors = {
-        관세: "#0052cc",
-        무역: "#005eff",
-        미국: "#4d90fe",
-        중국: "#8db9ff",
-        경제: "#b3d1ff",
-        대통령: "#ff6b6b",
-        정책: "#ffa8a8",
-        대립: "#ffd7d7",
-        외교: "#69db7c",
-        통상: "#a9e34b"
-    };
-    
-    // 차트 생성 - 원형으로 단어 배치
-    const container = root.container.children.push(
-        am5.Container.new(root, {
-            width: am5.percent(100),
-            height: am5.percent(100),
-            layout: root.horizontalLayout,
-        })
-    );
-    
-    // 데이터에 기반한 원형 배치
-    const centerX = container.width() / 2;
-    const centerY = container.height() / 2;
-    const radius = Math.min(centerX, centerY) * 0.7;
-    
-    // 중앙 단어 추가
-    container.children.push(
-        am5.Circle.new(root, {
-            radius: 60,
-            fill: am5.color("#0052cc"),
-            centerX: centerX,
-            centerY: centerY,
-            dx: 0,
-            dy: 0,
-        })
-    );
-    
-    container.children.push(
-        am5.Label.new(root, {
-            text: "관세",
-            fill: am5.color("#ffffff"),
-            fontSize: 16,
-            fontWeight: "bold",
-            centerX: centerX,
-            centerY: centerY,
-            dx: 0,
-            dy: 0,
-        })
-    );
-    
-    // 언급어 단어 추가
-    mentionData.forEach((item, index) => {
-        // 대략적인 원형 배치를 위한 각도 계산
-        const angle = (index / mentionData.length) * Math.PI * 2;
-        const bubbleRadius = (item.value / mentionData[0].value) * 30 + 15;
+    try {
+        // Root 생성
+        const root = am5.Root.new(chartDiv);
         
-        // 위치 계산 (원형)
-        let x = centerX + Math.cos(angle) * (radius - bubbleRadius * 1.2);
-        let y = centerY + Math.sin(angle) * (radius - bubbleRadius * 1.2);
+        // 테마 설정
+        root.setThemes([
+            am5themes_Animated.new(root)
+        ]);
         
-        // 선 그리기
-        container.children.push(
-            am5.Line.new(root, {
-                stroke: am5.color("#cccccc"),
-                strokeWidth: 1,
-                strokeOpacity: 0.5,
-                x1: centerX,
-                y1: centerY,
-                x2: x,
-                y2: y,
+        // 색상 설정
+        const colors = {
+            관세: "#0052cc",
+            무역: "#005eff",
+            미국: "#4d90fe",
+            중국: "#8db9ff",
+            경제: "#b3d1ff",
+            대통령: "#ff6b6b",
+            정책: "#ffa8a8",
+            대립: "#ffd7d7",
+            외교: "#69db7c",
+            통상: "#a9e34b"
+        };
+        
+        // 차트 생성 - 원형으로 단어 배치
+        const container = root.container.children.push(
+            am5.Container.new(root, {
+                width: am5.percent(100),
+                height: am5.percent(100),
+                layout: root.horizontalLayout
             })
         );
         
-        // 원 그리기
+        // 데이터에 기반한 원형 배치
+        const centerX = container.width() / 2;
+        const centerY = container.height() / 2;
+        const radius = Math.min(centerX, centerY) * 0.7;
+        
+        // 중앙 단어 추가
         container.children.push(
             am5.Circle.new(root, {
-                radius: bubbleRadius,
-                fill: colors[item.category] || am5.color("#999999"),
-                centerX: 0,
-                centerY: 0,
-                dx: x,
-                dy: y,
+                radius: 60,
+                fill: am5.color("#0052cc"),
+                centerX: centerX,
+                centerY: centerY,
+                dx: 0,
+                dy: 0
             })
         );
         
-        // 텍스트 추가
         container.children.push(
             am5.Label.new(root, {
-                text: item.category,
+                text: "관세",
                 fill: am5.color("#ffffff"),
-                fontSize: 12,
-                fontWeight: "500",
-                centerX: 0,
-                centerY: 0,
-                dx: x,
-                dy: y,
+                fontSize: 16,
+                fontWeight: "bold",
+                centerX: centerX,
+                centerY: centerY,
+                dx: 0,
+                dy: 0
             })
         );
-    });
+        
+        // 언급어 단어 추가
+        mentionData.forEach((item, index) => {
+            // 대략적인 원형 배치를 위한 각도 계산
+            const angle = (index / mentionData.length) * Math.PI * 2;
+            const bubbleRadius = (item.value / mentionData[0].value) * 30 + 15;
+            
+            // 위치 계산 (원형)
+            let x = centerX + Math.cos(angle) * (radius - bubbleRadius * 1.2);
+            let y = centerY + Math.sin(angle) * (radius - bubbleRadius * 1.2);
+            
+            // 선 그리기
+            container.children.push(
+                am5.Line.new(root, {
+                    stroke: am5.color("#cccccc"),
+                    strokeWidth: 1,
+                    strokeOpacity: 0.5,
+                    x1: centerX,
+                    y1: centerY,
+                    x2: x,
+                    y2: y
+                })
+            );
+            
+            // 원 그리기
+            container.children.push(
+                am5.Circle.new(root, {
+                    radius: bubbleRadius,
+                    fill: colors[item.category] || am5.color("#999999"),
+                    centerX: 0,
+                    centerY: 0,
+                    dx: x,
+                    dy: y
+                })
+            );
+            
+            // 텍스트 추가
+            container.children.push(
+                am5.Label.new(root, {
+                    text: item.category,
+                    fill: am5.color("#ffffff"),
+                    fontSize: 12,
+                    fontWeight: "500",
+                    centerX: 0,
+                    centerY: 0,
+                    dx: x,
+                    dy: y
+                })
+            );
+        });
+        
+        console.log("언급어 차트 초기화 완료");
+    } catch (error) {
+        console.error("언급어 차트 초기화 오류:", error);
+    }
 }
 
 /**
@@ -416,10 +463,18 @@ const dataStatsData = {
  * - 각 섹션별 바 차트 생성
  */
 function initDataStatsCharts() {
-    createStatsChart('mediaChart', dataStatsData.media);
-    createStatsChart('characterChart', dataStatsData.characters);
-    createStatsChart('congressChart', dataStatsData.congress);
-    createStatsChart('governmentChart', dataStatsData.government);
+    console.log("데이터 수집 현황 차트 초기화 시작");
+    
+    try {
+        createStatsChart('mediaChart', dataStatsData.media);
+        createStatsChart('characterChart', dataStatsData.characters);
+        createStatsChart('congressChart', dataStatsData.congress);
+        createStatsChart('governmentChart', dataStatsData.government);
+        
+        console.log("데이터 수집 현황 차트 초기화 완료");
+    } catch (error) {
+        console.error("데이터 수집 현황 차트 초기화 오류:", error);
+    }
 }
 
 /**
@@ -428,118 +483,125 @@ function initDataStatsCharts() {
 function createStatsChart(chartId, data) {
     // 차트 영역 확인
     const chartDiv = document.getElementById(chartId);
-    if (!chartDiv) return;
+    if (!chartDiv) {
+        console.error(`차트 영역 요소가 없습니다: #${chartId}`);
+        return;
+    }
 
-    // Root 생성
-    const root = am5.Root.new(chartDiv);
-    
-    // 테마 설정
-    root.setThemes([
-        am5themes_Animated.new(root)
-    ]);
-    
-    // 차트 생성
-    const chart = root.container.children.push(
-        am5xy.XYChart.new(root, {
-            panX: false,
-            panY: false,
-            wheelX: "none",
-            wheelY: "none",
-            paddingLeft: 0,
-            paddingRight: 10,
-            layout: root.verticalLayout,
-        })
-    );
-    
-    // 데이터 생성
-    chart.data.setAll(data);
-    
-    // Y축 생성
-    const yAxis = chart.yAxes.push(
-        am5xy.CategoryAxis.new(root, {
-            categoryField: "category",
-            renderer: am5xy.AxisRendererY.new(root, {
-                minGridDistance: 10,
-                cellStartLocation: 0.1,
-                cellEndLocation: 0.9,
-            }),
-        })
-    );
-    
-    yAxis.data.setAll(data);
-    
-    // X축 생성
-    const xAxis = chart.xAxes.push(
-        am5xy.ValueAxis.new(root, {
-            renderer: am5xy.AxisRendererX.new(root, {
-                visible: false,
+    try {
+        // Root 생성
+        const root = am5.Root.new(chartDiv);
+        
+        // 테마 설정
+        root.setThemes([
+            am5themes_Animated.new(root)
+        ]);
+        
+        // 차트 생성
+        const chart = root.container.children.push(
+            am5xy.XYChart.new(root, {
+                panX: false,
+                panY: false,
+                wheelX: "none",
+                wheelY: "none",
+                paddingLeft: 0,
+                paddingRight: 10,
+                layout: root.verticalLayout
             })
-        })
-    );
-    
-    // 시리즈 생성
-    const series = chart.series.push(
-        am5xy.ColumnSeries.new(root, {
-            name: "데이터 수집",
-            xAxis: xAxis,
-            yAxis: yAxis,
-            valueXField: "value",
-            categoryYField: "category",
-            tooltip: am5.Tooltip.new(root, {
-                labelText: "{categoryY}: {valueX}",
-            }),
-        })
-    );
-    
-    // 막대 스타일 지정
-    series.columns.template.setAll({
-        height: am5.p60,
-        cornerRadiusTR: 4,
-        cornerRadiusBR: 4
-    });
-    
-    // 컬러 어댑터 추가
-    series.columns.template.adapters.add("fill", function(fill, target) {
-        const dataItem = target.dataItem;
-        if (dataItem) {
-            const categoryValue = dataItem.get("categoryY");
-            const index = data.findIndex(item => item.category === categoryValue);
-            
-            // 색상 변화를 위한 색상 배열
-            const colors = [
-                am5.color("#0052cc"),
-                am5.color("#3179ea"),
-                am5.color("#63a0ff"),
-                am5.color("#94c1ff"),
-                am5.color("#c6dfff")
-            ];
-            
-            return colors[index % colors.length];
-        }
-        return fill;
-    });
-    
-    series.columns.template.adapters.add("stroke", function(stroke, target) {
-        return am5.color("#ffffff");
-    });
-    
-    // 데이터 연결
-    series.data.setAll(data);
-    
-    // 컬럼 라벨 추가
-    series.bullets.push(function() {
-        return am5.Bullet.new(root, {
-            sprite: am5.Label.new(root, {
-                text: "{valueX}",
-                fill: am5.color("#000000"),
-                centerY: am5.p50,
-                centerX: am5.p100,
-                populateText: true,
+        );
+        
+        // 데이터 생성
+        chart.data.setAll(data);
+        
+        // Y축 생성
+        const yAxis = chart.yAxes.push(
+            am5xy.CategoryAxis.new(root, {
+                categoryField: "category",
+                renderer: am5xy.AxisRendererY.new(root, {
+                    minGridDistance: 10,
+                    cellStartLocation: 0.1,
+                    cellEndLocation: 0.9
+                })
             })
+        );
+        
+        yAxis.data.setAll(data);
+        
+        // X축 생성
+        const xAxis = chart.xAxes.push(
+            am5xy.ValueAxis.new(root, {
+                renderer: am5xy.AxisRendererX.new(root, {
+                    visible: false
+                })
+            })
+        );
+        
+        // 시리즈 생성
+        const series = chart.series.push(
+            am5xy.ColumnSeries.new(root, {
+                name: "데이터 수집",
+                xAxis: xAxis,
+                yAxis: yAxis,
+                valueXField: "value",
+                categoryYField: "category",
+                tooltip: am5.Tooltip.new(root, {
+                    labelText: "{categoryY}: {valueX}"
+                })
+            })
+        );
+        
+        // 막대 스타일 지정
+        series.columns.template.setAll({
+            height: am5.p60,
+            cornerRadiusTR: 4,
+            cornerRadiusBR: 4
         });
-    });
-    
-    // 애니메이션 추가
-    series.appear(1000);
-    chart.appear(1000, 100);
+        
+        // 컬러 어댑터 추가
+        series.columns.template.adapters.add("fill", function(fill, target) {
+            const dataItem = target.dataItem;
+            if (dataItem) {
+                const categoryValue = dataItem.get("categoryY");
+                const index = data.findIndex(item => item.category === categoryValue);
+                
+                // 색상 변화를 위한 색상 배열
+                const colors = [
+                    am5.color("#0052cc"),
+                    am5.color("#3179ea"),
+                    am5.color("#63a0ff"),
+                    am5.color("#94c1ff"),
+                    am5.color("#c6dfff")
+                ];
+                
+                return colors[index % colors.length];
+            }
+            return fill;
+        });
+        
+        series.columns.template.adapters.add("stroke", function(stroke, target) {
+            return am5.color("#ffffff");
+        });
+        
+        // 데이터 연결
+        series.data.setAll(data);
+        
+        // 컬럼 라벨 추가
+        series.bullets.push(function() {
+            return am5.Bullet.new(root, {
+                sprite: am5.Label.new(root, {
+                    text: "{valueX}",
+                    fill: am5.color("#000000"),
+                    centerY: am5.p50,
+                    centerX: am5.p100,
+                    populateText: true
+                })
+            });
+        });
+        
+        // 애니메이션 추가
+        series.appear(1000);
+        chart.appear(1000, 100);
+    } catch (error) {
+        console.error(`차트 생성 오류(${chartId}):`, error);
+    }
 } 

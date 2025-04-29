@@ -10,50 +10,84 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <!-- 폰트 로드 -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
-
-    <!-- JavaScript 파일 로드 -->
-    <!-- amCharts5 -->
-    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/forceDirected.js"></script>
-    <!-- Swiper.js -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </head>
 <body>
     <!-- 헤더 영역 -->
-    <header class="header">
-        <div class="header__inner">
-            <h1 class="logo">
-                <a href="/"><img src="images/logo.png" alt="AI 분석 포털"></a>
-            </h1>
-            <div class="search-bar">
-                <input type="text" placeholder="국정과제 입법 키워드를 입력하세요.">
-                <div class="search-buttons">
-                    <button type="button" class="btn btn-enter">엔터</button>
-                    <button type="button" class="btn btn-search">AI 검색</button>
+    <header>
+        <article class="container">
+            <div class="header__inner">
+                <h1 class="logo">
+                    <a href="/" title="메인페이지로 이동합니다.">
+                        <img src="/images/logo/logo.svg" alt="AI 분석 포털 로고 이미지">
+                    </a>
+                </h1>
+                <div class="menu-wrapper">
+                    <div class="gnb-menu">
+                        <a href="javascript:void(0)" title="마이페이지 페이지로 이동">마이페이지</a>
+                        <a href="javascript:void(0)" title="로그아웃 페이지로 이동">로그아웃</a>
+                        <div class="user-info">
+                            <span class="user-name">홍길동님</span>
+                            <figure>
+                                <img src="/images/header/default.svg" alt="프로필 기본 이미지">
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="search-bar">
+                        <label>
+                            <input type="text" placeholder="궁금하신 외교 키워드를 입력하세요.">
+                        </label>
+                        <div class="search-buttons">
+                            <button type="button" class="btn btn-enter" title="검색 내용을 진행합니다.">
+                                검색 <i class="icon icon-search"></i>
+                            </button>
+                            <button type="button" class="btn btn-search" title="AI 검색을 진행합니다.">
+                                AI 검색
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="util-menu">
-                <a href="#" class="util-menu__item">고객센터</a>
-                <a href="#" class="util-menu__item">이용안내</a>
-                <button type="button" class="util-menu__item login-btn">로그인</button>
-            </div>
-        </div>
+        </article>
+
+        <!-- 네비게이션 영역 -->
+        <nav class="navigation">
+            <ul class="navigation__list">
+                <li class="navigation__item">
+                    <a href="javascript:void(0)" title="이슈 서비스">
+                        <span>이슈 서비스</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
+                            <path d="M2 5.5L7.5 11L13 5.5" stroke="#222222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </li>
+                <li class="navigation__item">
+                    <a href="javascript:void(0)" title="정보 인사 검색">
+                        <span>정보 인사 검색</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
+                            <path d="M2 5.5L7.5 11L13 5.5" stroke="#222222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </li>
+                <li class="navigation__item">
+                    <a href="javascript:void(0)" title="스포트라이트">
+                        <span>스포트라이트</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
+                            <path d="M2 5.5L7.5 11L13 5.5" stroke="#222222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </li>
+                <li class="navigation__item">
+                    <a href="javascript:void(0)" title="고객지원">
+                        <span>고객지원</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
+                            <path d="M2 5.5L7.5 11L13 5.5" stroke="#222222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </li>
+            </ul>
+        </nav> 
     </header>
 
-    <!-- 네비게이션 영역 -->
-    <nav class="gnb">
-        <div class="gnb__inner">
-            <ul class="gnb__list">
-                <li class="gnb__item"><a href="#">이슈 서비스</a></li>
-                <li class="gnb__item"><a href="#">정보 인사 검색</a></li>
-                <li class="gnb__item"><a href="#">스포트라이트</a></li>
-                <li class="gnb__item"><a href="#">고객지원</a></li>
-            </ul>
-        </div>
-    </nav>
 
     <!-- 메인 배너 영역 -->
     <section class="main-banner">
@@ -248,8 +282,16 @@
         </div>
     </footer>
 
+    <!-- JavaScript 파일 로드 (순서 중요) -->
+    <!-- 1. 외부 라이브러리 먼저 로드 -->
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/forceDirected.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     
-    <!-- 사용자 정의 스크립트 -->
+    <!-- 2. 사용자 정의 스크립트 로드 -->
     <script src="js/slide.js"></script>
     <script src="js/chart.js"></script>
     <script src="js/main.js"></script>
